@@ -1,4 +1,4 @@
-[filteringlibrary](../README.md) / [Exports](../modules.md) / DataContainer
+[react-item-filters](../README.md) / [Exports](../modules.md) / DataContainer
 
 # Class: DataContainer<DT\>
 
@@ -48,7 +48,7 @@
 
 #### Defined in
 
-lib/filtering.tsx:5
+[lib/filtering.ts:5](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L5)
 
 ## Properties
 
@@ -58,7 +58,7 @@ lib/filtering.tsx:5
 
 #### Defined in
 
-lib/filtering.tsx:2
+[lib/filtering.ts:2](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L2)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:4
+[lib/filtering.ts:4](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L4)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:3
+[lib/filtering.ts:3](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L3)
 
 ## Methods
 
@@ -106,7 +106,7 @@ lib/filtering.tsx:3
 
 #### Defined in
 
-lib/filtering.tsx:42
+[lib/filtering.ts:42](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L42)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:11
+[lib/filtering.ts:11](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L11)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:25
+[lib/filtering.ts:25](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L25)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:21
+[lib/filtering.ts:21](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L21)
 
 ___
 
@@ -180,4 +180,4 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:18
+[lib/filtering.ts:18](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L18)

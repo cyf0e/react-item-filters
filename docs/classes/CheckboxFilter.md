@@ -1,4 +1,4 @@
-[filteringlibrary](../README.md) / [Exports](../modules.md) / CheckboxFilter
+[react-item-filters](../README.md) / [Exports](../modules.md) / CheckboxFilter
 
 # Class: CheckboxFilter<DataElementType, SelectorReturnType\>
 
@@ -61,7 +61,7 @@
 
 #### Defined in
 
-lib/checkboxFilter.tsx:15
+[lib/checkboxFilter.tsx:15](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L15)
 
 ## Properties
 
@@ -71,7 +71,7 @@ lib/checkboxFilter.tsx:15
 
 #### Defined in
 
-lib/checkboxFilter.tsx:13
+[lib/checkboxFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L13)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:48
+[lib/filtering.ts:48](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L48)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:49
+[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L49)
 
 ___
 
@@ -137,17 +137,23 @@ ___
 
 #### Defined in
 
-lib/checkboxFilter.tsx:14
+[lib/checkboxFilter.tsx:14](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L14)
 
 ## Methods
 
 ### addCheckboxFilter
 
-▸ **addCheckboxFilter**(`Component`, `nameValueMap?`, `prettyLabels?`): `undefined` \| `any`[]
+▸ **addCheckboxFilter**(`Component`, `nameValueMap?`, `prettyLabels?`): `any`[]
 
-If a custom component is supplied it has to have props: {value: any, filterChangeFunction: Function}.
+If a custom component is supplied it has to have props: {labelValue: any, filterChangeFunction: Function}.
 The value is provided for labeling the checkbox.
-The filterChangeFunction is supplied to the onEvent function you wish to call for example onChange = {filterChangeFunction}
+The filterChangeFunction is supplied to the onEvent function you wish to call for
+
+**`Example`**
+
+```ts
+onChange = {filterChangeFunction}
+```
 
 #### Parameters
 
@@ -159,11 +165,11 @@ The filterChangeFunction is supplied to the onEvent function you wish to call fo
 
 #### Returns
 
-`undefined` \| `any`[]
+`any`[]
 
 #### Defined in
 
-lib/checkboxFilter.tsx:30
+[lib/checkboxFilter.tsx:31](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L31)
 
 ___
 
@@ -181,7 +187,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:60
+[lib/filtering.ts:60](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L60)
 
 ___
 
@@ -199,7 +205,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:55
+[lib/filtering.ts:55](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L55)
 
 ___
 
@@ -220,4 +226,4 @@ ___
 
 #### Defined in
 
-lib/checkboxFilter.tsx:70
+[lib/checkboxFilter.tsx:75](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L75)

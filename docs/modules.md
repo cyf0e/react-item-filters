@@ -1,6 +1,6 @@
-[filteringlibrary](README.md) / Exports
+[react-item-filters](README.md) / Exports
 
-# filteringlibrary
+# react-item-filters
 
 ## Table of contents
 
@@ -17,7 +17,7 @@
 
 ### Functions
 
-- [Provider](modules.md#provider)
+- [FilterProvider](modules.md#filterprovider)
 - [useCheckboxFilter](modules.md#usecheckboxfilter)
 - [useFilter](modules.md#usefilter)
 - [useSearchFilter](modules.md#usesearchfilter)
@@ -43,13 +43,13 @@
 
 #### Defined in
 
-lib/checkboxFilter.tsx:5
+[lib/checkboxFilter.tsx:5](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L5)
 
 ## Functions
 
-### Provider
+### FilterProvider
 
-▸ **Provider**<`InitialDataType`\>(`props`): `Element`
+▸ **FilterProvider**<`InitialDataType`\>(`props`): `Element`
 
 Provider - Function component that wraps children with the filtering context.
 
@@ -73,7 +73,7 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Defined in
 
-components/Provider.tsx:12
+[components/FilterProvider.tsx:12](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/components/FilterProvider.tsx#L12)
 
 ___
 
@@ -127,7 +127,7 @@ Components[] - The components to render.
 
 #### Defined in
 
-hooks/useCheckboxFilter.tsx:37
+[hooks/useCheckboxFilter.tsx:37](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/hooks/useCheckboxFilter.tsx#L37)
 
 ___
 
@@ -151,7 +151,7 @@ Data[] - Returns the filtered dataafter all filters in the same context have bee
 
 #### Defined in
 
-hooks/useFilter.tsx:9
+[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/hooks/useFilter.tsx#L9)
 
 ___
 
@@ -198,4 +198,4 @@ const MySearchComp = ({updateSearchFilter}:{updateSearchFilter:Function}) => {
 
 #### Defined in
 
-hooks/useSearchFilter.tsx:20
+[hooks/useSearchFilter.tsx:20](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/hooks/useSearchFilter.tsx#L20)

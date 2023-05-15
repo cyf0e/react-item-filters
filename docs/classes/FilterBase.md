@@ -1,4 +1,4 @@
-[filteringlibrary](../README.md) / [Exports](../modules.md) / FilterBase
+[react-item-filters](../README.md) / [Exports](../modules.md) / FilterBase
 
 # Class: FilterBase<DT\>
 
@@ -53,7 +53,7 @@
 
 #### Defined in
 
-lib/filtering.tsx:50
+[lib/filtering.ts:50](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L50)
 
 ## Properties
 
@@ -63,7 +63,7 @@ lib/filtering.tsx:50
 
 #### Defined in
 
-lib/filtering.tsx:48
+[lib/filtering.ts:48](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L48)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:49
+[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L49)
 
 ## Methods
 
@@ -101,7 +101,7 @@ lib/filtering.tsx:49
 
 #### Defined in
 
-lib/filtering.tsx:60
+[lib/filtering.ts:60](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L60)
 
 ___
 
@@ -115,4 +115,4 @@ ___
 
 #### Defined in
 
-lib/filtering.tsx:55
+[lib/filtering.ts:55](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L55)
