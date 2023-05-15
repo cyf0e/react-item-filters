@@ -61,7 +61,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:15](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L15)
+[lib/checkboxFilter.tsx:15](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L15)
 
 ## Properties
 
@@ -71,7 +71,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L13)
+[lib/checkboxFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L13)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:48](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L48)
+[lib/filtering.ts:48](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/filtering.ts#L48)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L49)
+[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/filtering.ts#L49)
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:14](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L14)
+[lib/checkboxFilter.tsx:14](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L14)
 
 ## Methods
 
@@ -169,7 +169,7 @@ onChange = {filterChangeFunction}
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:31](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L31)
+[lib/checkboxFilter.tsx:31](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L31)
 
 ___
 
@@ -187,7 +187,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:60](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L60)
+[lib/filtering.ts:60](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/filtering.ts#L60)
 
 ___
 
@@ -205,7 +205,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:55](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/filtering.ts#L55)
+[lib/filtering.ts:55](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/filtering.ts#L55)
 
 ___
 
@@ -226,4 +226,4 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:75](https://github.com/cyf0e/react-item-filters/blob/1ac849a/src/lib/checkboxFilter.tsx#L75)
+[lib/checkboxFilter.tsx:75](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L75)

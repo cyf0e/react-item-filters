@@ -1,8 +1,6 @@
 react-item-filters / [Exports](modules.md)
 
-<div align="center">
 # React Item Filters
-</div>
 Easily create components that offer product filtering in client side react. Created as a way to simply add filtering to a list of products on a web store. Currently only usable client side access with hooks.
 
 **Note:** This is a hobby project in early stage. There is no doubt it has unexpected errors from unforseen edge cases. If you plan on using this, consider testing thoroughly with your use case.
@@ -77,7 +75,7 @@ export default App;
 
 ## Docs
 
-[Link to Documentation](modules.md)
+[Link to Documentation](docs/modules.md)
 or can be generated using:
 
 ```bash
