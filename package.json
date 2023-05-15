@@ -1,0 +1,36 @@
+{
+  "name": "react-item-filters",
+  "version": "0.1.0",
+  "description": "A library that helps filtering data client-side.",
+  "main": "./build/index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "test": "npx jest ./test",
+    "docs": "npx typedoc --plugin typedoc-plugin-markdown ./src/index.ts"
+  },
+  "keywords": [
+    "react",
+    "filter"
+  ],
+  "author": "cyf001@protonmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-typescript": "^7.21.5",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.5.1",
+    "@types/react-test-renderer": "^18.0.0",
+    "babel-jest": "^29.5.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-test-renderer": "^18.2.0",
+    "ts-jest": "^29.1.0",
+    "typedoc": "^0.24.7",
+    "typedoc-plugin-markdown": "^3.15.3",
+    "typescript": "^5.0.4"
+  }
+}
