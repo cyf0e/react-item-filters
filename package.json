@@ -1,6 +1,6 @@
 {
   "name": "react-item-filters",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A library that helps filtering data client-side.",
   "main": "./build/index.js",
   "files": [
