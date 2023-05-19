@@ -1,12 +1,12 @@
+import React from "react";
+import "@testing-library/jest-dom/extend-expect";
 import { FilterProvider } from "../src/components/FilterProvider";
 import { fireEvent, render, renderHook, screen } from "@testing-library/react";
 import { DataContainer, FilterBase } from "../src/lib/filtering";
-import "@testing-library/jest-dom/extend-expect";
 import { useFilter } from "../src/hooks/useFilter";
 import { useCheckboxFilter } from "../src/hooks/useCheckboxFilter";
 import { SearchFilter } from "../src/lib/searchFilter";
 import { useSearchFilter } from "../src/hooks/useSearchFilter";
-import React from "react";
 import { CheckboxPropType } from "../src/lib/checkboxFilter";
 import { cleanPossibleValue } from "../src/lib/util";
 const testData = [
@@ -100,6 +100,44 @@ test("Provider provides initial data", () => {
   expect(filteredData.result.current).toStrictEqual(testData);
 });
 
+test("Passing a non array to Provider as inital data throws error", () => {
+  //First two lines are a hack to disable error output from render()
+  //https://stackoverflow.com/questions/64045789/stop-huge-error-output-from-testing-library
+
+  const errorObject = console.error; //store the state of the object
+  console.error = jest.fn(); // mock the object
+
+  function TestComponent() {
+    const fd: TestItem[] = useFilter();
+    const checkboxes = useCheckboxFilter(
+      (el: TestItem) => el.firstName,
+      GenericCheckBoxComponent,
+      new Map([
+        ["Peter", "Pete"],
+        ["Michael", "Mike"],
+      ])
+    );
+    return (
+      <div>
+        {checkboxes}
+        {fd.map((e) => (
+          <h1 key={e.firstName}>{e.firstName}</h1>
+        ))}
+      </div>
+    );
+  }
+  const res = () => {
+    render(
+      <FilterProvider initialData={{ a: "red" } as unknown as any[]}>
+        <TestComponent />
+      </FilterProvider>
+    );
+  };
+
+  expect(res).toThrowError();
+
+  console.error = errorObject;
+});
 test("Two different providers provide different data", () => {
   const filteredData = renderHook(() => useFilter(), {
     wrapper: ({ children }: { children?: any }) => {

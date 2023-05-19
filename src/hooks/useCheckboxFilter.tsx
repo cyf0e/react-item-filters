@@ -6,7 +6,19 @@ import { useFilterContext } from "./useFilterContext";
  * useCheckboxFilter - hook that creates a checkbox filter and retruns basic checkbox components to render with the options.
  *  @param {(arg:DataArrayElementType)=>SelectorReturnType} selectorFunction - The function that returns the part of the data we want to filter by.
  *
- *  @param {<T extends {value:string|SelectorReturnType,filterChangeFunction:Function}>(props:T)=>React.JSX.Element} Component - The Component that will be wrapped around. It gets passed in the onClick function and the value to display.
+ *  @param Component - The Component that will be wrapped around. It gets passed in the onClick function and the value to display.
+ *  The type of props that the components gets is { labelValue: string | SelectorReturnType, filterChangeFunction: Function } and should be used like:
+ * @example
+ * ```jsx
+ *    const Comp = ( { labelValue, filterChangeFunction } : { labelValue: string, filterChangeFunction: Function }) =>
+ *    {
+ *    return (
+ *            <>
+ *            <input type="checkbox" onChange={filterChangeFunction}/>
+ *            <label>{labelValue}</label>}
+ *            </>
+ *    )
+ * ```
  *
  *  @param {typeof nameMap} nameMap - A map that is used to lookup names you wish to assign to the checkbox labels for possible values of the checkbox filter.
  *  KEYS have to be the values the selector function returns and VALUES must be their respective string labels.
