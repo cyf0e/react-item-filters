@@ -13,9 +13,9 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
   initialData: InitialDataType;
   children?: any;
 }) {
-  if (!Array.isArray(props.initialData)) {
+  if (props.initialData && !Array.isArray(props.initialData)) {
     throw new Error(
-      `Initial Data passed to the provider MUST be an array. Instead got: ${typeof props.initialData}`
+      `Initial Data passed to the provider MUST be an array. Instead got: ${typeof props.initialData}. Use [] for empty initialization.`
     );
   }
   const dataContext = useMemo(() => {
