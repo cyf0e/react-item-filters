@@ -43,7 +43,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:5](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L5)
+[lib/checkboxFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/checkboxFilter.tsx#L21)
 
 ## Functions
 
@@ -73,15 +73,38 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Defined in
 
-[components/FilterProvider.tsx:12](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/components/FilterProvider.tsx#L12)
+[components/FilterProvider.tsx:12](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/components/FilterProvider.tsx#L12)
 
 ___
 
 ### useCheckboxFilter
 
-▸ **useCheckboxFilter**<`DataArrayElementType`, `SelectorReturnType`\>(`selectorFunction`, `Component`, `nameMap?`, `prettyLabels?`): `React.JSX.Element`[]
+▸ **useCheckboxFilter**<`DataArrayElementType`, `SelectorReturnType`\>(`selectorFunction`, `Component?`, `nameMap?`, `prettyLabels?`): `React.JSX.Element`[]
 
 useCheckboxFilter - hook that creates a checkbox filter and retruns basic checkbox components to render with the options.
+
+**`Example`**
+
+```jsx
+   const Comp = ( { labelValue, filterChangeFunction } : { labelValue: string, filterChangeFunction: Function }) =>
+   {
+   return (
+           <>
+           <input type="checkbox" onChange={filterChangeFunction}/>
+           <label>{labelValue}</label>}
+           </>
+   )
+```
+ If no custom Component is passed in, the returned checkbox elements will be the default element.
+ You should really pass in a custom component in most cases.
+```jsx
+
+ <div>
+    <input name={labelValue} id={labelValue} type="checkbox" />
+    <label htmlFor={labelValue}>{labelValue}</label>
+ </div>
+
+```
 
 **`Remark`**
 
@@ -115,7 +138,7 @@ and the type would be string or ReturnType of the selection function.
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `selectorFunction` | (`arg`: `DataArrayElementType`) => `SelectorReturnType` | `undefined` | The function that returns the part of the data we want to filter by. |
-| `Component` | <T\>(`props`: `T`) => `Element` | `undefined` | The Component that will be wrapped around. It gets passed in the onClick function and the value to display. |
+| `Component?` | <T\>(`props`: `T`) => `Element` | `undefined` | The Component that will be wrapped around. It gets passed in the filterChangeFunction function and the value to display. The type of props that the components gets is { labelValue: string \| SelectorReturnType, filterChangeFunction: Function } and should be used like: |
 | `nameMap?` | `Map`<`SelectorReturnType`, `string`\> | `undefined` | A map that is used to lookup names you wish to assign to the checkbox labels for possible values of the checkbox filter. KEYS have to be the values the selector function returns and VALUES must be their respective string labels. If the the data is an array of {color: 'red'\|'blue'} objects, useCheckboxHook will automatically get all the possible values for color and after some clean up offer those values as labels for the checkboxes. If you instead pass in a nameMap the names specified in the map will be used. |
 | `prettyLabels` | `boolean` | `true` | Boolean that selects if the user wants some clean up (capitalize first words, remove underscore) done on the possible values that are used as labels when nameMap is NOT provided. |
 
@@ -127,7 +150,7 @@ Components[] - The components to render.
 
 #### Defined in
 
-[hooks/useCheckboxFilter.tsx:37](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/hooks/useCheckboxFilter.tsx#L37)
+[hooks/useCheckboxFilter.tsx:58](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/hooks/useCheckboxFilter.tsx#L58)
 
 ___
 
@@ -151,7 +174,7 @@ Data[] - Returns the filtered dataafter all filters in the same context have bee
 
 #### Defined in
 
-[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/hooks/useFilter.tsx#L9)
+[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/hooks/useFilter.tsx#L9)
 
 ___
 
@@ -198,4 +221,4 @@ const MySearchComp = ({updateSearchFilter}:{updateSearchFilter:Function}) => {
 
 #### Defined in
 
-[hooks/useSearchFilter.tsx:20](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/hooks/useSearchFilter.tsx#L20)
+[hooks/useSearchFilter.tsx:20](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/hooks/useSearchFilter.tsx#L20)

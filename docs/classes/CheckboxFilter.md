@@ -61,7 +61,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:15](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L15)
+[lib/checkboxFilter.tsx:31](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/checkboxFilter.tsx#L31)
 
 ## Properties
 
@@ -71,7 +71,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L13)
+[lib/checkboxFilter.tsx:29](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/checkboxFilter.tsx#L29)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:48](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/filtering.ts#L48)
+[lib/filtering.ts:48](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/filtering.ts#L48)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/filtering.ts#L49)
+[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/filtering.ts#L49)
 
 ___
 
@@ -137,13 +137,13 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:14](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L14)
+[lib/checkboxFilter.tsx:30](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/checkboxFilter.tsx#L30)
 
 ## Methods
 
 ### addCheckboxFilter
 
-▸ **addCheckboxFilter**(`Component`, `nameValueMap?`, `prettyLabels?`): `any`[]
+▸ **addCheckboxFilter**(`Component?`, `nameValueMap?`, `prettyLabels?`): `any`[]
 
 If a custom component is supplied it has to have props: {labelValue: any, filterChangeFunction: Function}.
 The value is provided for labeling the checkbox.
@@ -159,7 +159,7 @@ onChange = {filterChangeFunction}
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
-| `Component` | (`props`: [`CheckboxPropType`](../modules.md#checkboxproptype)<`SelectorReturnType`\>) => `Element` | `undefined` |
+| `Component?` | (`props`: [`CheckboxPropType`](../modules.md#checkboxproptype)<`SelectorReturnType`\>) => `Element` | `undefined` |
 | `nameValueMap?` | `Map`<`SelectorReturnType`, `string`\> | `undefined` |
 | `prettyLabels` | `boolean` | `true` |
 
@@ -169,7 +169,7 @@ onChange = {filterChangeFunction}
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:31](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L31)
+[lib/checkboxFilter.tsx:47](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/checkboxFilter.tsx#L47)
 
 ___
 
@@ -187,7 +187,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:60](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/filtering.ts#L60)
+[lib/filtering.ts:60](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/filtering.ts#L60)
 
 ___
 
@@ -205,7 +205,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:55](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/filtering.ts#L55)
+[lib/filtering.ts:55](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/filtering.ts#L55)
 
 ___
 
@@ -226,4 +226,4 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:75](https://github.com/cyf0e/react-item-filters/blob/3dd69b2/src/lib/checkboxFilter.tsx#L75)
+[lib/checkboxFilter.tsx:93](https://github.com/cyf0e/react-item-filters/blob/d51e4b8/src/lib/checkboxFilter.tsx#L93)

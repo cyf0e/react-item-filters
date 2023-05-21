@@ -6,7 +6,7 @@ import { useFilterContext } from "./useFilterContext";
  * useCheckboxFilter - hook that creates a checkbox filter and retruns basic checkbox components to render with the options.
  *  @param {(arg:DataArrayElementType)=>SelectorReturnType} selectorFunction - The function that returns the part of the data we want to filter by.
  *
- *  @param Component - The Component that will be wrapped around. It gets passed in the onClick function and the value to display.
+ *  @param Component - The Component that will be wrapped around. It gets passed in the filterChangeFunction function and the value to display.
  *  The type of props that the components gets is { labelValue: string | SelectorReturnType, filterChangeFunction: Function } and should be used like:
  * @example
  * ```jsx
@@ -19,7 +19,16 @@ import { useFilterContext } from "./useFilterContext";
  *            </>
  *    )
  * ```
+ *  If no custom Component is passed in, the returned checkbox elements will be the default element.
+ *  You should really pass in a custom component in most cases.
+ * ```jsx
  *
+ *  <div>
+ *     <input name={labelValue} id={labelValue} type="checkbox" />
+ *     <label htmlFor={labelValue}>{labelValue}</label>
+ *  </div>
+ *
+ * ```
  *  @param {typeof nameMap} nameMap - A map that is used to lookup names you wish to assign to the checkbox labels for possible values of the checkbox filter.
  *  KEYS have to be the values the selector function returns and VALUES must be their respective string labels.
  *  If the the data is an array of {color: 'red'|'blue'} objects, useCheckboxHook will automatically get all the possible values for color and
@@ -48,7 +57,7 @@ import { useFilterContext } from "./useFilterContext";
  */
 export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>(
   selectorFunction: (arg: DataArrayElementType) => SelectorReturnType,
-  Component: <T extends CheckboxPropType<SelectorReturnType>>(
+  Component?: <T extends CheckboxPropType<SelectorReturnType>>(
     props: T
   ) => React.JSX.Element,
   nameMap?: Map<SelectorReturnType, string>,

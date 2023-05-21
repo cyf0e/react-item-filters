@@ -1,14 +1,17 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { FilterProvider } from "../src/components/FilterProvider";
 import { fireEvent, render, renderHook, screen } from "@testing-library/react";
-import { DataContainer, FilterBase } from "../src/lib/filtering";
-import { useFilter } from "../src/hooks/useFilter";
-import { useCheckboxFilter } from "../src/hooks/useCheckboxFilter";
-import { SearchFilter } from "../src/lib/searchFilter";
-import { useSearchFilter } from "../src/hooks/useSearchFilter";
-import { CheckboxPropType } from "../src/lib/checkboxFilter";
 import { cleanPossibleValue } from "../src/lib/util";
+import {
+  useCheckboxFilter,
+  useFilter,
+  useSearchFilter,
+  DataContainer,
+  FilterBase,
+  FilterProvider,
+  CheckboxPropType,
+  SearchFilter,
+} from "../src/index";
 const testData = [
   { firstName: "Michael", lastName: "Guy" },
   { firstName: "Peter", lastName: "Parker" },
@@ -100,6 +103,17 @@ test("Provider provides initial data", () => {
   expect(filteredData.result.current).toStrictEqual(testData);
 });
 
+test("Provider doesnt throw when initial data is []", () => {
+  const renderProvider = () => {
+    renderHook(() => useFilter(), {
+      wrapper: ({ children }: { children?: any }) => {
+        return <FilterProvider initialData={[]}>{children}</FilterProvider>;
+      },
+    });
+  };
+  expect(renderProvider).not.toThrow();
+});
+
 test("Passing a non array to Provider as inital data throws error", () => {
   //First two lines are a hack to disable error output from render()
   //https://stackoverflow.com/questions/64045789/stop-huge-error-output-from-testing-library
@@ -158,7 +172,7 @@ test("Two different providers provide different data", () => {
   expect(filteredData2.result.current).toStrictEqual([{ hello: "world" }]);
 });
 
-test("useCheckboxFilter Checking that a checkbox filters out the unchecked items", async () => {
+test("useCheckboxFilter Checking that a custom checkbox filters out the unchecked items", async () => {
   function TestComponent() {
     const filteredData: string[] = useFilter();
     const components = useCheckboxFilter((el: string) => {
@@ -180,7 +194,7 @@ test("useCheckboxFilter Checking that a checkbox filters out the unchecked items
       </div>
     );
   }
-  const items = render(<TestComponent />, {
+  render(<TestComponent />, {
     wrapper: ({ children }: { children?: any }) => {
       return (
         <FilterProvider initialData={["red", "blue"]}>
@@ -189,17 +203,52 @@ test("useCheckboxFilter Checking that a checkbox filters out the unchecked items
       );
     },
   });
-  expect(screen.getByTestId("red")).toContainHTML(
-    "<h1 data-testid='red'>red</h1>"
-  );
-  expect(screen.getByTestId("blue")).toContainHTML(
-    "<h1 data-testid='blue'>blue</h1>"
-  );
+
+  expect(screen.getAllByRole("heading")).toHaveLength(2);
+  expect(screen.getAllByRole("heading")[0]).toHaveTextContent("red");
+  expect(screen.getAllByRole("heading")[1]).toHaveTextContent("blue");
   fireEvent.click(screen.getByLabelText("Red"));
+  expect(screen.getAllByRole("heading")).toHaveLength(1);
+  expect(screen.getAllByRole("heading")[0]).toHaveTextContent("red");
   expect(screen.queryByTestId("blue")).toBeFalsy();
-  expect(screen.queryByTestId("red")).toContainHTML(
-    '<h1 data-testid="red">red</h1>'
-  );
+});
+test("useCheckboxFilter default checkbox filters out the unchecked items", async () => {
+  function TestComponent() {
+    const filteredData: string[] = useFilter();
+    const components = useCheckboxFilter((el: string) => {
+      return el;
+    });
+    return (
+      <div>
+        {components}
+        <div>
+          {filteredData.map((e: string) => {
+            return (
+              <h1 data-testid={e} key={e}>
+                {e}
+              </h1>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+  render(<TestComponent />, {
+    wrapper: ({ children }: { children?: any }) => {
+      return (
+        <FilterProvider initialData={["red", "blue"]}>
+          {children}
+        </FilterProvider>
+      );
+    },
+  });
+  expect(screen.getAllByRole("heading")).toHaveLength(2);
+  expect(screen.getAllByRole("heading")[0]).toHaveTextContent("red");
+  expect(screen.getAllByRole("heading")[1]).toHaveTextContent("blue");
+  fireEvent.click(screen.getByLabelText("Red"));
+  expect(screen.getAllByRole("heading")).toHaveLength(1);
+  expect(screen.getAllByRole("heading")[0]).toHaveTextContent("red");
+  expect(screen.queryByTestId("blue")).toBeFalsy();
 });
 test("useCheckbox No selected checkbox displays all items", () => {
   function TestComponent() {

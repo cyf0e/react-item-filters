@@ -1,6 +1,6 @@
 {
   "name": "react-item-filters",
-  "version": "0.1.32",
+  "version": "0.1.4",
   "description": "A library that helps filtering data client-side.",
   "main": "./build/index.js",
   "files": [
@@ -9,7 +9,8 @@
   "scripts": {
     "build": "npx tsc",
     "test": "npx jest ./test",
-    "docs": "npx typedoc --plugin typedoc-plugin-markdown ./src/index.ts"
+    "docs": "npx typedoc --plugin typedoc-plugin-markdown ./src/index.ts",
+    "prep": "npm run build && npm run test && npm run docs"
   },
   "keywords": [
     "react",
