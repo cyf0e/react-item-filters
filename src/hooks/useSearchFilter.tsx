@@ -10,9 +10,9 @@ import { useFilterContext } from "./useFilterContext";
  *  const selectorFn = (el) => { return el.name } //searches only over first names, or
  *  const selectorFn = (el) => { return [el.name, el.last] } // will search by both parameters.
  *
- * @param Component - React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {updateSearchFilter} props parameter and call that whenever you want filtering to occur passing it the element object.
- *  @example const MySearchComp = ({updateSearchFilter}:{updateSearchFilter:Function}) => {
- *  return <input onChange=(e)=>{updateSearchFilter(e)} />
+ * @param Component - React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {filterChangeFunction} props parameter and call that whenever you want filtering to occur passing it the element object.
+ *  @example const MySearchComp = ({filterChangeFunction}:{filterChangeFunction:Function}) => {
+ *  return <input onChange=(e)=>{filterChangeFunction(e)} />
  * }
  * @returns - The Search input component passed as Component or a default search component.
  *
