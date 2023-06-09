@@ -1,7 +1,10 @@
-import { createContext, useMemo } from "react";
+import { createContext, useMemo, useState } from "react";
 import { DataContainer } from "../lib/filtering";
 
-export const Context = createContext<DataContainer<any>>(null as any);
+export const Context = createContext<{
+  context: DataContainer<any>;
+  clearAllFilters: Function;
+}>(null as any);
 
 /**
  * Provider - Function component that wraps children with the filtering context.
@@ -18,10 +21,17 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
       `Initial Data passed to the provider MUST be an array. Instead got: ${typeof props.initialData}. Use [] for empty initialization.`
     );
   }
-  const dataContext = useMemo(() => {
-    return new DataContainer(props.initialData);
-  }, [props.initialData]);
+  const [dataContext, setDataContext] = useState<any>(
+    new DataContainer(props.initialData)
+  );
+  const resetDataContext = () => {
+    setDataContext(new DataContainer([...props.initialData]));
+  };
   return (
-    <Context.Provider value={dataContext}>{props.children}</Context.Provider>
+    <Context.Provider
+      value={{ context: dataContext, clearAllFilters: resetDataContext }}
+    >
+      {props.children}
+    </Context.Provider>
   );
 }

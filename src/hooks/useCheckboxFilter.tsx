@@ -42,7 +42,7 @@ import { useFilterContext } from "./useFilterContext";
  * DataArrayElement is the type of element from the supplied data array.
  * @example
  * For example if the data is
- * ```
+ * ```jsx
  * const data=[{name:John,lastname:John},{name:Peter,lastname:Parker}]
  * typeof data = DataArrayElement[]
  * typeof DataArrayEleemnt would be {name:string,lastname:string}
@@ -63,7 +63,7 @@ export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>(
   nameMap?: Map<SelectorReturnType, string>,
   prettyLabels = true
 ): Array<React.JSX.Element> {
-  const dataContext = useFilterContext();
+  const dataContext = useFilterContext().context;
   const [checkboxComponents, setCheckboxComponents] = useState<any>(undefined);
 
   useEffect(() => {

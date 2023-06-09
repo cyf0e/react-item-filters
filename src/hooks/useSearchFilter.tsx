@@ -12,7 +12,7 @@ import { useFilterContext } from "./useFilterContext";
  *
  * @param Component - React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {filterChangeFunction} props parameter and call that whenever you want filtering to occur passing it the element object.
  *  @example const MySearchComp = ({filterChangeFunction}:{filterChangeFunction:Function}) => {
- *  return <input onChange=(e)=>{filterChangeFunction(e)} />
+ *  return <input onChange={(e)=>{filterChangeFunction(e)}} />
  * }
  * @returns - The Search input component passed as Component or a default search component.
  *
@@ -21,7 +21,7 @@ export function useSearchFilter<DT>(
   selectorFunction: (element: DT) => string | string[],
   Component?: React.FC<{ filterChangeFunction: Function }>
 ): React.JSX.Element {
-  const dataContext = useFilterContext();
+  const dataContext = useFilterContext().context;
   return useMemo(() => {
     const sf = new SearchFilter(dataContext, selectorFunction);
     const searchFilterComponent = sf.addSearchFilter(Component);

@@ -53,7 +53,7 @@
 
 #### Defined in
 
-[lib/filtering.ts:50](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/lib/filtering.ts#L50)
+[lib/filtering.ts:51](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/filtering.ts#L51)
 
 ## Properties
 
@@ -63,7 +63,7 @@
 
 #### Defined in
 
-[lib/filtering.ts:48](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/lib/filtering.ts#L48)
+[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/filtering.ts#L49)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/lib/filtering.ts#L49)
+[lib/filtering.ts:50](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/filtering.ts#L50)
 
 ## Methods
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:60](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/lib/filtering.ts#L60)
+[lib/filtering.ts:61](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/filtering.ts#L61)
 
 ___
 
@@ -115,4 +115,4 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:55](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/lib/filtering.ts#L55)
+[lib/filtering.ts:56](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/filtering.ts#L56)

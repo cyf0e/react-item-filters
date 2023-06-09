@@ -15,6 +15,7 @@ export class DataContainer<DT> {
     });
     return fd;
   }
+
   setOnUpdateFilters(fn: (...args: any) => any) {
     this.filterUpdateFunction = fn;
   }

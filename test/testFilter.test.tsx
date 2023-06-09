@@ -11,6 +11,7 @@ import {
   FilterProvider,
   CheckboxPropType,
   SearchFilter,
+  useClearFilter,
 } from "../src/index";
 const testData = [
   { firstName: "Michael", lastName: "Guy" },
@@ -22,7 +23,7 @@ const GenericCheckBoxComponent = ({
   filterChangeFunction,
 }: CheckboxPropType<any>) => {
   return (
-    <div>
+    <div key={Math.random()}>
       <input id={labelValue} type="checkbox" onChange={filterChangeFunction} />
       <label data-testid="labelElements" htmlFor={labelValue}>
         {labelValue}
@@ -63,7 +64,56 @@ test("DataContainer filtering properly filters data", () => {
   });
   expect(c.getFilteredData()).toStrictEqual([4, 5]);
 });
+test("DataContainer clearing all filters shows all data", () => {
+  function TestComponent() {
+    const clearAllFilters = useClearFilter();
+    const fd = useFilter<string>();
+    const components = useCheckboxFilter((el: string) => {
+      return el;
+    }, GenericCheckBoxComponent);
+    return (
+      <div>
+        <button
+          onClick={() => {
+            clearAllFilters();
+          }}
+        >
+          Clear
+        </button>
+        {components}
+        {fd.map((el) => (
+          <h1 key={el}>{el}</h1>
+        ))}
+      </div>
+    );
+  }
+  const data = ["red", "blue", "green"];
+  const items = render(<TestComponent />, {
+    wrapper: ({ children }: { children?: any }) => {
+      return <FilterProvider initialData={data}>{children}</FilterProvider>;
+    },
+  });
+  const button = screen.getByRole("button");
+  expect(screen.getAllByRole("heading")).toHaveLength(3);
+  fireEvent.click(screen.getAllByRole("checkbox")[0]);
+  expect(screen.getAllByRole("heading")).toHaveLength(1);
+  screen.getAllByRole("heading").forEach((heading) => {
+    expect(heading.innerHTML).toEqual("red");
+  });
+  fireEvent.click(button);
+  expect(screen.getAllByRole("heading")).toHaveLength(3);
+  expect(screen.getAllByRole("heading")[0].innerHTML).toEqual("red");
+  expect(screen.getAllByRole("heading")[1].innerHTML).toEqual("blue");
+  expect(screen.getAllByRole("heading")[2].innerHTML).toEqual("green");
+  expect(screen.getAllByRole("heading")[3]).toBeUndefined();
 
+  //make sure filtering still works after
+  fireEvent.click(screen.getAllByRole("checkbox")[0]);
+  expect(screen.getAllByRole("heading")).toHaveLength(1);
+  screen.getAllByRole("heading").forEach((heading) => {
+    expect(heading.innerHTML).toEqual("red");
+  });
+});
 test("useCheckbox returns valid components", () => {
   function TestComponent() {
     const components = useCheckboxFilter((el: string) => {

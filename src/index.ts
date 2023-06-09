@@ -3,6 +3,7 @@
 export * from "./hooks/useCheckboxFilter";
 export * from "./hooks/useSearchFilter";
 export * from "./hooks/useFilter";
+export * from "./hooks/useClearFilter";
 
 //COMPONENTS
 

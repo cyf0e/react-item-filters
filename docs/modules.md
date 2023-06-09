@@ -19,6 +19,7 @@
 
 - [FilterProvider](modules.md#filterprovider)
 - [useCheckboxFilter](modules.md#usecheckboxfilter)
+- [useClearFilter](modules.md#useclearfilter)
 - [useFilter](modules.md#usefilter)
 - [useSearchFilter](modules.md#usesearchfilter)
 
@@ -43,7 +44,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/lib/checkboxFilter.tsx#L21)
+[lib/checkboxFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/checkboxFilter.tsx#L21)
 
 ## Functions
 
@@ -73,7 +74,7 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Defined in
 
-[components/FilterProvider.tsx:12](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/components/FilterProvider.tsx#L12)
+[components/FilterProvider.tsx:15](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/components/FilterProvider.tsx#L15)
 
 ___
 
@@ -113,7 +114,7 @@ DataArrayElement is the type of element from the supplied data array.
 **`Example`**
 
 For example if the data is
-```
+```jsx
 const data=[{name:John,lastname:John},{name:Peter,lastname:Parker}]
 typeof data = DataArrayElement[]
 typeof DataArrayEleemnt would be {name:string,lastname:string}
@@ -150,7 +151,32 @@ Components[] - The components to render.
 
 #### Defined in
 
-[hooks/useCheckboxFilter.tsx:58](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/hooks/useCheckboxFilter.tsx#L58)
+[hooks/useCheckboxFilter.tsx:58](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/hooks/useCheckboxFilter.tsx#L58)
+
+___
+
+### useClearFilter
+
+▸ **useClearFilter**(): `Function`
+
+NOTE: React by default will not reset the state of your Filter elements like the checkbox for example. This is because it doesnt reset state of components that are rendered in the same place so the checkboxes will stay checked after clearing unless you explicitly make them reset by adding a dynamic key to them for example
+```jsx
+function CustomCheckboxComp(){
+ return <div key={randomString() || Math.random()}>
+
+</div>
+}
+```
+
+#### Returns
+
+`Function`
+
+clearFilters function
+
+#### Defined in
+
+[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/hooks/useClearFilter.tsx#L13)
 
 ___
 
@@ -174,7 +200,7 @@ Data[] - Returns the filtered dataafter all filters in the same context have bee
 
 #### Defined in
 
-[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/hooks/useFilter.tsx#L9)
+[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/hooks/useFilter.tsx#L9)
 
 ___
 
@@ -195,8 +221,8 @@ const data=[{name:Peter,last:Parker}]
 **`Example`**
 
 ```ts
-const MySearchComp = ({updateSearchFilter}:{updateSearchFilter:Function}) => {
- return <input onChange=(e)=>{updateSearchFilter(e)} />
+const MySearchComp = ({filterChangeFunction}:{filterChangeFunction:Function}) => {
+ return <input onChange={(e)=>{filterChangeFunction(e)}} />
 }
 ```
 
@@ -211,7 +237,7 @@ const MySearchComp = ({updateSearchFilter}:{updateSearchFilter:Function}) => {
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `selectorFunction` | (`element`: `DT`) => `string` \| `string`[] | Function used to select what part of the data you want to be able to search by. You can select to search by some string property or multiple string properties. |
-| `Component?` | `FC`<{ `filterChangeFunction`: `Function`  }\> | React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {updateSearchFilter} props parameter and call that whenever you want filtering to occur passing it the element object. |
+| `Component?` | `FC`<{ `filterChangeFunction`: `Function`  }\> | React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {filterChangeFunction} props parameter and call that whenever you want filtering to occur passing it the element object. |
 
 #### Returns
 
@@ -221,4 +247,4 @@ const MySearchComp = ({updateSearchFilter}:{updateSearchFilter:Function}) => {
 
 #### Defined in
 
-[hooks/useSearchFilter.tsx:20](https://github.com/cyf0e/react-item-filters/blob/f6485bb/src/hooks/useSearchFilter.tsx#L20)
+[hooks/useSearchFilter.tsx:20](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/hooks/useSearchFilter.tsx#L20)

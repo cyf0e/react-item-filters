@@ -7,7 +7,7 @@ import { useFilterContext } from "./useFilterContext";
  * @returns {Array<T>} Data[] - Returns the filtered dataafter all filters in the same context have been applied.
  */
 export function useFilter<T>() {
-  const ctx = useFilterContext() as DataContainer<T>;
+  const ctx = useFilterContext().context as DataContainer<T>;
   const [data, setData] = useState<T[]>(ctx.data);
   useMemo(() => {
     setData(ctx.data); //update the state after context changes for example from fetching data
