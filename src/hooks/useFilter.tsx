@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DataContainer } from "../lib/filtering";
 import { useFilterContext } from "./useFilterContext";
 /**
@@ -15,6 +15,6 @@ export function useFilter<T>() {
       const newData = ctx.getFilteredData();
       setData(newData);
     });
-  }, [ctx]);
+  }, [ctx, ctx.data]);
   return data;
 }

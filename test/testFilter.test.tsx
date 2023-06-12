@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { fireEvent, render, renderHook, screen } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { cleanPossibleValue } from "../src/lib/util";
 import {
   useCheckboxFilter,
@@ -13,6 +20,14 @@ import {
   SearchFilter,
   useClearFilter,
 } from "../src/index";
+jest.useFakeTimers();
+const getTestPromiseData = () =>
+  new Promise((res, rej) => {
+    setTimeout(() => {
+      res(["red", "blue"]);
+    }, 10000);
+  });
+
 const testData = [
   { firstName: "Michael", lastName: "Guy" },
   { firstName: "Peter", lastName: "Parker" },
@@ -201,6 +216,47 @@ test("Passing a non array to Provider as inital data throws error", () => {
   expect(res).toThrowError();
 
   console.error = errorObject;
+});
+test("Async initial state update sets new state correctly", async () => {
+  let headings: any = [];
+  function TestComponent() {
+    const fd: string[] = useFilter();
+    const checkboxes = useCheckboxFilter(
+      (el: string) => el,
+      GenericCheckBoxComponent
+    );
+
+    return (
+      <div>
+        {checkboxes}
+        {fd.map((e) => (
+          <h1 key={e}>{e}</h1>
+        ))}
+      </div>
+    );
+  }
+  const ParentComponent = ({ children }: { children: any }) => {
+    const [startData, setStartData] = useState<any>([]);
+    useEffect(() => {
+      getTestPromiseData().then((res) => {
+        act(() => {
+          setStartData(res);
+        });
+      });
+    }, []);
+    return <FilterProvider initialData={startData}>{children}</FilterProvider>;
+  };
+  const res = render(<TestComponent />, {
+    wrapper: ({ children }: { children?: any }) => {
+      return <ParentComponent>{children}</ParentComponent>;
+    },
+  });
+  expect(screen.queryAllByRole("heading")).toHaveLength(0);
+  jest.runAllTimers();
+  await waitFor(() => res.getAllByRole("heading"));
+  expect(screen.queryAllByRole("heading")).toHaveLength(2);
+  expect(screen.queryAllByRole("heading")[0].innerHTML).toEqual("red");
+  expect(screen.queryAllByRole("heading")[1].innerHTML).toEqual("blue");
 });
 test("Two different providers provide different data", () => {
   const filteredData = renderHook(() => useFilter(), {

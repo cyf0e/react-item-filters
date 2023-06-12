@@ -24,6 +24,10 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
   const [dataContext, setDataContext] = useState<any>(
     new DataContainer(props.initialData)
   );
+  useMemo(() => {
+    setDataContext(new DataContainer(props.initialData));
+  }, [props.initialData]);
+
   const resetDataContext = () => {
     setDataContext(new DataContainer([...props.initialData]));
   };

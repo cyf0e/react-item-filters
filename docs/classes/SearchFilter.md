@@ -61,7 +61,7 @@
 
 #### Defined in
 
-[lib/searchFilter.tsx:10](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/searchFilter.tsx#L10)
+[lib/searchFilter.tsx:10](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/searchFilter.tsx#L10)
 
 ## Properties
 
@@ -75,7 +75,7 @@
 
 #### Defined in
 
-[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/filtering.ts#L49)
+[lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/filtering.ts#L49)
 
 ___
 
@@ -103,7 +103,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:50](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/filtering.ts#L50)
+[lib/filtering.ts:50](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/filtering.ts#L50)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[lib/searchFilter.tsx:8](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/searchFilter.tsx#L8)
+[lib/searchFilter.tsx:8](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/searchFilter.tsx#L8)
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 #### Defined in
 
-[lib/searchFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/searchFilter.tsx#L9)
+[lib/searchFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/searchFilter.tsx#L9)
 
 ## Methods
 
@@ -157,7 +157,7 @@ ___
 
 #### Defined in
 
-[lib/searchFilter.tsx:32](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/searchFilter.tsx#L32)
+[lib/searchFilter.tsx:32](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/searchFilter.tsx#L32)
 
 ___
 
@@ -175,7 +175,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:61](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/filtering.ts#L61)
+[lib/filtering.ts:61](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/filtering.ts#L61)
 
 ___
 
@@ -193,7 +193,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:56](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/filtering.ts#L56)
+[lib/filtering.ts:56](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/filtering.ts#L56)
 
 ___
 
@@ -213,4 +213,4 @@ ___
 
 #### Defined in
 
-[lib/searchFilter.tsx:47](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/searchFilter.tsx#L47)
+[lib/searchFilter.tsx:47](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/searchFilter.tsx#L47)

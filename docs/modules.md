@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/lib/checkboxFilter.tsx#L21)
+[lib/checkboxFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/checkboxFilter.tsx#L21)
 
 ## Functions
 
@@ -74,7 +74,7 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Defined in
 
-[components/FilterProvider.tsx:15](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/components/FilterProvider.tsx#L15)
+[components/FilterProvider.tsx:15](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/components/FilterProvider.tsx#L15)
 
 ___
 
@@ -151,7 +151,7 @@ Components[] - The components to render.
 
 #### Defined in
 
-[hooks/useCheckboxFilter.tsx:58](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/hooks/useCheckboxFilter.tsx#L58)
+[hooks/useCheckboxFilter.tsx:58](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/hooks/useCheckboxFilter.tsx#L58)
 
 ___
 
@@ -176,7 +176,7 @@ clearFilters function
 
 #### Defined in
 
-[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/hooks/useClearFilter.tsx#L13)
+[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/hooks/useClearFilter.tsx#L13)
 
 ___
 
@@ -200,7 +200,7 @@ Data[] - Returns the filtered dataafter all filters in the same context have bee
 
 #### Defined in
 
-[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/hooks/useFilter.tsx#L9)
+[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/hooks/useFilter.tsx#L9)
 
 ___
 
@@ -247,4 +247,4 @@ const MySearchComp = ({filterChangeFunction}:{filterChangeFunction:Function}) =>
 
 #### Defined in
 
-[hooks/useSearchFilter.tsx:20](https://github.com/cyf0e/react-item-filters/blob/a9642bc/src/hooks/useSearchFilter.tsx#L20)
+[hooks/useSearchFilter.tsx:20](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/hooks/useSearchFilter.tsx#L20)
