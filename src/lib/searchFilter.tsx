@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { DataContainer, FilterBase } from "./filtering";
-
+import Fuzzy from "fuzzy";
 export class SearchFilter<
   DT,
   SelectorReturnType extends string | string[]
@@ -9,7 +9,8 @@ export class SearchFilter<
   selectorFunction: (element: DT) => SelectorReturnType;
   constructor(
     context: DataContainer<DT>,
-    selectorFunction: (element: DT) => SelectorReturnType
+    selectorFunction: (element: DT) => SelectorReturnType,
+    fuzzy?: boolean
   ) {
     const filterFunction = (el: DT) => {
       const stringsToSearch = this.selectorFunction(el);
@@ -21,6 +22,9 @@ export class SearchFilter<
         });
         return result;
       } else {
+        if (fuzzy) {
+          return Fuzzy.test(this.searchTerm.toLowerCase(), stringsToSearch);
+        }
         return stringsToSearch
           .toLowerCase()
           .includes(this.searchTerm.toLowerCase());

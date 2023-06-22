@@ -1,6 +1,6 @@
 {
   "name": "react-item-filters",
-  "version": "0.1.51",
+  "version": "0.1.52",
   "description": "A library that helps filtering data client-side.",
   "main": "./build/index.js",
   "files": [
@@ -38,5 +38,8 @@
     "typedoc": "^0.24.7",
     "typedoc-plugin-markdown": "^3.15.3",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "fuzzy": "^0.1.3"
   }
 }

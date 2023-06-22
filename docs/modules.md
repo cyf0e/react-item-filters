@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/lib/checkboxFilter.tsx#L21)
+[lib/checkboxFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/checkboxFilter.tsx#L21)
 
 ## Functions
 
@@ -74,7 +74,7 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Defined in
 
-[components/FilterProvider.tsx:15](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/components/FilterProvider.tsx#L15)
+[components/FilterProvider.tsx:15](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/components/FilterProvider.tsx#L15)
 
 ___
 
@@ -151,7 +151,7 @@ Components[] - The components to render.
 
 #### Defined in
 
-[hooks/useCheckboxFilter.tsx:58](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/hooks/useCheckboxFilter.tsx#L58)
+[hooks/useCheckboxFilter.tsx:58](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useCheckboxFilter.tsx#L58)
 
 ___
 
@@ -176,7 +176,7 @@ clearFilters function
 
 #### Defined in
 
-[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/hooks/useClearFilter.tsx#L13)
+[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useClearFilter.tsx#L13)
 
 ___
 
@@ -200,13 +200,13 @@ Data[] - Returns the filtered dataafter all filters in the same context have bee
 
 #### Defined in
 
-[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/hooks/useFilter.tsx#L9)
+[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useFilter.tsx#L9)
 
 ___
 
 ### useSearchFilter
 
-▸ **useSearchFilter**<`DT`\>(`selectorFunction`, `Component?`): `React.JSX.Element`
+▸ **useSearchFilter**<`DT`\>(`selectorFunction`, `Component?`, `fuzzy?`): `React.JSX.Element`
 
 useSearchFilter - Hook that enables text searching on the data.
 
@@ -238,6 +238,7 @@ const MySearchComp = ({filterChangeFunction}:{filterChangeFunction:Function}) =>
 | :------ | :------ | :------ |
 | `selectorFunction` | (`element`: `DT`) => `string` \| `string`[] | Function used to select what part of the data you want to be able to search by. You can select to search by some string property or multiple string properties. |
 | `Component?` | `FC`<{ `filterChangeFunction`: `Function`  }\> | React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {filterChangeFunction} props parameter and call that whenever you want filtering to occur passing it the element object. |
+| `fuzzy?` | `boolean` | Optional fuzzy parameter to turn fuzzy search on |
 
 #### Returns
 
@@ -247,4 +248,4 @@ const MySearchComp = ({filterChangeFunction}:{filterChangeFunction:Function}) =>
 
 #### Defined in
 
-[hooks/useSearchFilter.tsx:20](https://github.com/cyf0e/react-item-filters/blob/6587d08/src/hooks/useSearchFilter.tsx#L20)
+[hooks/useSearchFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useSearchFilter.tsx#L21)

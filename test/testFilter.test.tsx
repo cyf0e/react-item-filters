@@ -513,6 +513,36 @@ test("useSearchFilter hook", () => {
   expect(screen.getAllByRole("heading")).toHaveLength(1);
   expect(screen.getByRole("heading")).toContainHTML("<h1>Peter</h1>");
 });
+test("useSearchFilter hook with fuzzy search", () => {
+  const TestComponent = () => {
+    const fd: TestItem[] = useFilter();
+    const searchComp = useSearchFilter(
+      (el: TestItem) => {
+        return el.firstName;
+      },
+      undefined,
+      true
+    );
+    return (
+      <div>
+        {searchComp}
+        {fd.map((f) => {
+          return <h1 key={f.firstName}>{f.firstName}</h1>;
+        })}
+      </div>
+    );
+  };
+  const res = render(<TestComponent />, {
+    wrapper: ({ children }) => (
+      <FilterProvider initialData={testData}>{children}</FilterProvider>
+    ),
+  });
+  expect(screen.getByRole("textbox")).toContainHTML('<input type="text"/>');
+  expect(screen.getAllByRole("heading")).toHaveLength(2);
+  fireEvent.change(screen.getByRole("textbox"), { target: { value: "ptr" } });
+  expect(screen.getAllByRole("heading")).toHaveLength(1);
+  expect(screen.getByRole("heading")).toContainHTML("<h1>Peter</h1>");
+});
 test("useSearchFilter hook with array of strings returned from the selector function ", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();

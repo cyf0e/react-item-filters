@@ -14,16 +14,18 @@ import { useFilterContext } from "./useFilterContext";
  *  @example const MySearchComp = ({filterChangeFunction}:{filterChangeFunction:Function}) => {
  *  return <input onChange={(e)=>{filterChangeFunction(e)}} />
  * }
+ * @param fuzzy - Optional fuzzy parameter to turn fuzzy search on
  * @returns - The Search input component passed as Component or a default search component.
  *
  */
 export function useSearchFilter<DT>(
   selectorFunction: (element: DT) => string | string[],
-  Component?: React.FC<{ filterChangeFunction: Function }>
+  Component?: React.FC<{ filterChangeFunction: Function }>,
+  fuzzy?: boolean
 ): React.JSX.Element {
   const dataContext = useFilterContext().context;
   return useMemo(() => {
-    const sf = new SearchFilter(dataContext, selectorFunction);
+    const sf = new SearchFilter(dataContext, selectorFunction, fuzzy);
     const searchFilterComponent = sf.addSearchFilter(Component);
     return searchFilterComponent;
   }, [Component, dataContext]);
