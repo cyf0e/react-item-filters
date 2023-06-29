@@ -14,6 +14,7 @@ export const Context = createContext<{
  */
 export function FilterProvider<InitialDataType extends Array<any>>(props: {
   initialData: InitialDataType;
+  useSessionStorage?: boolean;
   children?: any;
 }) {
   if (!Array.isArray(props.initialData)) {
@@ -22,13 +23,14 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
     );
   }
   const [dataContext, setDataContext] = useState<any>(
-    new DataContainer(props.initialData)
+    new DataContainer(props.initialData, props.useSessionStorage)
   );
   useMemo(() => {
     setDataContext(new DataContainer(props.initialData));
   }, [props.initialData]);
 
   const resetDataContext = () => {
+    window.sessionStorage.setItem("react-item-filters", "");
     setDataContext(new DataContainer([...props.initialData]));
   };
   return (

@@ -1,6 +1,10 @@
 import { ChangeEvent } from "react";
-import { DataContainer, FilterBase } from "./filtering";
-import { cleanPossibleValue } from "./util";
+import { DataContainer, FilterBase, ISessionStorage } from "./filtering";
+import {
+  cleanPossibleValue,
+  loadFromSessionStorage,
+  storeToSessionStorage,
+} from "./util";
 function DefaultCheckboxComponent<T>(props: CheckboxPropType<T>) {
   const labelValue = props.labelValue as string;
   return (
@@ -21,11 +25,9 @@ function DefaultCheckboxComponent<T>(props: CheckboxPropType<T>) {
 export type CheckboxPropType<SelectorReturnType> = {
   labelValue: string | SelectorReturnType;
   filterChangeFunction: (event: ChangeEvent<HTMLInputElement>) => void;
+  preChecked?: boolean;
 };
-interface ISessionStorage {
-  serializeToStorage: () => void;
-  loadFromStorage: () => void;
-}
+
 export class CheckboxFilter<DataElementType, SelectorReturnType = string>
   extends FilterBase<DataElementType>
   implements ISessionStorage
@@ -43,6 +45,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     };
     super(context, filterFunction, name);
     this.selectorFunction = selectorFunction;
+    this.loadFromStorage();
   }
   /** If a custom component is supplied it has to have props: {labelValue: any, filterChangeFunction: Function}.
    * The value is provided for labeling the checkbox.
@@ -56,8 +59,6 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     nameValueMap?: Map<SelectorReturnType, string>,
     prettyLabels: boolean = true
   ) {
-    //restore session values
-    this.loadFromStorage();
     //Get possible values and return default checkbox component from those values
     const possibleValues = this.getDataContext().getPossibleValues(
       this.selectorFunction
@@ -72,6 +73,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
           <ComponentToRender
             key={value}
             labelValue={value}
+            preChecked={this.checked.has(key)}
             filterChangeFunction={(event: ChangeEvent<HTMLInputElement>) => {
               this.setChecked(key, event.currentTarget.checked);
             }}
@@ -85,6 +87,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
         return (
           <ComponentToRender
             key={v as string}
+            preChecked={this.checked.has(v as SelectorReturnType)}
             labelValue={prettyLabels ? cleanPossibleValue(v) : v}
             filterChangeFunction={(e: ChangeEvent<HTMLInputElement>) => {
               this.setChecked(v, e.currentTarget.checked);
@@ -98,22 +101,22 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
       );
   }
   serializeToStorage() {
-    if (window) {
-      const checkedCSV = Array.from(this.checked).join(",");
-      window.sessionStorage.setItem(this.name, checkedCSV);
-    }
+    if (!this.sessionStorageSerializationEnabled) return;
+
+    storeToSessionStorage(this.name, Array.from(this.checked).join(","));
   }
   loadFromStorage() {
-    if (!window)
-      throw new Error("Window is undefined. Cannot use session storage.");
-    const storageString = window.sessionStorage.getItem(this.name);
-    if (!storageString) return;
-    const checkedValues = storageString.split(",");
+    if (!this.sessionStorageSerializationEnabled) return;
+
+    const storedValues = loadFromSessionStorage(this.name);
+    if (!storedValues) return;
+    const checkedValues = storedValues.split(",");
     checkedValues.forEach((value) => {
       if (value && typeof value == "string") {
         this.checked.add(value as SelectorReturnType);
       }
     });
+    this.dispatchUpdate();
   }
   setChecked(value: any, state: boolean) {
     if (state) {

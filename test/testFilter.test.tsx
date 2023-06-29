@@ -20,6 +20,7 @@ import {
   SearchFilter,
   useClearFilter,
 } from "../src/index";
+
 jest.useFakeTimers();
 const getTestPromiseData = () =>
   new Promise((res, rej) => {
@@ -51,14 +52,14 @@ test("assign invalid data context to FilterBase throws error", () => {
     new FilterBase(
       [] as unknown as any,
       (el: any) => false,
-      "randomFilterBase"
+      "anyname"
     ).getDataContext();
   expect(fb).toThrowError();
   expect(() => {
     return new FilterBase(
       undefined as unknown as any,
       () => false,
-      "randomFB2"
+      "name2"
     ).getDataContext();
   }).toThrowError();
 });
@@ -89,7 +90,7 @@ test("DataContainer clearing all filters shows all data", () => {
     const clearAllFilters = useClearFilter();
     const fd = useFilter<string>();
     const components = useCheckboxFilter(
-      "checkbox",
+      "somerandomName",
       (el: string) => {
         return el;
       },
@@ -141,7 +142,7 @@ test("DataContainer clearing all filters shows all data", () => {
 test("useCheckbox returns valid components", () => {
   function TestComponent() {
     const components = useCheckboxFilter(
-      "checkbox",
+      "somerandomName",
       (el: string) => {
         return el;
       },
@@ -202,7 +203,7 @@ test("Passing a non array to Provider as inital data throws error", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
     const checkboxes = useCheckboxFilter(
-      "checkbox",
+      "somerandomName",
       (el: TestItem) => el.firstName,
       GenericCheckBoxComponent,
       new Map([
@@ -236,7 +237,7 @@ test("Async initial state update sets new state correctly", async () => {
   function TestComponent() {
     const fd: string[] = useFilter();
     const checkboxes = useCheckboxFilter(
-      "checkbox",
+      "somerandomName",
       (el: string) => el,
       GenericCheckBoxComponent
     );
@@ -297,7 +298,7 @@ test("useCheckboxFilter Checking that a custom checkbox filters out the unchecke
   function TestComponent() {
     const filteredData: string[] = useFilter();
     const components = useCheckboxFilter(
-      "checkbox",
+      "somerandomName",
       (el: string) => {
         return el;
       },
@@ -340,7 +341,7 @@ test("useCheckboxFilter Checking that a custom checkbox filters out the unchecke
 test("useCheckboxFilter default checkbox filters out the unchecked items", async () => {
   function TestComponent() {
     const filteredData: string[] = useFilter();
-    const components = useCheckboxFilter("checkbox", (el: string) => {
+    const components = useCheckboxFilter("somerandomName", (el: string) => {
       return el;
     });
     return (
@@ -379,7 +380,7 @@ test("useCheckbox No selected checkbox displays all items", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
     const checkboxes = useCheckboxFilter(
-      "checkbox",
+      "somerandomName",
       (el: TestItem) => el.firstName,
       GenericCheckBoxComponent
     );
@@ -406,7 +407,7 @@ test("Unselected checkbox displays hidden items again", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
     const checkboxes = useCheckboxFilter(
-      "checkbox",
+      "somerandomName",
       (el: TestItem) => el.firstName,
       GenericCheckBoxComponent
     );
@@ -441,7 +442,7 @@ test("useCheckbox works with nameMap", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
     const checkboxes = useCheckboxFilter(
-      "checkbox",
+      "somerandomName",
       (el: TestItem) => el.firstName,
       GenericCheckBoxComponent,
       new Map([
@@ -491,7 +492,7 @@ test("search filter component", () => {
     (el) => {
       return el;
     },
-    "searchFilter"
+    "somerandomName"
   );
   const comp = sf.addSearchFilter(searchFilterComp);
   const res = render(<div>{comp}</div>);
@@ -516,7 +517,7 @@ test("search filter component", () => {
 test("useSearchFilter hook", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
-    const searchComp = useSearchFilter("searchFilter", (el: TestItem) => {
+    const searchComp = useSearchFilter("somerandomName", (el: TestItem) => {
       return el.firstName;
     });
     return (
@@ -533,9 +534,10 @@ test("useSearchFilter hook", () => {
       <FilterProvider initialData={testData}>{children}</FilterProvider>
     ),
   });
-  expect(screen.getByRole("textbox")).toContainHTML('<input type="text"/>');
+  expect(screen.getByRole("textbox")).toHaveValue("");
   expect(screen.getAllByRole("heading")).toHaveLength(2);
   fireEvent.change(screen.getByRole("textbox"), { target: { value: "peter" } });
+  expect(screen.getByRole("textbox")).toHaveValue("peter");
   expect(screen.getAllByRole("heading")).toHaveLength(1);
   expect(screen.getByRole("heading")).toContainHTML("<h1>Peter</h1>");
 });
@@ -543,7 +545,7 @@ test("useSearchFilter hook with fuzzy search", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
     const searchComp = useSearchFilter(
-      "searchFilter",
+      "somerandomName",
       (el: TestItem) => {
         return el.firstName;
       },
@@ -564,16 +566,19 @@ test("useSearchFilter hook with fuzzy search", () => {
       <FilterProvider initialData={testData}>{children}</FilterProvider>
     ),
   });
-  expect(screen.getByRole("textbox")).toContainHTML('<input type="text"/>');
+  expect(screen.getByRole("textbox")).toHaveValue("");
   expect(screen.getAllByRole("heading")).toHaveLength(2);
   fireEvent.change(screen.getByRole("textbox"), { target: { value: "ptr" } });
+
+  expect(screen.getByRole("textbox")).toHaveValue("ptr");
+
   expect(screen.getAllByRole("heading")).toHaveLength(1);
   expect(screen.getByRole("heading")).toContainHTML("<h1>Peter</h1>");
 });
 test("useSearchFilter hook with array of strings returned from the selector function ", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
-    const searchComp = useSearchFilter("searchFilter", (el: TestItem) => {
+    const searchComp = useSearchFilter("somerandomName", (el: TestItem) => {
       return [el.firstName, el.lastName];
     });
     return (

@@ -1,11 +1,13 @@
 export class DataContainer<DT> {
+  sessionStorageSerializationEnabled = false;
   data: DT[];
   filters: Array<(element: DT) => boolean>;
   filterUpdateFunction?: () => DT[];
-  constructor(data?: DT[]) {
+  constructor(data?: DT[], sessionStorageEnabled?: boolean) {
     if (!data) throw new Error("Initial Data is undefined.");
     this.data = data;
     this.filters = new Array<(element: any) => boolean>();
+    this.sessionStorageSerializationEnabled = sessionStorageEnabled ?? false;
   }
 
   getFilteredData() {
@@ -50,6 +52,7 @@ export class FilterBase<DT> {
   dataContext?: DataContainer<DT>;
   filterFunction: (element: DT) => boolean;
   name: string;
+  sessionStorageSerializationEnabled = false;
   constructor(
     context: DataContainer<DT>,
     filterFn: (element: DT) => boolean,
@@ -59,6 +62,8 @@ export class FilterBase<DT> {
     this.filterFunction = filterFn;
     this.getDataContext().addFilter(this.filterFunction);
     this.name = name;
+    this.sessionStorageSerializationEnabled =
+      this.getDataContext().sessionStorageSerializationEnabled;
   }
   getDataContext() {
     if (!this.dataContext)
@@ -68,4 +73,8 @@ export class FilterBase<DT> {
   dispatchUpdate() {
     this.getDataContext().onFiltersUpdated();
   }
+}
+export interface ISessionStorage {
+  serializeToStorage: () => void;
+  loadFromStorage: () => void;
 }

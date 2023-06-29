@@ -1,10 +1,11 @@
 import { ChangeEvent } from "react";
-import { DataContainer, FilterBase } from "./filtering";
+import { DataContainer, FilterBase, ISessionStorage } from "./filtering";
 import Fuzzy from "fuzzy";
-export class SearchFilter<
-  DT,
-  SelectorReturnType extends string | string[]
-> extends FilterBase<DT> {
+import { loadFromSessionStorage, storeToSessionStorage } from "./util";
+export class SearchFilter<DT, SelectorReturnType extends string | string[]>
+  extends FilterBase<DT>
+  implements ISessionStorage
+{
   searchTerm: string = "";
   selectorFunction: (element: DT) => SelectorReturnType;
   constructor(
@@ -33,24 +34,46 @@ export class SearchFilter<
     };
     super(context, filterFunction, name);
     this.selectorFunction = selectorFunction;
+    this.loadFromStorage();
   }
-  addSearchFilter(Component?: React.FC<{ filterChangeFunction: Function }>) {
+  addSearchFilter(
+    Component?: React.FC<{
+      preloadedValue?: string;
+      filterChangeFunction: Function;
+    }>
+  ) {
     if (!Component) {
       return (
         <div>
           <input
             type="text"
+            defaultValue={this.searchTerm}
             onChange={this.updateSearchFilter.bind(this)}
           ></input>
         </div>
       );
     }
     return (
-      <Component filterChangeFunction={this.updateSearchFilter.bind(this)} />
+      <Component
+        preloadedValue={this.searchTerm}
+        filterChangeFunction={this.updateSearchFilter.bind(this)}
+      />
     );
   }
   updateSearchFilter(e: ChangeEvent<HTMLInputElement>) {
     this.searchTerm = e.currentTarget.value;
+    this.serializeToStorage();
     this.dispatchUpdate();
+  }
+  loadFromStorage() {
+    if (!this.sessionStorageSerializationEnabled) return;
+    const storageSearchString = loadFromSessionStorage(this.name);
+    if (!storageSearchString || storageSearchString.length == 0) return;
+    this.searchTerm = storageSearchString;
+    this.dispatchUpdate();
+  }
+  serializeToStorage() {
+    if (!this.sessionStorageSerializationEnabled) return;
+    storeToSessionStorage(this.name, this.searchTerm);
   }
 }
