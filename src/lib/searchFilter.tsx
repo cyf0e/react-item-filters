@@ -10,6 +10,7 @@ export class SearchFilter<
   constructor(
     context: DataContainer<DT>,
     selectorFunction: (element: DT) => SelectorReturnType,
+    name: string,
     fuzzy?: boolean
   ) {
     const filterFunction = (el: DT) => {
@@ -30,7 +31,7 @@ export class SearchFilter<
           .includes(this.searchTerm.toLowerCase());
       }
     };
-    super(context, filterFunction);
+    super(context, filterFunction, name);
     this.selectorFunction = selectorFunction;
   }
   addSearchFilter(Component?: React.FC<{ filterChangeFunction: Function }>) {

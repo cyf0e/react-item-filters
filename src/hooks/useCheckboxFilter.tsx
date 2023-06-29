@@ -56,6 +56,7 @@ import { useFilterContext } from "./useFilterContext";
  * and the type would be string or ReturnType of the selection function.
  */
 export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>(
+  name: string,
   selectorFunction: (arg: DataArrayElementType) => SelectorReturnType,
   Component?: <T extends CheckboxPropType<SelectorReturnType>>(
     props: T
@@ -70,7 +71,7 @@ export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>(
     const checkbox = new CheckboxFilter<
       DataArrayElementType,
       SelectorReturnType
-    >(dataContext, selectorFunction);
+    >(dataContext, selectorFunction, name);
 
     const createdCheckboxComponents = checkbox.addCheckboxFilter(
       Component,

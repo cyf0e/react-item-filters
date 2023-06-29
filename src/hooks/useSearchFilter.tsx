@@ -19,13 +19,14 @@ import { useFilterContext } from "./useFilterContext";
  *
  */
 export function useSearchFilter<DT>(
+  name: string,
   selectorFunction: (element: DT) => string | string[],
   Component?: React.FC<{ filterChangeFunction: Function }>,
   fuzzy?: boolean
 ): React.JSX.Element {
   const dataContext = useFilterContext().context;
   return useMemo(() => {
-    const sf = new SearchFilter(dataContext, selectorFunction, fuzzy);
+    const sf = new SearchFilter(dataContext, selectorFunction, name, fuzzy);
     const searchFilterComponent = sf.addSearchFilter(Component);
     return searchFilterComponent;
   }, [Component, dataContext]);

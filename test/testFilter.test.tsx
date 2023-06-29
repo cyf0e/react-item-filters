@@ -48,12 +48,17 @@ const GenericCheckBoxComponent = ({
 };
 test("assign invalid data context to FilterBase throws error", () => {
   const fb = () =>
-    new FilterBase([] as unknown as any, (el: any) => false).getDataContext();
+    new FilterBase(
+      [] as unknown as any,
+      (el: any) => false,
+      "randomFilterBase"
+    ).getDataContext();
   expect(fb).toThrowError();
   expect(() => {
     return new FilterBase(
       undefined as unknown as any,
-      () => false
+      () => false,
+      "randomFB2"
     ).getDataContext();
   }).toThrowError();
 });
@@ -83,9 +88,13 @@ test("DataContainer clearing all filters shows all data", () => {
   function TestComponent() {
     const clearAllFilters = useClearFilter();
     const fd = useFilter<string>();
-    const components = useCheckboxFilter((el: string) => {
-      return el;
-    }, GenericCheckBoxComponent);
+    const components = useCheckboxFilter(
+      "checkbox",
+      (el: string) => {
+        return el;
+      },
+      GenericCheckBoxComponent
+    );
     return (
       <div>
         <button
@@ -131,9 +140,13 @@ test("DataContainer clearing all filters shows all data", () => {
 });
 test("useCheckbox returns valid components", () => {
   function TestComponent() {
-    const components = useCheckboxFilter((el: string) => {
-      return el;
-    }, GenericCheckBoxComponent);
+    const components = useCheckboxFilter(
+      "checkbox",
+      (el: string) => {
+        return el;
+      },
+      GenericCheckBoxComponent
+    );
 
     return <div>{components}</div>;
   }
@@ -189,6 +202,7 @@ test("Passing a non array to Provider as inital data throws error", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
     const checkboxes = useCheckboxFilter(
+      "checkbox",
       (el: TestItem) => el.firstName,
       GenericCheckBoxComponent,
       new Map([
@@ -222,6 +236,7 @@ test("Async initial state update sets new state correctly", async () => {
   function TestComponent() {
     const fd: string[] = useFilter();
     const checkboxes = useCheckboxFilter(
+      "checkbox",
       (el: string) => el,
       GenericCheckBoxComponent
     );
@@ -281,9 +296,13 @@ test("Two different providers provide different data", () => {
 test("useCheckboxFilter Checking that a custom checkbox filters out the unchecked items", async () => {
   function TestComponent() {
     const filteredData: string[] = useFilter();
-    const components = useCheckboxFilter((el: string) => {
-      return el;
-    }, GenericCheckBoxComponent);
+    const components = useCheckboxFilter(
+      "checkbox",
+      (el: string) => {
+        return el;
+      },
+      GenericCheckBoxComponent
+    );
 
     return (
       <div>
@@ -321,7 +340,7 @@ test("useCheckboxFilter Checking that a custom checkbox filters out the unchecke
 test("useCheckboxFilter default checkbox filters out the unchecked items", async () => {
   function TestComponent() {
     const filteredData: string[] = useFilter();
-    const components = useCheckboxFilter((el: string) => {
+    const components = useCheckboxFilter("checkbox", (el: string) => {
       return el;
     });
     return (
@@ -360,6 +379,7 @@ test("useCheckbox No selected checkbox displays all items", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
     const checkboxes = useCheckboxFilter(
+      "checkbox",
       (el: TestItem) => el.firstName,
       GenericCheckBoxComponent
     );
@@ -386,6 +406,7 @@ test("Unselected checkbox displays hidden items again", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
     const checkboxes = useCheckboxFilter(
+      "checkbox",
       (el: TestItem) => el.firstName,
       GenericCheckBoxComponent
     );
@@ -420,6 +441,7 @@ test("useCheckbox works with nameMap", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
     const checkboxes = useCheckboxFilter(
+      "checkbox",
       (el: TestItem) => el.firstName,
       GenericCheckBoxComponent,
       new Map([
@@ -464,9 +486,13 @@ test("search filter component", () => {
     );
   };
   const dc = new DataContainer(["red", "white"]);
-  const sf = new SearchFilter(dc, (el) => {
-    return el;
-  });
+  const sf = new SearchFilter(
+    dc,
+    (el) => {
+      return el;
+    },
+    "searchFilter"
+  );
   const comp = sf.addSearchFilter(searchFilterComp);
   const res = render(<div>{comp}</div>);
   fireEvent.change(screen.getByRole("textbox"), {
@@ -490,7 +516,7 @@ test("search filter component", () => {
 test("useSearchFilter hook", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
-    const searchComp = useSearchFilter((el: TestItem) => {
+    const searchComp = useSearchFilter("searchFilter", (el: TestItem) => {
       return el.firstName;
     });
     return (
@@ -517,6 +543,7 @@ test("useSearchFilter hook with fuzzy search", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
     const searchComp = useSearchFilter(
+      "searchFilter",
       (el: TestItem) => {
         return el.firstName;
       },
@@ -546,7 +573,7 @@ test("useSearchFilter hook with fuzzy search", () => {
 test("useSearchFilter hook with array of strings returned from the selector function ", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
-    const searchComp = useSearchFilter((el: TestItem) => {
+    const searchComp = useSearchFilter("searchFilter", (el: TestItem) => {
       return [el.firstName, el.lastName];
     });
     return (

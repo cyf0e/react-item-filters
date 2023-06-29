@@ -24,7 +24,8 @@ export class DataContainer<DT> {
   }
 
   getPossibleValues<SF extends (...args: any) => any>(selectorFunction: SF) {
-    if (!this.data) throw new Error("There is no data in the DataContainer.");
+    if (!this.data)
+      throw new Error("Data in DataContainer is null or undefined.");
     const possibleValues: Set<string> = new Set<string>();
     this.data.map((element) => {
       const eLReturn = selectorFunction(element);
@@ -48,10 +49,16 @@ export class DataContainer<DT> {
 export class FilterBase<DT> {
   dataContext?: DataContainer<DT>;
   filterFunction: (element: DT) => boolean;
-  constructor(context: DataContainer<DT>, filterFn: (element: DT) => boolean) {
+  name: string;
+  constructor(
+    context: DataContainer<DT>,
+    filterFn: (element: DT) => boolean,
+    name: string
+  ) {
     this.dataContext = context;
     this.filterFunction = filterFn;
     this.getDataContext().addFilter(this.filterFunction);
+    this.name = name;
   }
   getDataContext() {
     if (!this.dataContext)
