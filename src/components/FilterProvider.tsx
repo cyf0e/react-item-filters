@@ -26,12 +26,16 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
     new DataContainer(props.initialData, props.useSessionStorage)
   );
   useMemo(() => {
-    setDataContext(new DataContainer(props.initialData));
+    setDataContext(
+      new DataContainer(props.initialData, props.useSessionStorage)
+    );
   }, [props.initialData]);
 
   const resetDataContext = () => {
     window.sessionStorage.setItem("react-item-filters", "");
-    setDataContext(new DataContainer([...props.initialData]));
+    setDataContext(
+      new DataContainer([...props.initialData], props.useSessionStorage)
+    );
   };
   return (
     <Context.Provider

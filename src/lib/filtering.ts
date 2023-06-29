@@ -52,7 +52,7 @@ export class FilterBase<DT> {
   dataContext?: DataContainer<DT>;
   filterFunction: (element: DT) => boolean;
   name: string;
-  sessionStorageSerializationEnabled = false;
+  sessionStorageSerializationEnabled: boolean;
   constructor(
     context: DataContainer<DT>,
     filterFn: (element: DT) => boolean,
