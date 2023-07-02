@@ -1,19 +1,20 @@
 export class DataContainer<DT> {
   sessionStorageSerializationEnabled = false;
   data: DT[];
-  filters: Array<(element: DT) => boolean>;
+  filters: Array<FilterBase<DT>>;
+
   filterUpdateFunction?: () => DT[];
   constructor(data?: DT[], sessionStorageEnabled?: boolean) {
     if (!data) throw new Error("Initial Data is undefined.");
     this.data = data;
-    this.filters = new Array<(element: any) => boolean>();
+    this.filters = new Array<FilterBase<DT>>();
     this.sessionStorageSerializationEnabled = sessionStorageEnabled ?? false;
   }
 
   getFilteredData() {
     let fd = [...this.data];
     this.filters.forEach((f) => {
-      fd = fd.filter(f);
+      fd = fd.filter(f.getFilterFunction());
     });
     return fd;
   }
@@ -43,7 +44,7 @@ export class DataContainer<DT> {
     });
     return Array.from(possibleValues);
   }
-  addFilter(filter: (...args: any) => any) {
+  addFilter(filter: FilterBase<DT>) {
     if (!filter) throw new Error("Filter function is undefined");
     this.filters.push(filter);
   }
@@ -60,10 +61,13 @@ export class FilterBase<DT> {
   ) {
     this.dataContext = context;
     this.filterFunction = filterFn;
-    this.getDataContext().addFilter(this.filterFunction);
+    this.getDataContext().addFilter(this);
     this.name = name;
     this.sessionStorageSerializationEnabled =
       this.getDataContext().sessionStorageSerializationEnabled;
+  }
+  getFilterFunction() {
+    return this.filterFunction;
   }
   getDataContext() {
     if (!this.dataContext)

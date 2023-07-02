@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 import { DataContainer, FilterBase, ISessionStorage } from "./filtering";
 import {
   cleanPossibleValue,
-  loadFromSessionStorage,
+  loadHistoryFilters,
   storeToSessionStorage,
 } from "./util";
 function DefaultCheckboxComponent<T>(props: CheckboxPropType<T>) {
@@ -12,7 +12,7 @@ function DefaultCheckboxComponent<T>(props: CheckboxPropType<T>) {
       <input
         name={labelValue}
         id={labelValue}
-        onChange={props.filterChangeFunction}
+        onChange={props.filterUpdateFunction}
         type="checkbox"
         style={{ width: "1rem", height: "1rem" }}
       />
@@ -22,12 +22,14 @@ function DefaultCheckboxComponent<T>(props: CheckboxPropType<T>) {
     </div>
   );
 }
+export type CheckboxUpdateFunction = {
+  (event: ChangeEvent<HTMLInputElement>): void;
+};
 export type CheckboxPropType<SelectorReturnType> = {
   labelValue: string | SelectorReturnType;
-  filterChangeFunction: (event: ChangeEvent<HTMLInputElement>) => void;
+  filterUpdateFunction: CheckboxUpdateFunction;
   preChecked?: boolean;
 };
-
 export class CheckboxFilter<DataElementType, SelectorReturnType = string>
   extends FilterBase<DataElementType>
   implements ISessionStorage
@@ -47,10 +49,10 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     this.selectorFunction = selectorFunction;
     this.loadFromStorage();
   }
-  /** If a custom component is supplied it has to have props: {labelValue: any, filterChangeFunction: Function}.
+  /** If a custom component is supplied it has to have props: {labelValue: any, filterUpdateFunction: Function}.
    * The value is provided for labeling the checkbox.
-   * The filterChangeFunction is supplied to the onEvent function you wish to call for
-   * @example onChange = {filterChangeFunction}
+   * The filterUpdateFunction is supplied to the onEvent function you wish to call for
+   * @example onChange = {filterUpdateFunction}
    */
   addCheckboxFilter(
     Component?: (
@@ -74,7 +76,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
             key={value}
             labelValue={value}
             preChecked={this.checked.has(key)}
-            filterChangeFunction={(event: ChangeEvent<HTMLInputElement>) => {
+            filterUpdateFunction={(event: ChangeEvent<HTMLInputElement>) => {
               this.setChecked(key, event.currentTarget.checked);
             }}
           />
@@ -89,7 +91,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
             key={v as string}
             preChecked={this.checked.has(v as SelectorReturnType)}
             labelValue={prettyLabels ? cleanPossibleValue(v) : v}
-            filterChangeFunction={(e: ChangeEvent<HTMLInputElement>) => {
+            filterUpdateFunction={(e: ChangeEvent<HTMLInputElement>) => {
               this.setChecked(v, e.currentTarget.checked);
             }}
           />
@@ -108,7 +110,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
   loadFromStorage() {
     if (!this.sessionStorageSerializationEnabled) return;
 
-    const storedValues = loadFromSessionStorage(this.name);
+    const storedValues = loadHistoryFilters(this.name);
     if (!storedValues) return;
     const checkedValues = storedValues.split(",");
     checkedValues.forEach((value) => {

@@ -1,5 +1,9 @@
-import React, { useMemo } from "react";
-import { SearchFilter } from "../lib/searchFilter";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  SearchFilter,
+  SearchFilterPropType,
+  SearchFilterUpdateFunction,
+} from "../lib/searchFilter";
 import { useFilterContext } from "./useFilterContext";
 
 /**
@@ -10,9 +14,9 @@ import { useFilterContext } from "./useFilterContext";
  *  const selectorFn = (el) => { return el.name } //searches only over first names, or
  *  const selectorFn = (el) => { return [el.name, el.last] } // will search by both parameters.
  *
- * @param Component - React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {filterChangeFunction} props parameter and call that whenever you want filtering to occur passing it the element object.
- *  @example const MySearchComp = ({filterChangeFunction}:{filterChangeFunction:Function}) => {
- *  return <input onChange={(e)=>{filterChangeFunction(e)}} />
+ * @param Component - React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you must have it take a {filterUpdateFunction} props parameter and call that whenever you want filtering to occur passing it the element object.
+ *  @example const MySearchComp = ({filterUpdateFunction}:{filterUpdateFunction:Function}) => {
+ *  return <input onChange={(e)=>{filterUpdateFunction(e)}} />
  * }
  * @param fuzzy - Optional fuzzy parameter to turn fuzzy search on
  * @returns - The Search input component passed as Component or a default search component.
@@ -21,13 +25,15 @@ import { useFilterContext } from "./useFilterContext";
 export function useSearchFilter<DT>(
   name: string,
   selectorFunction: (element: DT) => string | string[],
-  Component?: React.FC<{ filterChangeFunction: Function }>,
+  Component?: React.FC<SearchFilterPropType>,
   fuzzy?: boolean
 ): React.JSX.Element {
   const dataContext = useFilterContext().context;
-  return useMemo(() => {
+  const [searchFilterComponent, setSearchFilterComponent] = useState<any>();
+  useEffect(() => {
     const sf = new SearchFilter(dataContext, selectorFunction, name, fuzzy);
-    const searchFilterComponent = sf.addSearchFilter(Component);
-    return searchFilterComponent;
+    const sfComponent = sf.addSearchFilter(Component);
+    setSearchFilterComponent(sfComponent);
   }, [Component, dataContext]);
+  return searchFilterComponent;
 }

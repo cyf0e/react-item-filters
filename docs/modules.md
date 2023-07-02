@@ -31,16 +31,16 @@
 
 #### Type parameters
 
-| Name |
-| :------ |
+| Name                 |
+| :------------------- |
 | `SelectorReturnType` |
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `filterChangeFunction` | (`event`: `ChangeEvent`<`HTMLInputElement`\>) => `void` |
-| `labelValue` | `string` \| `SelectorReturnType` |
+| Name                   | Type                                                    |
+| :--------------------- | :------------------------------------------------------ |
+| `filterUpdateFunction` | (`event`: `ChangeEvent`<`HTMLInputElement`\>) => `void` |
+| `labelValue`           | `string` \| `SelectorReturnType`                        |
 
 #### Defined in
 
@@ -56,17 +56,17 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name              | Type            |
+| :---------------- | :-------------- |
 | `InitialDataType` | extends `any`[] |
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `props` | `Object` | props.initialData is the starting point for unfiltered data that you want to be filtered. |
-| `props.children?` | `any` | - |
-| `props.initialData` | `InitialDataType` | - |
+| Name                | Type              | Description                                                                               |
+| :------------------ | :---------------- | :---------------------------------------------------------------------------------------- |
+| `props`             | `Object`          | props.initialData is the starting point for unfiltered data that you want to be filtered. |
+| `props.children?`   | `any`             | -                                                                                         |
+| `props.initialData` | `InitialDataType` | -                                                                                         |
 
 #### Returns
 
@@ -76,7 +76,7 @@ Provider - Function component that wraps children with the filtering context.
 
 [components/FilterProvider.tsx:15](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/components/FilterProvider.tsx#L15)
 
-___
+---
 
 ### useCheckboxFilter
 
@@ -87,24 +87,24 @@ useCheckboxFilter - hook that creates a checkbox filter and retruns basic checkb
 **`Example`**
 
 ```jsx
-   const Comp = ( { labelValue, filterChangeFunction } : { labelValue: string, filterChangeFunction: Function }) =>
+   const Comp = ( { labelValue, filterUpdateFunction } : { labelValue: string, filterUpdateFunction: Function }) =>
    {
    return (
            <>
-           <input type="checkbox" onChange={filterChangeFunction}/>
+           <input type="checkbox" onChange={filterUpdateFunction}/>
            <label>{labelValue}</label>}
            </>
    )
 ```
- If no custom Component is passed in, the returned checkbox elements will be the default element.
- You should really pass in a custom component in most cases.
+
+If no custom Component is passed in, the returned checkbox elements will be the default element.
+You should really pass in a custom component in most cases.
+
 ```jsx
-
- <div>
-    <input name={labelValue} id={labelValue} type="checkbox" />
-    <label htmlFor={labelValue}>{labelValue}</label>
- </div>
-
+<div>
+  <input name={labelValue} id={labelValue} type="checkbox" />
+  <label htmlFor={labelValue}>{labelValue}</label>
+</div>
 ```
 
 **`Remark`**
@@ -114,6 +114,7 @@ DataArrayElement is the type of element from the supplied data array.
 **`Example`**
 
 For example if the data is
+
 ```jsx
 const data=[{name:John,lastname:John},{name:Peter,lastname:Parker}]
 typeof data = DataArrayElement[]
@@ -122,26 +123,28 @@ typeof DataArrayEleemnt would be {name:string,lastname:string}
 
 SelectorReturnType is the type of element that the selector function returns.
 For the last example if we wanted to filter by lastname the selector function we would pass in would be
+
 ```
 const selectorFunction = (el:DataArrayElement)=>{return el.lastname}
-````
+```
+
 and the type would be string or ReturnType of the selection function.
 
 #### Type parameters
 
-| Name |
-| :------ |
+| Name                   |
+| :--------------------- |
 | `DataArrayElementType` |
-| `SelectorReturnType` |
+| `SelectorReturnType`   |
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `selectorFunction` | (`arg`: `DataArrayElementType`) => `SelectorReturnType` | `undefined` | The function that returns the part of the data we want to filter by. |
-| `Component?` | <T\>(`props`: `T`) => `Element` | `undefined` | The Component that will be wrapped around. It gets passed in the filterChangeFunction function and the value to display. The type of props that the components gets is { labelValue: string \| SelectorReturnType, filterChangeFunction: Function } and should be used like: |
-| `nameMap?` | `Map`<`SelectorReturnType`, `string`\> | `undefined` | A map that is used to lookup names you wish to assign to the checkbox labels for possible values of the checkbox filter. KEYS have to be the values the selector function returns and VALUES must be their respective string labels. If the the data is an array of {color: 'red'\|'blue'} objects, useCheckboxHook will automatically get all the possible values for color and after some clean up offer those values as labels for the checkboxes. If you instead pass in a nameMap the names specified in the map will be used. |
-| `prettyLabels` | `boolean` | `true` | Boolean that selects if the user wants some clean up (capitalize first words, remove underscore) done on the possible values that are used as labels when nameMap is NOT provided. |
+| Name               | Type                                                    | Default value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| :----------------- | :------------------------------------------------------ | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `selectorFunction` | (`arg`: `DataArrayElementType`) => `SelectorReturnType` | `undefined`   | The function that returns the part of the data we want to filter by.                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `Component?`       | <T\>(`props`: `T`) => `Element`                         | `undefined`   | The Component that will be wrapped around. It gets passed in the filterUpdateFunction function and the value to display. The type of props that the components gets is { labelValue: string \| SelectorReturnType, filterUpdateFunction: Function } and should be used like:                                                                                                                                                                                                                                                        |
+| `nameMap?`         | `Map`<`SelectorReturnType`, `string`\>                  | `undefined`   | A map that is used to lookup names you wish to assign to the checkbox labels for possible values of the checkbox filter. KEYS have to be the values the selector function returns and VALUES must be their respective string labels. If the the data is an array of {color: 'red'\|'blue'} objects, useCheckboxHook will automatically get all the possible values for color and after some clean up offer those values as labels for the checkboxes. If you instead pass in a nameMap the names specified in the map will be used. |
+| `prettyLabels`     | `boolean`                                               | `true`        | Boolean that selects if the user wants some clean up (capitalize first words, remove underscore) done on the possible values that are used as labels when nameMap is NOT provided.                                                                                                                                                                                                                                                                                                                                                  |
 
 #### Returns
 
@@ -153,18 +156,17 @@ Components[] - The components to render.
 
 [hooks/useCheckboxFilter.tsx:58](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useCheckboxFilter.tsx#L58)
 
-___
+---
 
 ### useClearFilter
 
 ▸ **useClearFilter**(): `Function`
 
 NOTE: React by default will not reset the state of your Filter elements like the checkbox for example. This is because it doesnt reset state of components that are rendered in the same place so the checkboxes will stay checked after clearing unless you explicitly make them reset by adding a dynamic key to them for example
-```jsx
-function CustomCheckboxComp(){
- return <div key={randomString() || Math.random()}>
 
-</div>
+```jsx
+function CustomCheckboxComp() {
+  return <div key={randomString() || Math.random()}></div>;
 }
 ```
 
@@ -178,7 +180,7 @@ clearFilters function
 
 [hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useClearFilter.tsx#L13)
 
-___
+---
 
 ### useFilter
 
@@ -189,8 +191,8 @@ useFilter - Hook to access the filtered data.
 #### Type parameters
 
 | Name |
-| :------ |
-| `T` |
+| :--- |
+| `T`  |
 
 #### Returns
 
@@ -202,7 +204,7 @@ Data[] - Returns the filtered dataafter all filters in the same context have bee
 
 [hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useFilter.tsx#L9)
 
-___
+---
 
 ### useSearchFilter
 
@@ -213,32 +215,46 @@ useSearchFilter - Hook that enables text searching on the data.
 **`Example`**
 
 ```ts
-const data=[{name:Peter,last:Parker}]
- const selectorFn = (el) => { return el.name } //searches only over first names, or
- const selectorFn = (el) => { return [el.name, el.last] } // will search by both parameters.
+const data = [{ name: Peter, last: Parker }];
+const selectorFn = (el) => {
+  return el.name;
+}; //searches only over first names, or
+const selectorFn = (el) => {
+  return [el.name, el.last];
+}; // will search by both parameters.
 ```
 
 **`Example`**
 
 ```ts
-const MySearchComp = ({filterChangeFunction}:{filterChangeFunction:Function}) => {
- return <input onChange={(e)=>{filterChangeFunction(e)}} />
-}
+const MySearchComp = ({
+  filterUpdateFunction,
+}: {
+  filterUpdateFunction: Function;
+}) => {
+  return (
+    <input
+      onChange={(e) => {
+        filterUpdateFunction(e);
+      }}
+    />
+  );
+};
 ```
 
 #### Type parameters
 
 | Name |
-| :------ |
+| :--- |
 | `DT` |
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `selectorFunction` | (`element`: `DT`) => `string` \| `string`[] | Function used to select what part of the data you want to be able to search by. You can select to search by some string property or multiple string properties. |
-| `Component?` | `FC`<{ `filterChangeFunction`: `Function`  }\> | React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {filterChangeFunction} props parameter and call that whenever you want filtering to occur passing it the element object. |
-| `fuzzy?` | `boolean` | Optional fuzzy parameter to turn fuzzy search on |
+| Name               | Type                                          | Description                                                                                                                                                                                                                                                                             |
+| :----------------- | :-------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `selectorFunction` | (`element`: `DT`) => `string` \| `string`[]   | Function used to select what part of the data you want to be able to search by. You can select to search by some string property or multiple string properties.                                                                                                                         |
+| `Component?`       | `FC`<{ `filterUpdateFunction`: `Function` }\> | React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {filterUpdateFunction} props parameter and call that whenever you want filtering to occur passing it the element object. |
+| `fuzzy?`           | `boolean`                                     | Optional fuzzy parameter to turn fuzzy search on                                                                                                                                                                                                                                        |
 
 #### Returns
 

@@ -22,9 +22,9 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
       `Initial Data passed to the provider MUST be an array. Instead got: ${typeof props.initialData}. Use [] for empty initialization.`
     );
   }
-  const [dataContext, setDataContext] = useState<any>(
-    new DataContainer(props.initialData, props.useSessionStorage)
-  );
+  const [dataContext, setDataContext] = useState<
+    DataContainer<InitialDataType>
+  >(new DataContainer(props.initialData, props.useSessionStorage));
   useMemo(() => {
     setDataContext(
       new DataContainer(props.initialData, props.useSessionStorage)
@@ -33,6 +33,11 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
 
   const resetDataContext = () => {
     window.sessionStorage.setItem("react-item-filters", "");
+    const oldSearchParams = new URLSearchParams(window.location.search);
+    dataContext.filters.forEach((filter) =>
+      oldSearchParams.delete(filter.name)
+    );
+    window.history.replaceState("", "", "?" + oldSearchParams.toString());
     setDataContext(
       new DataContainer([...props.initialData], props.useSessionStorage)
     );

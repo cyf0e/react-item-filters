@@ -19,6 +19,7 @@ import {
   CheckboxPropType,
   SearchFilter,
   useClearFilter,
+  SearchFilterUpdateFunction,
 } from "../src/index";
 
 jest.useFakeTimers();
@@ -26,7 +27,7 @@ const getTestPromiseData = () =>
   new Promise((res, rej) => {
     setTimeout(() => {
       res(["red", "blue"]);
-    }, 10000);
+    }, 1000);
   });
 
 const testData = [
@@ -36,11 +37,11 @@ const testData = [
 type TestItem = typeof testData extends Array<infer R> ? R : undefined;
 const GenericCheckBoxComponent = ({
   labelValue,
-  filterChangeFunction,
+  filterUpdateFunction,
 }: CheckboxPropType<any>) => {
   return (
     <div key={Math.random()}>
-      <input id={labelValue} type="checkbox" onChange={filterChangeFunction} />
+      <input id={labelValue} type="checkbox" onChange={filterUpdateFunction} />
       <label data-testid="labelElements" htmlFor={labelValue}>
         {labelValue}
       </label>
@@ -74,15 +75,21 @@ test("assign some invalid initial data to DataContainer throws error", () => {
 });
 test("assigning empty filter to DataContainer throws error", () => {
   const c = new DataContainer(testData);
-  expect(() => c.addFilter(undefined as unknown as () => false)).toThrowError(
+  expect(() => c.addFilter(undefined as unknown as any)).toThrowError(
     "Filter function is undefined"
   );
 });
 test("DataContainer filtering properly filters data", () => {
   const c = new DataContainer<number>([1, 2, 3, 4, 5]);
-  c.addFilter((n: number) => {
-    return n > 3;
-  });
+  c.addFilter(
+    new FilterBase(
+      c,
+      (n: number) => {
+        return n > 3;
+      },
+      "testrandom"
+    )
+  );
   expect(c.getFilteredData()).toStrictEqual([4, 5]);
 });
 test("DataContainer clearing all filters shows all data", () => {
@@ -475,14 +482,17 @@ test("useCheckbox works with nameMap", () => {
 //TODO: split this test up into different tests, add tests to check if proper component is being returned
 test("search filter component", () => {
   const searchFilterComp = ({
-    filterChangeFunction,
+    filterUpdateFunction,
   }: {
-    filterChangeFunction: any;
+    filterUpdateFunction: SearchFilterUpdateFunction;
   }) => {
     return (
       <div>
         <h1>Search</h1>
-        <input type="text" onChange={filterChangeFunction} />
+        <input
+          type="text"
+          onChange={(e) => filterUpdateFunction(e.currentTarget.value)}
+        />
       </div>
     );
   };

@@ -1,6 +1,7 @@
 react-item-filters / [Exports](modules.md)
 
 # React Item Filters
+
 [GitHub](https://github.com/cyf0e/react-item-filters)
 [NPM Package](https://www.npmjs.com/package/react-item-filters)
 <br>
@@ -39,12 +40,12 @@ For example using the checkbox filter ...
 ```jsx
 import { FilterProvider,useCheckboxFilter,useFilter } from 'react-item-filters';
 
-function CheckboxElement (props: { labelValue:string, filterChangeFunction: any }) {
+function CheckboxElement (props: { labelValue:string, filterUpdateFunction: any }) {
     //labelValue returns a clean value to display in the label element so 'Light Blue' for example.
     //You can use that value as an id or modify it in some way.
     return (
         <div>
-        <input id={labelValue} type="checkbox" onChange={filterChangeFunction}/>
+        <input id={labelValue} type="checkbox" onChange={filterUpdateFunction}/>
         <label htmlFor={labelValue}>{labelValue}</label>
         </div>
     )

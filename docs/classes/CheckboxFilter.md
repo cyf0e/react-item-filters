@@ -4,10 +4,10 @@
 
 ## Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `DataElementType` | `DataElementType` |
-| `SelectorReturnType` | `string` |
+| Name                 | Type              |
+| :------------------- | :---------------- |
+| `DataElementType`    | `DataElementType` |
+| `SelectorReturnType` | `string`          |
 
 ## Hierarchy
 
@@ -43,17 +43,17 @@
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `DataElementType` | `DataElementType` |
-| `SelectorReturnType` | `string` |
+| Name                 | Type              |
+| :------------------- | :---------------- |
+| `DataElementType`    | `DataElementType` |
+| `SelectorReturnType` | `string`          |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `context` | [`DataContainer`](DataContainer.md)<`DataElementType`\> |
-| `selectorFunction` | (`element`: `DataElementType`) => `SelectorReturnType` |
+| Name               | Type                                                    |
+| :----------------- | :------------------------------------------------------ |
+| `context`          | [`DataContainer`](DataContainer.md)<`DataElementType`\> |
+| `selectorFunction` | (`element`: `DataElementType`) => `SelectorReturnType`  |
 
 #### Overrides
 
@@ -73,7 +73,7 @@
 
 [lib/checkboxFilter.tsx:29](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/checkboxFilter.tsx#L29)
 
-___
+---
 
 ### dataContext
 
@@ -87,7 +87,7 @@ ___
 
 [lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L49)
 
-___
+---
 
 ### filterFunction
 
@@ -99,8 +99,8 @@ ___
 
 ##### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name      | Type              |
+| :-------- | :---------------- |
 | `element` | `DataElementType` |
 
 ##### Returns
@@ -115,7 +115,7 @@ ___
 
 [lib/filtering.ts:50](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L50)
 
-___
+---
 
 ### selectorFunction
 
@@ -127,8 +127,8 @@ ___
 
 ##### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name      | Type              |
+| :-------- | :---------------- |
 | `element` | `DataElementType` |
 
 ##### Returns
@@ -145,23 +145,23 @@ ___
 
 ▸ **addCheckboxFilter**(`Component?`, `nameValueMap?`, `prettyLabels?`): `any`[]
 
-If a custom component is supplied it has to have props: {labelValue: any, filterChangeFunction: Function}.
+If a custom component is supplied it has to have props: {labelValue: any, filterUpdateFunction: Function}.
 The value is provided for labeling the checkbox.
-The filterChangeFunction is supplied to the onEvent function you wish to call for
+The filterUpdateFunction is supplied to the onEvent function you wish to call for
 
 **`Example`**
 
 ```ts
-onChange = {filterChangeFunction}
+onChange = { filterUpdateFunction };
 ```
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `Component?` | (`props`: [`CheckboxPropType`](../modules.md#checkboxproptype)<`SelectorReturnType`\>) => `Element` | `undefined` |
-| `nameValueMap?` | `Map`<`SelectorReturnType`, `string`\> | `undefined` |
-| `prettyLabels` | `boolean` | `true` |
+| Name            | Type                                                                                                | Default value |
+| :-------------- | :-------------------------------------------------------------------------------------------------- | :------------ |
+| `Component?`    | (`props`: [`CheckboxPropType`](../modules.md#checkboxproptype)<`SelectorReturnType`\>) => `Element` | `undefined`   |
+| `nameValueMap?` | `Map`<`SelectorReturnType`, `string`\>                                                              | `undefined`   |
+| `prettyLabels`  | `boolean`                                                                                           | `true`        |
 
 #### Returns
 
@@ -171,7 +171,7 @@ onChange = {filterChangeFunction}
 
 [lib/checkboxFilter.tsx:47](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/checkboxFilter.tsx#L47)
 
-___
+---
 
 ### dispatchUpdate
 
@@ -189,7 +189,7 @@ ___
 
 [lib/filtering.ts:61](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L61)
 
-___
+---
 
 ### getDataContext
 
@@ -207,7 +207,7 @@ ___
 
 [lib/filtering.ts:56](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L56)
 
-___
+---
 
 ### setChecked
 
@@ -215,9 +215,9 @@ ___
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `value` | `any` |
+| Name    | Type      |
+| :------ | :-------- |
+| `value` | `any`     |
 | `state` | `boolean` |
 
 #### Returns

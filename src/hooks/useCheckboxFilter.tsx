@@ -6,15 +6,15 @@ import { useFilterContext } from "./useFilterContext";
  * useCheckboxFilter - hook that creates a checkbox filter and retruns basic checkbox components to render with the options.
  *  @param {(arg:DataArrayElementType)=>SelectorReturnType} selectorFunction - The function that returns the part of the data we want to filter by.
  *
- *  @param Component - The Component that will be wrapped around. It gets passed in the filterChangeFunction function and the value to display.
- *  The type of props that the components gets is { labelValue: string | SelectorReturnType, filterChangeFunction: Function } and should be used like:
+ *  @param Component - The Component that will be wrapped around. It gets passed in the filterUpdateFunction function and the value to display.
+ *  The type of props that the components gets is { labelValue: string | SelectorReturnType, filterUpdateFunction: Function } and should be used like:
  * @example
  * ```jsx
- *    const Comp = ( { labelValue, filterChangeFunction } : { labelValue: string, filterChangeFunction: Function }) =>
+ *    const Comp = ( { labelValue, filterUpdateFunction } : { labelValue: string, filterUpdateFunction: Function }) =>
  *    {
  *    return (
  *            <>
- *            <input type="checkbox" onChange={filterChangeFunction}/>
+ *            <input type="checkbox" onChange={filterUpdateFunction}/>
  *            <label>{labelValue}</label>}
  *            </>
  *    )
@@ -80,7 +80,7 @@ export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>(
     );
 
     setCheckboxComponents(createdCheckboxComponents);
-  }, [dataContext]);
+  }, [Component, dataContext]);
 
   return checkboxComponents;
 }

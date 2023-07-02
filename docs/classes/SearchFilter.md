@@ -4,9 +4,9 @@
 
 ## Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `DT` | `DT` |
+| Name                 | Type                           |
+| :------------------- | :----------------------------- |
+| `DT`                 | `DT`                           |
 | `SelectorReturnType` | extends `string` \| `string`[] |
 
 ## Hierarchy
@@ -43,18 +43,18 @@
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `DT` | `DT` |
+| Name                 | Type                           |
+| :------------------- | :----------------------------- |
+| `DT`                 | `DT`                           |
 | `SelectorReturnType` | extends `string` \| `string`[] |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `context` | [`DataContainer`](DataContainer.md)<`DT`\> |
-| `selectorFunction` | (`element`: `DT`) => `SelectorReturnType` |
-| `fuzzy?` | `boolean` |
+| Name               | Type                                       |
+| :----------------- | :----------------------------------------- |
+| `context`          | [`DataContainer`](DataContainer.md)<`DT`\> |
+| `selectorFunction` | (`element`: `DT`) => `SelectorReturnType`  |
+| `fuzzy?`           | `boolean`                                  |
 
 #### Overrides
 
@@ -78,7 +78,7 @@
 
 [lib/filtering.ts:49](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L49)
 
-___
+---
 
 ### filterFunction
 
@@ -90,8 +90,8 @@ ___
 
 ##### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name      | Type |
+| :-------- | :--- |
 | `element` | `DT` |
 
 ##### Returns
@@ -106,7 +106,7 @@ ___
 
 [lib/filtering.ts:50](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L50)
 
-___
+---
 
 ### searchTerm
 
@@ -116,7 +116,7 @@ ___
 
 [lib/searchFilter.tsx:8](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/searchFilter.tsx#L8)
 
-___
+---
 
 ### selectorFunction
 
@@ -128,8 +128,8 @@ ___
 
 ##### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name      | Type |
+| :-------- | :--- |
 | `element` | `DT` |
 
 ##### Returns
@@ -148,9 +148,9 @@ ___
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `Component?` | `FC`<{ `filterChangeFunction`: `Function`  }\> |
+| Name         | Type                                          |
+| :----------- | :-------------------------------------------- |
+| `Component?` | `FC`<{ `filterUpdateFunction`: `Function` }\> |
 
 #### Returns
 
@@ -160,7 +160,7 @@ ___
 
 [lib/searchFilter.tsx:36](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/searchFilter.tsx#L36)
 
-___
+---
 
 ### dispatchUpdate
 
@@ -178,7 +178,7 @@ ___
 
 [lib/filtering.ts:61](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L61)
 
-___
+---
 
 ### getDataContext
 
@@ -196,7 +196,7 @@ ___
 
 [lib/filtering.ts:56](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L56)
 
-___
+---
 
 ### updateSearchFilter
 
@@ -204,9 +204,9 @@ ___
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `e` | `ChangeEvent`<`HTMLInputElement`\> |
+| Name | Type                               |
+| :--- | :--------------------------------- |
+| `e`  | `ChangeEvent`<`HTMLInputElement`\> |
 
 #### Returns
 
