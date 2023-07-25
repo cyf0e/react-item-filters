@@ -60,7 +60,11 @@ export function storeToSessionStorage(name: string, data: string) {
       ...rootStoreObject,
     });
     console.log(newSearchParams);
-    window.history.replaceState("", "", "?" + newSearchParams.toString());
+    window.history.replaceState(
+      window.history.state,
+      "",
+      "?" + newSearchParams.toString()
+    );
     window.sessionStorage.setItem(
       "react-item-filters",
       JSON.stringify(rootStoreObject)

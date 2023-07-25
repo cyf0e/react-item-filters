@@ -1,14 +1,17 @@
-export class DataContainer<DT> {
-  sessionStorageSerializationEnabled = false;
-  data: DT[];
-  filters: Array<FilterBase<DT>>;
+import { EventBase } from "./eventBase";
 
-  filterUpdateFunction?: () => DT[];
-  constructor(data?: DT[], sessionStorageEnabled?: boolean) {
+export class DataContainer<DataType> extends EventBase {
+  private data: DataType[];
+  private filters: Array<FilterBase<DataType>>;
+  constructor({ data }: { data?: DataType[] }) {
+    super();
     if (!data) throw new Error("Initial Data is undefined.");
     this.data = data;
-    this.filters = new Array<FilterBase<DT>>();
-    this.sessionStorageSerializationEnabled = sessionStorageEnabled ?? false;
+    this.filters = new Array<FilterBase<DataType>>();
+  }
+
+  getData() {
+    return this.data;
   }
 
   getFilteredData() {
@@ -17,13 +20,6 @@ export class DataContainer<DT> {
       fd = fd.filter(f.getFilterFunction());
     });
     return fd;
-  }
-
-  setOnUpdateFilters(fn: (...args: any) => any) {
-    this.filterUpdateFunction = fn;
-  }
-  onFiltersUpdated() {
-    if (this.filterUpdateFunction) this.filterUpdateFunction();
   }
 
   getPossibleValues<SF extends (...args: any) => any>(selectorFunction: SF) {
@@ -44,38 +40,40 @@ export class DataContainer<DT> {
     });
     return Array.from(possibleValues);
   }
-  addFilter(filter: FilterBase<DT>) {
+  addFilter(filter: FilterBase<DataType>) {
     if (!filter) throw new Error("Filter function is undefined");
+    this.emit("filtersUpdated");
     this.filters.push(filter);
   }
 }
-export class FilterBase<DT> {
-  dataContext?: DataContainer<DT>;
-  filterFunction: (element: DT) => boolean;
-  name: string;
-  sessionStorageSerializationEnabled: boolean;
-  constructor(
-    context: DataContainer<DT>,
-    filterFn: (element: DT) => boolean,
-    name: string
-  ) {
-    this.dataContext = context;
-    this.filterFunction = filterFn;
-    this.getDataContext().addFilter(this);
+export class FilterBase<DataType> {
+  private dataContainer: DataContainer<DataType>;
+  private filterFunction: (element: DataType) => boolean;
+  protected name: string;
+  protected sessionStorageSerializationEnabled: boolean = false;
+  constructor({
+    filterFunction,
+    name,
+    dataContainer,
+  }: {
+    dataContainer: DataContainer<DataType>;
+    filterFunction: (element: DataType) => boolean;
+    name: string;
+  }) {
+    this.dataContainer = dataContainer;
+    this.filterFunction = filterFunction;
+    this.getDataContainer().addFilter(this);
     this.name = name;
-    this.sessionStorageSerializationEnabled =
-      this.getDataContext().sessionStorageSerializationEnabled;
   }
+
   getFilterFunction() {
     return this.filterFunction;
   }
-  getDataContext() {
-    if (!this.dataContext)
+
+  getDataContainer() {
+    if (!this.dataContainer)
       throw new Error("Context is undefined in FilterBase.");
-    return this.dataContext;
-  }
-  dispatchUpdate() {
-    this.getDataContext().onFiltersUpdated();
+    return this.dataContainer;
   }
 }
 export interface ISessionStorage {

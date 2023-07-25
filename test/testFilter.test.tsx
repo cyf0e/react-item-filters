@@ -65,22 +65,22 @@ test("assign invalid data context to FilterBase throws error", () => {
   }).toThrowError();
 });
 test("assigns data to DataContainer", () => {
-  const c = new DataContainer([1, 2, 3, 4, 5]);
+  const c = new DataContainer({ data: [1, 2, 3, 4, 5] });
   expect(c.data).toStrictEqual([1, 2, 3, 4, 5]);
 });
 test("assign some invalid initial data to DataContainer throws error", () => {
-  expect(() => new DataContainer(undefined as unknown as any[])).toThrowError(
-    "Initial Data is undefined."
-  );
+  expect(
+    () => new DataContainer({ data: undefined as unknown as any[] })
+  ).toThrowError("Initial Data is undefined.");
 });
 test("assigning empty filter to DataContainer throws error", () => {
-  const c = new DataContainer(testData);
+  const c = new DataContainer({ data: testData });
   expect(() => c.addFilter(undefined as unknown as any)).toThrowError(
     "Filter function is undefined"
   );
 });
 test("DataContainer filtering properly filters data", () => {
-  const c = new DataContainer<number>([1, 2, 3, 4, 5]);
+  const c = new DataContainer<number>({ data: [1, 2, 3, 4, 5] });
   c.addFilter(
     new FilterBase(
       c,
@@ -496,14 +496,14 @@ test("search filter component", () => {
       </div>
     );
   };
-  const dc = new DataContainer(["red", "white"]);
-  const sf = new SearchFilter(
-    dc,
-    (el) => {
+  const dc = new DataContainer({ data: ["red", "white"] });
+  const sf = new SearchFilter({
+    context: dc,
+    selectorFunction: (el) => {
       return el;
     },
-    "somerandomName"
-  );
+    name: "somerandomName",
+  });
   const comp = sf.addSearchFilter(searchFilterComp);
   const res = render(<div>{comp}</div>);
   fireEvent.change(screen.getByRole("textbox"), {
@@ -527,8 +527,11 @@ test("search filter component", () => {
 test("useSearchFilter hook", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
-    const searchComp = useSearchFilter("somerandomName", (el: TestItem) => {
-      return el.firstName;
+    const searchComp = useSearchFilter({
+      name: "somerandomName",
+      selectorFunction: (el: TestItem) => {
+        return el.firstName;
+      },
     });
     return (
       <div>
@@ -554,14 +557,14 @@ test("useSearchFilter hook", () => {
 test("useSearchFilter hook with fuzzy search", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
-    const searchComp = useSearchFilter(
-      "somerandomName",
-      (el: TestItem) => {
+    const searchComp = useSearchFilter({
+      name: "somerandomName",
+      selectorFunction: (el: TestItem) => {
         return el.firstName;
       },
-      undefined,
-      true
-    );
+
+      fuzzy: true,
+    });
     return (
       <div>
         {searchComp}
@@ -588,8 +591,11 @@ test("useSearchFilter hook with fuzzy search", () => {
 test("useSearchFilter hook with array of strings returned from the selector function ", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
-    const searchComp = useSearchFilter("somerandomName", (el: TestItem) => {
-      return [el.firstName, el.lastName];
+    const searchComp = useSearchFilter({
+      name: "somerandomName",
+      selectorFunction: (el: TestItem) => {
+        return [el.firstName, el.lastName];
+      },
     });
     return (
       <div>
@@ -621,7 +627,7 @@ test("Clean possible values returns nicely parsed names", () => {
   expect(cleanPossibleValue({ a: 2 })).toEqual({ a: 2 });
 });
 test("unsupported possible values throw error", () => {
-  const dc = new DataContainer(["a", "b", 2]);
+  const dc = new DataContainer({ data: ["a", "b", 2] });
   expect(() => {
     dc.getPossibleValues((el: any) => el);
   }).toThrowError(

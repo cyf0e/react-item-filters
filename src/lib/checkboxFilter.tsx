@@ -36,16 +36,20 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
 {
   checked: Set<SelectorReturnType> = new Set<SelectorReturnType>();
   selectorFunction: (element: DataElementType) => SelectorReturnType;
-  constructor(
-    context: DataContainer<DataElementType>,
-    selectorFunction: (element: DataElementType) => SelectorReturnType,
-    name: string
-  ) {
+  constructor({
+    dataContainer,
+    selectorFunction,
+    name,
+  }: {
+    dataContainer: DataContainer<DataElementType>;
+    selectorFunction: (element: DataElementType) => SelectorReturnType;
+    name: string;
+  }) {
     const filterFunction = (element: DataElementType) => {
       if (this.checked.size == 0) return true;
       return this.checked.has(selectorFunction(element));
     };
-    super(context, filterFunction, name);
+    super({ dataContainer, filterFunction, name });
     this.selectorFunction = selectorFunction;
     this.loadFromStorage();
   }
@@ -55,49 +59,21 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
    * @example onChange = {filterUpdateFunction}
    */
   addCheckboxFilter(
-    Component?: (
-      props: CheckboxPropType<SelectorReturnType>
-    ) => React.JSX.Element,
     nameValueMap?: Map<SelectorReturnType, string>,
     prettyLabels: boolean = true
   ) {
     //Get possible values and return default checkbox component from those values
-    const possibleValues = this.getDataContext().getPossibleValues(
+    const possibleValues = this.getDataContainer().getPossibleValues(
       this.selectorFunction
     );
-    const ComponentToRender = Component
-      ? Component
-      : DefaultCheckboxComponent<SelectorReturnType>;
+
     if (nameValueMap) {
       const comps = new Array<any>();
       nameValueMap.forEach((value, key) => {
-        comps.push(
-          <ComponentToRender
-            key={value}
-            labelValue={value}
-            preChecked={this.checked.has(key)}
-            filterUpdateFunction={(event: ChangeEvent<HTMLInputElement>) => {
-              this.setChecked(key, event.currentTarget.checked);
-            }}
-          />
-        );
+        comps.push();
       });
       return comps;
-    }
-    if (ComponentToRender)
-      return possibleValues.map((v, i) => {
-        return (
-          <ComponentToRender
-            key={v as string}
-            preChecked={this.checked.has(v as SelectorReturnType)}
-            labelValue={prettyLabels ? cleanPossibleValue(v) : v}
-            filterUpdateFunction={(e: ChangeEvent<HTMLInputElement>) => {
-              this.setChecked(v, e.currentTarget.checked);
-            }}
-          />
-        );
-      });
-    else
+    } else
       throw new Error(
         "Component must be defined. Please pass in a valid Component to useCheckboxFilter."
       );
@@ -118,7 +94,6 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
         this.checked.add(value as SelectorReturnType);
       }
     });
-    this.dispatchUpdate();
   }
   setChecked(value: any, state: boolean) {
     if (state) {
@@ -127,6 +102,5 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
       this.checked.delete(value as SelectorReturnType);
     }
     this.serializeToStorage();
-    this.dispatchUpdate();
   }
 }

@@ -24,22 +24,33 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
   }
   const [dataContext, setDataContext] = useState<
     DataContainer<InitialDataType>
-  >(new DataContainer(props.initialData, props.useSessionStorage));
+  >(
+    new DataContainer({
+      data: props.initialData,
+    })
+  );
   useMemo(() => {
     setDataContext(
-      new DataContainer(props.initialData, props.useSessionStorage)
+      new DataContainer({
+        data: props.initialData,
+      })
     );
   }, [props.initialData]);
-
   const resetDataContext = () => {
-    window.sessionStorage.setItem("react-item-filters", "");
+    /* window.sessionStorage.setItem("react-item-filters", "");
     const oldSearchParams = new URLSearchParams(window.location.search);
     dataContext.filters.forEach((filter) =>
       oldSearchParams.delete(filter.name)
     );
-    window.history.replaceState("", "", "?" + oldSearchParams.toString());
+    window.history.replaceState(
+      window.history.state,
+      "",
+      "?" + oldSearchParams.toString()
+    ); */
     setDataContext(
-      new DataContainer([...props.initialData], props.useSessionStorage)
+      new DataContainer({
+        data: [...props.initialData],
+      })
     );
   };
   return (

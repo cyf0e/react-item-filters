@@ -8,13 +8,13 @@ import { useFilterContext } from "./useFilterContext";
  */
 export function useFilter<T>() {
   const ctx = useFilterContext().context as DataContainer<T>;
-  const [data, setData] = useState<T[]>(ctx.data);
+  const [data, setData] = useState<T[]>(ctx.getFilteredData());
   useMemo(() => {
-    setData(ctx.data); //update the state after context changes for example from fetching data
-    ctx.setOnUpdateFilters(() => {
+    setData(ctx.getData()); //update the state after context changes for example from fetching data
+    ctx.on("filterValueUpdate", () => {
       const newData = ctx.getFilteredData();
       setData(newData);
     });
-  }, [ctx, ctx.data]);
+  }, [ctx, ctx.getData()]);
   return data;
 }

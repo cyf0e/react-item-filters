@@ -22,18 +22,23 @@ import { useFilterContext } from "./useFilterContext";
  * @returns - The Search input component passed as Component or a default search component.
  *
  */
-export function useSearchFilter<DT>(
-  name: string,
-  selectorFunction: (element: DT) => string | string[],
-  Component?: React.FC<SearchFilterPropType>,
-  fuzzy?: boolean
-): React.JSX.Element {
+export function useSearchFilter<DataType = any>({
+  name,
+  selectorFunction,
+  fuzzy,
+}: {
+  name: string;
+  selectorFunction: (element: DataType) => string | string[];
+  fuzzy?: boolean;
+}) {
   const dataContext = useFilterContext().context;
-  const [searchFilterComponent, setSearchFilterComponent] = useState<any>();
   useEffect(() => {
-    const sf = new SearchFilter(dataContext, selectorFunction, name, fuzzy);
-    const sfComponent = sf.addSearchFilter(Component);
-    setSearchFilterComponent(sfComponent);
-  }, [Component, dataContext]);
-  return searchFilterComponent;
+    const sf = new SearchFilter({
+      dataContainer: dataContext,
+      selectorFunction,
+      name,
+      fuzzy,
+    });
+    dataContext.addFilter(sf);
+  }, [dataContext]);
 }
