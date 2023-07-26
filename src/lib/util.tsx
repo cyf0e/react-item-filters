@@ -59,7 +59,6 @@ export function storeToSessionStorage(name: string, data: string) {
       ...oldSearchParamsObject,
       ...rootStoreObject,
     });
-    console.log(newSearchParams);
     window.history.replaceState(
       window.history.state,
       "",

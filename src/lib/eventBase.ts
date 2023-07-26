@@ -1,6 +1,9 @@
 export class EventBase {
-  private events: Map<string, Set<(...args: any) => any>> = new Map();
-
+  events: Map<string, Set<(...args: any) => any>> = new Map();
+  remove(event: string, listener: (...args: any) => any) {
+    const eventListeners = this.events.get(event);
+    eventListeners?.delete(listener);
+  }
   on(event: string, listener: (...args: any) => any) {
     const oldListeners = this.events.get(event);
     if (!oldListeners) {

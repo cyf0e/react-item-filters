@@ -16,10 +16,8 @@ import {
   DataContainer,
   FilterBase,
   FilterProvider,
-  CheckboxPropType,
   SearchFilter,
   useClearFilter,
-  SearchFilterUpdateFunction,
 } from "../src/index";
 
 jest.useFakeTimers();
@@ -36,37 +34,62 @@ const testData = [
 ];
 type TestItem = typeof testData extends Array<infer R> ? R : undefined;
 const GenericCheckBoxComponent = ({
-  labelValue,
-  filterUpdateFunction,
-}: CheckboxPropType<any>) => {
+  setChecked,
+  label,
+  onFilterClear,
+}: any) => {
+  const [check, setCheck] = useState(false);
+  useEffect(() => {
+    if (onFilterClear) {
+      return onFilterClear(() => setCheck(false));
+    }
+  }, []);
   return (
     <div key={Math.random()}>
-      <input id={labelValue} type="checkbox" onChange={filterUpdateFunction} />
-      <label data-testid="labelElements" htmlFor={labelValue}>
-        {labelValue}
+      <input
+        id={label}
+        type="checkbox"
+        checked={check}
+        onChange={(e) => {
+          setCheck(!check);
+          setChecked(label, e.currentTarget.checked);
+        }}
+      />
+      <label data-testid="labelElements" htmlFor={label}>
+        {label}
       </label>
     </div>
   );
 };
+const GenericSearchComponent = (props: any) => {
+  return (
+    <input
+      type="text"
+      onChange={(e) => props.setSearchString(e.currentTarget.value)}
+    ></input>
+  );
+};
 test("assign invalid data context to FilterBase throws error", () => {
   const fb = () =>
-    new FilterBase(
-      [] as unknown as any,
-      (el: any) => false,
-      "anyname"
-    ).getDataContext();
+    new FilterBase({
+      dataContainer: undefined as unknown as any,
+      filterFunction: (el: any) => false,
+      name: "anyname",
+      filterClearFunction: () => {},
+    }).getDataContainer();
   expect(fb).toThrowError();
   expect(() => {
-    return new FilterBase(
-      undefined as unknown as any,
-      () => false,
-      "name2"
-    ).getDataContext();
+    return new FilterBase({
+      dataContainer: undefined as unknown as any,
+      filterFunction: () => false,
+      name: "name2",
+      filterClearFunction: () => {},
+    }).getDataContainer();
   }).toThrowError();
 });
 test("assigns data to DataContainer", () => {
   const c = new DataContainer({ data: [1, 2, 3, 4, 5] });
-  expect(c.data).toStrictEqual([1, 2, 3, 4, 5]);
+  expect(c.getData()).toStrictEqual([1, 2, 3, 4, 5]);
 });
 test("assign some invalid initial data to DataContainer throws error", () => {
   expect(
@@ -82,27 +105,90 @@ test("assigning empty filter to DataContainer throws error", () => {
 test("DataContainer filtering properly filters data", () => {
   const c = new DataContainer<number>({ data: [1, 2, 3, 4, 5] });
   c.addFilter(
-    new FilterBase(
-      c,
-      (n: number) => {
+    new FilterBase({
+      dataContainer: c,
+      filterFunction: (n: number) => {
         return n > 3;
       },
-      "testrandom"
-    )
+      name: "testrandom",
+      filterClearFunction: () => {},
+    })
   );
   expect(c.getFilteredData()).toStrictEqual([4, 5]);
 });
+test("useCheckbox returns valid labels", () => {
+  function TestComponent() {
+    const components = useCheckboxFilter({
+      name: "somerandomName",
+      selectorFunction: (el: string) => {
+        return el;
+      },
+    });
+    const labels = Array.from(components.labels ?? []);
+    return (
+      <div>
+        {labels.map((label, i) => (
+          <h1 key={i}>{label}</h1>
+        ))}
+      </div>
+    );
+  }
+  const data = ["red", "blue"];
+  const items = render(<TestComponent />, {
+    wrapper: ({ children }: { children?: any }) => {
+      return <FilterProvider initialData={data}>{children}</FilterProvider>;
+    },
+  });
+  const labels = items.getAllByRole("heading");
+  expect(labels).toHaveLength(2);
+  expect(labels[0]).toHaveTextContent("Red");
+  expect(labels[1]).toHaveTextContent("Blue");
+});
+test("useSearchFilter hook", () => {
+  const TestComponent = () => {
+    const fd: TestItem[] = useFilter();
+    const searchComp = useSearchFilter({
+      name: "somerandomName",
+      selectorFunction: (el: TestItem) => {
+        return el.firstName;
+      },
+    });
+    return (
+      <div>
+        <input
+          onChange={(e) => {
+            searchComp.setSearchString(e.currentTarget.value);
+          }}
+        ></input>
+        {fd.map((f) => {
+          return <h1 key={f.firstName}>{f.firstName}</h1>;
+        })}
+      </div>
+    );
+  };
+  const res = render(<TestComponent />, {
+    wrapper: ({ children }) => (
+      <FilterProvider initialData={testData}>{children}</FilterProvider>
+    ),
+  });
+  expect(screen.getByRole("textbox")).toHaveValue("");
+  expect(screen.getAllByRole("heading")).toHaveLength(2);
+  fireEvent.change(screen.getByRole("textbox"), { target: { value: "peter" } });
+  expect(screen.getByRole("textbox")).toHaveValue("peter");
+  expect(screen.getAllByRole("heading")).toHaveLength(1);
+  expect(screen.getByRole("heading")).toContainHTML("<h1>Peter</h1>");
+});
+
 test("DataContainer clearing all filters shows all data", () => {
   function TestComponent() {
     const clearAllFilters = useClearFilter();
     const fd = useFilter<string>();
-    const components = useCheckboxFilter(
-      "somerandomName",
-      (el: string) => {
+    const components = useCheckboxFilter({
+      name: "somerandomName",
+      selectorFunction: (el: string) => {
         return el;
       },
-      GenericCheckBoxComponent
-    );
+    });
     return (
       <div>
         <button
@@ -112,7 +198,17 @@ test("DataContainer clearing all filters shows all data", () => {
         >
           Clear
         </button>
-        {components}
+        {components.labels.map((label) =>
+          label ? (
+            <GenericCheckBoxComponent
+              key={label}
+              label={label}
+              setChecked={components.setChecked}
+              onFilterUpdate={components.onFilterUpdate}
+              onFilterClear={components.onFilterClear}
+            />
+          ) : null
+        )}
         {fd.map((el) => (
           <h1 key={el}>{el}</h1>
         ))}
@@ -146,39 +242,6 @@ test("DataContainer clearing all filters shows all data", () => {
     expect(heading.innerHTML).toEqual("red");
   });
 });
-test("useCheckbox returns valid components", () => {
-  function TestComponent() {
-    const components = useCheckboxFilter(
-      "somerandomName",
-      (el: string) => {
-        return el;
-      },
-      GenericCheckBoxComponent
-    );
-
-    return <div>{components}</div>;
-  }
-  const data = ["red", "blue"];
-  const items = render(<TestComponent />, {
-    wrapper: ({ children }: { children?: any }) => {
-      return <FilterProvider initialData={data}>{children}</FilterProvider>;
-    },
-  });
-  const inputs = items.getAllByRole("checkbox") as HTMLInputElement[];
-  expect(items.getByText("Red")).toContainHTML(
-    '<label data-testid="labelElements" for="Red">Red</label>'
-  );
-  expect(items.getByText("Blue")).toContainHTML(
-    '<label data-testid="labelElements" for="Blue">Blue</label>'
-  );
-  inputs.forEach((ie, i) => {
-    expect(ie).toContainHTML(
-      `<input id="${
-        data[i][0].toUpperCase() + data[i].slice(1)
-      }" type="checkbox" />`
-    );
-  });
-});
 
 test("Provider provides initial data", () => {
   const filteredData = renderHook(() => useFilter(), {
@@ -209,18 +272,27 @@ test("Passing a non array to Provider as inital data throws error", () => {
 
   function TestComponent() {
     const fd: TestItem[] = useFilter();
-    const checkboxes = useCheckboxFilter(
-      "somerandomName",
-      (el: TestItem) => el.firstName,
-      GenericCheckBoxComponent,
-      new Map([
+    const checkboxes = useCheckboxFilter({
+      name: "somerandomName",
+      selectorFunction: (el: TestItem) => el.firstName,
+
+      nameMap: new Map([
         ["Peter", "Pete"],
         ["Michael", "Mike"],
-      ])
-    );
+      ]),
+    });
     return (
       <div>
-        {checkboxes}
+        {checkboxes.labels.map((label) =>
+          label ? (
+            <GenericCheckBoxComponent
+              key={label}
+              label={label}
+              setChecked={checkboxes.setChecked}
+              onFilterUpdate={checkboxes.onFilterUpdate}
+            />
+          ) : null
+        )}
         {fd.map((e) => (
           <h1 key={e.firstName}>{e.firstName}</h1>
         ))}
@@ -240,18 +312,25 @@ test("Passing a non array to Provider as inital data throws error", () => {
   console.error = errorObject;
 });
 test("Async initial state update sets new state correctly", async () => {
-  let headings: any = [];
   function TestComponent() {
     const fd: string[] = useFilter();
-    const checkboxes = useCheckboxFilter(
-      "somerandomName",
-      (el: string) => el,
-      GenericCheckBoxComponent
-    );
+    const checkboxes = useCheckboxFilter({
+      name: "somerandomName",
+      selectorFunction: (el: string) => el,
+    });
 
     return (
       <div>
-        {checkboxes}
+        {checkboxes.labels.map((label) =>
+          label ? (
+            <GenericCheckBoxComponent
+              key={label}
+              label={label}
+              setChecked={checkboxes.setChecked}
+              onFilterUpdate={checkboxes.onFilterUpdate}
+            />
+          ) : null
+        )}
         {fd.map((e) => (
           <h1 key={e}>{e}</h1>
         ))}
@@ -304,17 +383,26 @@ test("Two different providers provide different data", () => {
 test("useCheckboxFilter Checking that a custom checkbox filters out the unchecked items", async () => {
   function TestComponent() {
     const filteredData: string[] = useFilter();
-    const components = useCheckboxFilter(
-      "somerandomName",
-      (el: string) => {
+    const checkboxes = useCheckboxFilter({
+      name: "somerandomName",
+      selectorFunction: (el: string) => {
         return el;
       },
-      GenericCheckBoxComponent
-    );
+    });
 
     return (
       <div>
-        {components}
+        {checkboxes.labels.map((label) =>
+          label ? (
+            <GenericCheckBoxComponent
+              key={label}
+              label={label}
+              setChecked={checkboxes.setChecked}
+              onFilterUpdate={checkboxes.onFilterUpdate}
+            />
+          ) : null
+        )}
+
         <div>
           {filteredData.map((e: string) => {
             return (
@@ -348,12 +436,25 @@ test("useCheckboxFilter Checking that a custom checkbox filters out the unchecke
 test("useCheckboxFilter default checkbox filters out the unchecked items", async () => {
   function TestComponent() {
     const filteredData: string[] = useFilter();
-    const components = useCheckboxFilter("somerandomName", (el: string) => {
-      return el;
+    const checkboxes = useCheckboxFilter({
+      name: "somerandomName",
+      selectorFunction: (el: string) => {
+        return el;
+      },
     });
     return (
       <div>
-        {components}
+        {checkboxes.labels.map((label) =>
+          label ? (
+            <GenericCheckBoxComponent
+              key={label}
+              label={label}
+              setChecked={checkboxes.setChecked}
+              onFilterUpdate={checkboxes.onFilterUpdate}
+            />
+          ) : null
+        )}
+
         <div>
           {filteredData.map((e: string) => {
             return (
@@ -386,14 +487,22 @@ test("useCheckboxFilter default checkbox filters out the unchecked items", async
 test("useCheckbox No selected checkbox displays all items", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
-    const checkboxes = useCheckboxFilter(
-      "somerandomName",
-      (el: TestItem) => el.firstName,
-      GenericCheckBoxComponent
-    );
+    const checkboxes = useCheckboxFilter({
+      name: "somerandomName",
+      selectorFunction: (el: TestItem) => el.firstName,
+    });
     return (
       <div>
-        {checkboxes}
+        {checkboxes.labels.map((label) =>
+          label ? (
+            <GenericCheckBoxComponent
+              key={label}
+              label={label}
+              setChecked={checkboxes.setChecked}
+              onFilterUpdate={checkboxes.onFilterUpdate}
+            />
+          ) : null
+        )}
         {fd.map((e) => (
           <h1 key={e.firstName}>{e.firstName}</h1>
         ))}
@@ -413,14 +522,22 @@ test("useCheckbox No selected checkbox displays all items", () => {
 test("Unselected checkbox displays hidden items again", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
-    const checkboxes = useCheckboxFilter(
-      "somerandomName",
-      (el: TestItem) => el.firstName,
-      GenericCheckBoxComponent
-    );
+    const checkboxes = useCheckboxFilter({
+      name: "somerandomName",
+      selectorFunction: (el: TestItem) => el.firstName,
+    });
     return (
       <div>
-        {checkboxes}
+        {checkboxes.labels.map((label) =>
+          label ? (
+            <GenericCheckBoxComponent
+              key={label}
+              label={label}
+              setChecked={checkboxes.setChecked}
+              onFilterUpdate={checkboxes.onFilterUpdate}
+            />
+          ) : null
+        )}
         {fd.map((e) => (
           <h1 key={e.firstName}>{e.firstName}</h1>
         ))}
@@ -448,18 +565,27 @@ test("Unselected checkbox displays hidden items again", () => {
 test("useCheckbox works with nameMap", () => {
   function TestComponent() {
     const fd: TestItem[] = useFilter();
-    const checkboxes = useCheckboxFilter(
-      "somerandomName",
-      (el: TestItem) => el.firstName,
-      GenericCheckBoxComponent,
-      new Map([
+    const checkboxes = useCheckboxFilter({
+      name: "somerandomName",
+      selectorFunction: (el: TestItem) => el.firstName,
+      nameMap: new Map([
         ["Peter", "Pete"],
         ["Michael", "Mike"],
-      ])
-    );
+      ]),
+    });
     return (
       <div>
-        {checkboxes}
+        {checkboxes.labels.map((label) =>
+          label ? (
+            <GenericCheckBoxComponent
+              key={label}
+              label={label}
+              setChecked={checkboxes.setChecked}
+              onFilterUpdate={checkboxes.onFilterUpdate}
+              onFilterClear={checkboxes.onFilterClear}
+            />
+          ) : null
+        )}
         {fd.map((e) => (
           <h1 key={e.firstName}>{e.firstName}</h1>
         ))}
@@ -473,87 +599,68 @@ test("useCheckbox works with nameMap", () => {
   });
 
   expect(screen.getAllByTestId("labelElements")).toHaveLength(2);
-  expect(screen.getAllByTestId("labelElements")[0]).toHaveTextContent("Pete");
-  expect(screen.getAllByTestId("labelElements")[1]).toHaveTextContent("Mike");
+
+  expect(screen.getAllByTestId("labelElements")[0]).toHaveTextContent("Mike");
+  expect(screen.getAllByTestId("labelElements")[1]).toHaveTextContent("Pete");
   fireEvent.click(screen.getByLabelText("Pete"));
   expect(screen.getAllByRole("heading")).toHaveLength(1);
   expect(screen.getByRole("heading")).toHaveTextContent("Peter");
 });
 //TODO: split this test up into different tests, add tests to check if proper component is being returned
 test("search filter component", () => {
-  const searchFilterComp = ({
-    filterUpdateFunction,
-  }: {
-    filterUpdateFunction: SearchFilterUpdateFunction;
-  }) => {
-    return (
-      <div>
-        <h1>Search</h1>
-        <input
-          type="text"
-          onChange={(e) => filterUpdateFunction(e.currentTarget.value)}
-        />
-      </div>
-    );
-  };
-  const dc = new DataContainer({ data: ["red", "white"] });
-  const sf = new SearchFilter({
-    context: dc,
-    selectorFunction: (el) => {
-      return el;
-    },
-    name: "somerandomName",
-  });
-  const comp = sf.addSearchFilter(searchFilterComp);
-  const res = render(<div>{comp}</div>);
-  fireEvent.change(screen.getByRole("textbox"), {
-    target: { value: "white" },
-  });
-  expect(dc.getFilteredData()).toEqual(["white"]);
-  fireEvent.change(screen.getByRole("textbox"), {
-    target: { value: "red" },
-  });
-  expect(dc.getFilteredData()).toEqual(["red"]);
-  fireEvent.change(screen.getByRole("textbox"), {
-    target: { value: "" },
-  });
-  expect(dc.getFilteredData()).toEqual(["red", "white"]);
-  fireEvent.change(screen.getByRole("textbox"), {
-    target: { value: "r" },
-  });
-  expect(dc.getFilteredData()).toEqual(["red"]);
-});
-
-test("useSearchFilter hook", () => {
-  const TestComponent = () => {
-    const fd: TestItem[] = useFilter();
-    const searchComp = useSearchFilter({
-      name: "somerandomName",
-      selectorFunction: (el: TestItem) => {
-        return el.firstName;
+  const Test = () => {
+    const fd = useFilter<string>();
+    const sf = useSearchFilter({
+      name: "randomSearchFilter",
+      selectorFunction: (el: string) => {
+        return el;
       },
     });
     return (
-      <div>
-        {searchComp}
-        {fd.map((f) => {
-          return <h1 key={f.firstName}>{f.firstName}</h1>;
-        })}
-      </div>
+      <>
+        <GenericSearchComponent
+          onFilterUpdate={sf.onFilterUpdate}
+          setSearchString={sf.setSearchString}
+        />
+        {fd.map((c: string) => (
+          <h1 key={c}>{c}</h1>
+        ))}
+      </>
     );
   };
-  const res = render(<TestComponent />, {
-    wrapper: ({ children }) => (
-      <FilterProvider initialData={testData}>{children}</FilterProvider>
-    ),
+  const res = render(
+    <div>
+      <FilterProvider initialData={["red", "white"]}>
+        <Test />
+      </FilterProvider>
+    </div>
+  );
+  fireEvent.change(screen.getByRole("textbox"), {
+    target: { value: "white" },
   });
-  expect(screen.getByRole("textbox")).toHaveValue("");
-  expect(screen.getAllByRole("heading")).toHaveLength(2);
-  fireEvent.change(screen.getByRole("textbox"), { target: { value: "peter" } });
-  expect(screen.getByRole("textbox")).toHaveValue("peter");
   expect(screen.getAllByRole("heading")).toHaveLength(1);
-  expect(screen.getByRole("heading")).toContainHTML("<h1>Peter</h1>");
+  expect(screen.getAllByRole("heading")[0]).toHaveTextContent("white");
+
+  fireEvent.change(screen.getByRole("textbox"), {
+    target: { value: "red" },
+  });
+  expect(screen.getAllByRole("heading")).toHaveLength(1);
+  expect(screen.getAllByRole("heading")[0]).toHaveTextContent("red");
+
+  fireEvent.change(screen.getByRole("textbox"), {
+    target: { value: "" },
+  });
+  expect(screen.getAllByRole("heading")).toHaveLength(2);
+  expect(screen.getAllByRole("heading")[0]).toHaveTextContent("red");
+  expect(screen.getAllByRole("heading")[1]).toHaveTextContent("white");
+
+  fireEvent.change(screen.getByRole("textbox"), {
+    target: { value: "r" },
+  });
+  expect(screen.getAllByRole("heading")).toHaveLength(1);
+  expect(screen.getAllByRole("heading")[0]).toHaveTextContent("red");
 });
+
 test("useSearchFilter hook with fuzzy search", () => {
   const TestComponent = () => {
     const fd: TestItem[] = useFilter();
@@ -567,7 +674,10 @@ test("useSearchFilter hook with fuzzy search", () => {
     });
     return (
       <div>
-        {searchComp}
+        <GenericSearchComponent
+          onFilterUpdate={searchComp.onFilterUpdate}
+          setSearchString={searchComp.setSearchString}
+        />
         {fd.map((f) => {
           return <h1 key={f.firstName}>{f.firstName}</h1>;
         })}
@@ -599,7 +709,10 @@ test("useSearchFilter hook with array of strings returned from the selector func
     });
     return (
       <div>
-        {searchComp}
+        <GenericSearchComponent
+          setSearchString={searchComp.setSearchString}
+          onFilterUpdate={searchComp.onFilterUpdate}
+        />
         {fd.map((f) => {
           return <h1 key={f.firstName}>{f.firstName}</h1>;
         })}

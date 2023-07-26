@@ -1,9 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import {
-  SearchFilter,
-  SearchFilterPropType,
-  SearchFilterUpdateFunction,
-} from "../lib/searchFilter";
+import { useEffect, useState } from "react";
+import { SearchFilter } from "../lib/searchFilter";
 import { useFilterContext } from "./useFilterContext";
 
 /**
@@ -32,6 +28,14 @@ export function useSearchFilter<DataType = any>({
   fuzzy?: boolean;
 }) {
   const dataContext = useFilterContext().context;
+  const [searchFilter, setSearchFilter] = useState(
+    new SearchFilter({
+      dataContainer: dataContext,
+      selectorFunction,
+      name,
+      fuzzy,
+    })
+  );
   useEffect(() => {
     const sf = new SearchFilter({
       dataContainer: dataContext,
@@ -39,6 +43,12 @@ export function useSearchFilter<DataType = any>({
       name,
       fuzzy,
     });
+    setSearchFilter(sf);
     dataContext.addFilter(sf);
   }, [dataContext]);
+  return {
+    onFilterUpdate: searchFilter.onFilterUpdate.bind(searchFilter),
+    setSearchString: searchFilter.updateSearchFilter.bind(searchFilter),
+    onFilterClear: searchFilter.onFilterClear.bind(searchFilter),
+  };
 }

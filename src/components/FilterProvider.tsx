@@ -3,18 +3,16 @@ import { DataContainer } from "../lib/filtering";
 
 export const Context = createContext<{
   context: DataContainer<any>;
-  clearAllFilters: Function;
 }>(null as any);
 
 /**
  * Provider - Function component that wraps children with the filtering context.
  *
- * @param {typeof props} props - props.initialData is the starting point for unfiltered data that you want to be filtered.
+ * @param {typeof props} props - props.initialData is the starting point for unfiltered data that you want to be filtered. Pass [] if you have to async load initial data.
  * @returns
  */
 export function FilterProvider<InitialDataType extends Array<any>>(props: {
   initialData: InitialDataType;
-  useSessionStorage?: boolean;
   children?: any;
 }) {
   if (!Array.isArray(props.initialData)) {
@@ -36,27 +34,9 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
       })
     );
   }, [props.initialData]);
-  const resetDataContext = () => {
-    /* window.sessionStorage.setItem("react-item-filters", "");
-    const oldSearchParams = new URLSearchParams(window.location.search);
-    dataContext.filters.forEach((filter) =>
-      oldSearchParams.delete(filter.name)
-    );
-    window.history.replaceState(
-      window.history.state,
-      "",
-      "?" + oldSearchParams.toString()
-    ); */
-    setDataContext(
-      new DataContainer({
-        data: [...props.initialData],
-      })
-    );
-  };
+
   return (
-    <Context.Provider
-      value={{ context: dataContext, clearAllFilters: resetDataContext }}
-    >
+    <Context.Provider value={{ context: dataContext }}>
       {props.children}
     </Context.Provider>
   );

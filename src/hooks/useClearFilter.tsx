@@ -11,6 +11,19 @@ import { useFilterContext } from "./useFilterContext";
  * @returns clearFilters function
  */
 export function useClearFilter() {
-  const clearFilters = useFilterContext().clearAllFilters;
-  return clearFilters;
+  const ctx = useFilterContext().context;
+  return () => {
+    ctx.clearFilters();
+    ctx.emit("filterValueUpdate");
+    /* window.sessionStorage.setItem("react-item-filters", "");
+    const oldSearchParams = new URLSearchParams(window.location.search);
+    dataContext.filters.forEach((filter) =>
+      oldSearchParams.delete(filter.name)
+    );
+    window.history.replaceState(
+      window.history.state,
+      "",
+      "?" + oldSearchParams.toString()
+    ); */
+  };
 }

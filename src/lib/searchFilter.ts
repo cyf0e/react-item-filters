@@ -1,22 +1,17 @@
 import { DataContainer, FilterBase, ISessionStorage } from "./filtering";
 import Fuzzy from "fuzzy";
 import { loadHistoryFilters, storeToSessionStorage } from "./util";
-export type SearchFilterUpdateFunction = {
-  (searchString: string): void;
-};
-export type SearchFilterPropType = {
-  preloadedValue?: string;
-  filterUpdateFunction: SearchFilterUpdateFunction;
-};
+
 export class SearchFilter<
-    DataType,
-    SelectorReturnType extends string | string[]
+    DataType = any,
+    SelectorReturnType extends string | string[] = any
   >
   extends FilterBase<DataType>
   implements ISessionStorage
 {
-  searchTerm: string = "";
+  searchTerm: string;
   selectorFunction: (element: DataType) => SelectorReturnType;
+
   constructor({
     dataContainer,
     selectorFunction,
@@ -34,19 +29,30 @@ export class SearchFilter<
         let result = false;
         stringsToSearch.forEach((s) => {
           result =
-            result || s.toLowerCase().includes(this.searchTerm.toLowerCase());
+            result ||
+            s.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
         });
         return result;
       } else {
+        if (stringsToSearch.length == 0) return true;
         if (fuzzy) {
           return Fuzzy.test(this.searchTerm.toLowerCase(), stringsToSearch);
         }
-        return stringsToSearch
-          .toLowerCase()
-          .includes(this.searchTerm.toLowerCase());
+        return (
+          stringsToSearch.toLowerCase().indexOf(this.searchTerm.toLowerCase()) >
+          -1
+        );
       }
     };
-    super({ dataContainer, name, filterFunction });
+    super({
+      dataContainer,
+      name,
+      filterFunction,
+      filterClearFunction: () => {
+        this.searchTerm = "";
+      },
+    });
+    this.searchTerm = "";
     this.selectorFunction = selectorFunction;
     this.loadFromStorage();
   }
@@ -55,6 +61,7 @@ export class SearchFilter<
     searchString = searchString ?? "";
     this.searchTerm = searchString;
     this.serializeToStorage();
+    this.dispatchUpdate();
   }
   loadFromStorage() {
     if (!this.sessionStorageSerializationEnabled) return;
