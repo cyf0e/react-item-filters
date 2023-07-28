@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { CheckboxFilter } from "../lib/checkboxFilter";
 import { useFilterContext } from "./useFilterContext";
 

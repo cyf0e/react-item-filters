@@ -16,7 +16,6 @@ import {
   DataContainer,
   FilterBase,
   FilterProvider,
-  SearchFilter,
   useClearFilter,
 } from "../src/index";
 
