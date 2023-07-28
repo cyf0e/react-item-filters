@@ -1,18 +1,21 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { CheckboxFilter } from "../lib/checkboxFilter";
 import { useFilterContext } from "./useFilterContext";
 
 /**
  * useCheckboxFilter - hook that creates a checkbox filter and returns utilities to render checkbox components.
- *  @param {(arg:DataArrayElementType)=>SelectorReturnType} selectorFunction - The function that returns the part of the data we want to filter by.
+ *  @param selectorFunction - The function that returns the part of the data we want to filter by.
  *
- *  @param {typeof nameMap} nameMap - A map that is used to lookup names you wish to assign to the checkbox labels for possible values of the checkbox filter.
+ *  @param nameMap - A map that is used to lookup names you wish to assign to the checkbox labels for possible values of the checkbox filter.
  *  KEYS have to be the values the selector function returns and VALUES must be their respective string labels.
  *  If the the data is an array of {color: 'red'|'blue'} objects, useCheckboxHook will automatically get all the possible values for color and
  *  after some clean up (depends on prettyLabels, by default True) offer those values as labels for the checkboxes. If you instead pass in a nameMap the names specified in the map will be used.
  *
- *  @param {boolean} prettyLabels - Boolean that selects if the user wants some clean up (capitalize first words, remove underscore) done on the possible values that are used as labels when nameMap is NOT provided.
+ *  @param prettyLabels - Boolean that selects if the user wants some clean up (capitalize first words, remove underscore) done on the possible values that are used as labels when nameMap is NOT provided.
  *
+ *  @param name - A user supplied string that is used to keep track of the filter internally as well as saving the filters into search parameters. This can be any unique string for the filter scope.
+ *
+ *  @param serializeToHistory - Boolean value that selects if you want to save the filter values to search parameters so they can be shared via url. By default FALSE.
  *
  * @remark
  * DataArrayElement is the type of element from the supplied data array.
@@ -36,42 +39,44 @@ export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>({
   selectorFunction,
   nameMap,
   prettyLabels = true,
+  serializeToHistory,
 }: {
   name: string;
   prettyLabels?: boolean;
   selectorFunction: (arg: DataArrayElementType) => SelectorReturnType;
   nameMap?: Map<SelectorReturnType, string>;
+  serializeToHistory?: boolean;
 }) {
   const dataContainer = useFilterContext().context;
-  const [checkbox, setCheckbox] = useState<
-    CheckboxFilter<DataArrayElementType, SelectorReturnType>
-  >(
-    new CheckboxFilter<DataArrayElementType, SelectorReturnType>({
+
+  const checkbox = useMemo(() => {
+    const checkbox = new CheckboxFilter({
       dataContainer,
       selectorFunction,
       name,
       prettyLabels,
       nameValueMap: nameMap,
-    })
-  );
-  useEffect(() => {
-    const checkbox = new CheckboxFilter<
-      DataArrayElementType,
-      SelectorReturnType
-    >({
-      dataContainer,
-      selectorFunction,
-      name,
-      prettyLabels,
-      nameValueMap: nameMap,
+      serializeToHistory,
     });
-    setCheckbox(checkbox);
     dataContainer.addFilter(checkbox);
+
+    //load checkbox filters from URL search params, needs to run after the filter is added to the data container.
+    checkbox.loadHistory();
+
+    return checkbox;
   }, [dataContainer]);
-  return {
-    setChecked: checkbox.setChecked.bind(checkbox),
-    onFilterUpdate: checkbox.onFilterUpdate.bind(checkbox),
-    onFilterClear: checkbox.onFilterClear.bind(checkbox),
-    labels: checkbox.getParsedPossibleValues(),
-  };
+
+  return useMemo(() => {
+    return {
+      setChecked: checkbox.setChecked.bind(checkbox),
+      onFilterUpdate: checkbox.onFilterUpdate.bind(checkbox),
+      onFilterClear: checkbox.onFilterClear.bind(checkbox),
+      labels: checkbox.getParsedPossibleValues(),
+      preloadedCheckedLabels: Array.from(checkbox.checked),
+    };
+  }, [checkbox]);
 }
+export type CheckboxFilterProps = Omit<
+  ReturnType<typeof useCheckboxFilter>,
+  "labels"
+> & { label: string };

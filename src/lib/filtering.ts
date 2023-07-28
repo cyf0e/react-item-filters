@@ -10,7 +10,7 @@ export class DataContainer<DataType> extends EventBase {
     this.filters = new Array<FilterBase<DataType>>();
   }
 
-  getData() {
+  getInitialData() {
     return this.data;
   }
 
@@ -26,6 +26,16 @@ export class DataContainer<DataType> extends EventBase {
   clearFilters() {
     this.filters.forEach((filter) => filter.clearFilter());
     this.emit("filterClear");
+    window.sessionStorage.setItem("react-item-filters", "");
+    const oldSearchParams = new URLSearchParams(window.location.search);
+    this.filters.forEach((filter) =>
+      oldSearchParams.delete(filter.getFilterName())
+    );
+    window.history.replaceState(
+      window.history.state,
+      "",
+      "?" + oldSearchParams.toString()
+    );
   }
 
   getPossibleValues<SF extends (...args: any) => any>(selectorFunction: SF) {
@@ -50,33 +60,42 @@ export class DataContainer<DataType> extends EventBase {
     if (!filter) throw new Error("Filter function is undefined");
     this.emit("filtersUpdated");
     this.filters.push(filter);
+    filter.onFilterUpdate(() => {
+      this.emit("filterValueUpdate");
+    });
   }
 }
 
-export class FilterBase<DataType> {
+export class FilterBase<DataType> extends EventBase {
   private dataContainer: DataContainer<DataType>;
   private filterFunction: (element: DataType) => boolean;
   protected filterClearFunction: () => void;
   protected name: string;
-  protected sessionStorageSerializationEnabled: boolean = false;
+  protected serializeToHistory: boolean = false;
   constructor({
     filterFunction,
     name,
     dataContainer,
     filterClearFunction,
+    serializeToHistory = false,
   }: {
     filterClearFunction: () => void;
     dataContainer: DataContainer<DataType>;
     filterFunction: (element: DataType) => boolean;
     name: string;
+    serializeToHistory?: boolean;
   }) {
+    super();
     if (!dataContainer) throw new Error("Invalid data container.");
     this.dataContainer = dataContainer;
     this.filterFunction = filterFunction;
     this.filterClearFunction = filterClearFunction;
     this.name = name;
+    this.serializeToHistory = serializeToHistory;
   }
-
+  getFilterName() {
+    return this.name;
+  }
   getFilterFunction() {
     return this.filterFunction;
   }
@@ -84,6 +103,8 @@ export class FilterBase<DataType> {
     if (this.filterClearFunction) {
       this.filterClearFunction();
     }
+
+    this.emit("filterClear");
   }
   getDataContainer() {
     if (!this.dataContainer)
@@ -92,19 +113,21 @@ export class FilterBase<DataType> {
   }
 
   dispatchUpdate() {
-    this.getDataContainer().emit("filterValueUpdate");
+    this.emit("filterValueUpdate");
   }
 
   onEventFired(eventName: string, fn: (...args: any) => any) {
-    this.getDataContainer().on(eventName, () => {
+    const listenerFunction = () => {
       if (typeof fn !== "function") {
         throw new Error(`${eventName} callback can only be a function.`);
       } else {
         fn();
       }
-    });
+    };
 
-    return () => this.dataContainer.remove(eventName, fn);
+    this.on(eventName, listenerFunction);
+
+    return () => this.remove(eventName, listenerFunction);
   }
   onFilterUpdate(fn: (...args: any) => any) {
     return this.onEventFired("filterValueUpdate", fn);
@@ -114,6 +137,6 @@ export class FilterBase<DataType> {
   }
 }
 export interface ISessionStorage {
-  serializeToStorage: () => void;
-  loadFromStorage: () => void;
+  saveHistory: () => void;
+  loadHistory: () => void;
 }

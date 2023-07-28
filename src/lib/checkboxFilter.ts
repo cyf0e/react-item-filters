@@ -1,8 +1,8 @@
 import { DataContainer, FilterBase, ISessionStorage } from "./filtering";
 import {
   cleanPossibleValue,
-  loadHistoryFilters,
-  storeToSessionStorage,
+  loadHistoryFiltersFromURL,
+  storeHistoryToURL,
 } from "./util";
 
 export class CheckboxFilter<DataElementType, SelectorReturnType = string>
@@ -14,6 +14,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
   selectorFunction: (element: DataElementType) => SelectorReturnType;
   nameValueMap?: Map<SelectorReturnType, string>;
   prettyLabels?: boolean;
+  allParsedLabels: Map<SelectorReturnType, string> = new Map();
 
   constructor({
     dataContainer,
@@ -21,19 +22,22 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     name,
     nameValueMap,
     prettyLabels = true,
+    serializeToHistory = false,
   }: {
     dataContainer: DataContainer<DataElementType>;
     selectorFunction: (element: DataElementType) => SelectorReturnType;
     name: string;
     nameValueMap?: Map<SelectorReturnType, string>;
     prettyLabels?: boolean;
+    serializeToHistory?: boolean;
   }) {
     const filterFunction = (element: DataElementType) => {
       if (this.checked.size == 0) return true;
-      const cleanLabel = this.parseLabelValue(selectorFunction(element));
+      const cleanLabel = this.allParsedLabels.get(selectorFunction(element));
       if (cleanLabel) return this.checked.has(cleanLabel as SelectorReturnType);
       return false;
     };
+
     super({
       dataContainer,
       filterFunction,
@@ -41,17 +45,26 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
       filterClearFunction: () => {
         this.checked.clear();
       },
+      serializeToHistory,
     });
+
     this.selectorFunction = selectorFunction;
     this.prettyLabels = prettyLabels;
     this.nameValueMap = nameValueMap;
-    this.loadFromStorage();
+
     //Get possible values
     this.possibleValues = this.getDataContainer().getPossibleValues(
       this.selectorFunction
     ) as Set<SelectorReturnType>;
+
+    //Save clean possible values for faster filtering
+    this.possibleValues.forEach((pv) => {
+      const cleanLabel = this.parseLabelValue(pv);
+      if (cleanLabel) this.allParsedLabels.set(pv, cleanLabel);
+    });
   }
   getParsedPossibleValues() {
+    if (this.nameValueMap) return Array.from(this.nameValueMap.values());
     return Array.from(this.possibleValues).map((pv) =>
       this.parseLabelValue(pv)
     );
@@ -68,22 +81,24 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     return rawLabel;
   }
 
-  serializeToStorage() {
-    if (!this.sessionStorageSerializationEnabled) return;
-
-    storeToSessionStorage(this.name, Array.from(this.checked).join(","));
+  saveHistory() {
+    if (!this.serializeToHistory) return;
+    storeHistoryToURL(this.name, Array.from(this.checked).join(","));
   }
-  loadFromStorage() {
-    if (!this.sessionStorageSerializationEnabled) return;
-
-    const storedValues = loadHistoryFilters(this.name);
+  loadHistory() {
+    if (!this.serializeToHistory) return;
+    const storedValues = loadHistoryFiltersFromURL(this.name);
     if (!storedValues) return;
     const checkedValues = storedValues.split(",");
+
     checkedValues.forEach((value) => {
       if (value && typeof value == "string") {
         this.checked.add(value as SelectorReturnType);
       }
     });
+
+    //update data container
+    this.dispatchUpdate();
   }
   setChecked(value: string | SelectorReturnType, state: boolean) {
     if (state) {
@@ -91,7 +106,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     } else {
       this.checked.delete(value as SelectorReturnType);
     }
-    this.serializeToStorage();
+    this.saveHistory();
     this.dispatchUpdate();
   }
 }

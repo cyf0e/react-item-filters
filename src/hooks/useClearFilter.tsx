@@ -15,15 +15,5 @@ export function useClearFilter() {
   return () => {
     ctx.clearFilters();
     ctx.emit("filterValueUpdate");
-    /* window.sessionStorage.setItem("react-item-filters", "");
-    const oldSearchParams = new URLSearchParams(window.location.search);
-    dataContext.filters.forEach((filter) =>
-      oldSearchParams.delete(filter.name)
-    );
-    window.history.replaceState(
-      window.history.state,
-      "",
-      "?" + oldSearchParams.toString()
-    ); */
   };
 }

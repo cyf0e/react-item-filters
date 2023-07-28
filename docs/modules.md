@@ -11,9 +11,13 @@
 - [FilterBase](classes/FilterBase.md)
 - [SearchFilter](classes/SearchFilter.md)
 
+### Interfaces
+
+- [ISessionStorage](interfaces/ISessionStorage.md)
+
 ### Type Aliases
 
-- [CheckboxPropType](modules.md#checkboxproptype)
+- [CheckboxFilterProps](modules.md#checkboxfilterprops)
 
 ### Functions
 
@@ -25,26 +29,13 @@
 
 ## Type Aliases
 
-### CheckboxPropType
+### CheckboxFilterProps
 
-Ƭ **CheckboxPropType**<`SelectorReturnType`\>: `Object`
-
-#### Type parameters
-
-| Name                 |
-| :------------------- |
-| `SelectorReturnType` |
-
-#### Type declaration
-
-| Name                   | Type                                                    |
-| :--------------------- | :------------------------------------------------------ |
-| `filterUpdateFunction` | (`event`: `ChangeEvent`<`HTMLInputElement`\>) => `void` |
-| `labelValue`           | `string` \| `SelectorReturnType`                        |
+Ƭ **CheckboxFilterProps**: `Omit`<`ReturnType`<typeof [`useCheckboxFilter`](modules.md#usecheckboxfilter)\>, ``"labels"``\> & { `label`: `string`  }
 
 #### Defined in
 
-[lib/checkboxFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/checkboxFilter.tsx#L21)
+[hooks/useCheckboxFilter.tsx:79](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useCheckboxFilter.tsx#L79)
 
 ## Functions
 
@@ -56,17 +47,17 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Type parameters
 
-| Name              | Type            |
-| :---------------- | :-------------- |
+| Name | Type |
+| :------ | :------ |
 | `InitialDataType` | extends `any`[] |
 
 #### Parameters
 
-| Name                | Type              | Description                                                                               |
-| :------------------ | :---------------- | :---------------------------------------------------------------------------------------- |
-| `props`             | `Object`          | props.initialData is the starting point for unfiltered data that you want to be filtered. |
-| `props.children?`   | `any`             | -                                                                                         |
-| `props.initialData` | `InitialDataType` | -                                                                                         |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `props` | `Object` | props.initialData is the starting point for unfiltered data that you want to be filtered. Pass [] if you have to async load initial data. |
+| `props.children?` | `any` | - |
+| `props.initialData` | `InitialDataType` | - |
 
 #### Returns
 
@@ -74,38 +65,15 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Defined in
 
-[components/FilterProvider.tsx:15](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/components/FilterProvider.tsx#L15)
+[components/FilterProvider.tsx:14](https://github.com/cyf0e/react-item-filters/blob/5033516/src/components/FilterProvider.tsx#L14)
 
----
+___
 
 ### useCheckboxFilter
 
-▸ **useCheckboxFilter**<`DataArrayElementType`, `SelectorReturnType`\>(`selectorFunction`, `Component?`, `nameMap?`, `prettyLabels?`): `React.JSX.Element`[]
+▸ **useCheckboxFilter**<`DataArrayElementType`, `SelectorReturnType`\>(`«destructured»`): `Object`
 
-useCheckboxFilter - hook that creates a checkbox filter and retruns basic checkbox components to render with the options.
-
-**`Example`**
-
-```jsx
-   const Comp = ( { labelValue, filterUpdateFunction } : { labelValue: string, filterUpdateFunction: Function }) =>
-   {
-   return (
-           <>
-           <input type="checkbox" onChange={filterUpdateFunction}/>
-           <label>{labelValue}</label>}
-           </>
-   )
-```
-
-If no custom Component is passed in, the returned checkbox elements will be the default element.
-You should really pass in a custom component in most cases.
-
-```jsx
-<div>
-  <input name={labelValue} id={labelValue} type="checkbox" />
-  <label htmlFor={labelValue}>{labelValue}</label>
-</div>
-```
+useCheckboxFilter - hook that creates a checkbox filter and returns utilities to render checkbox components.
 
 **`Remark`**
 
@@ -114,73 +82,85 @@ DataArrayElement is the type of element from the supplied data array.
 **`Example`**
 
 For example if the data is
-
 ```jsx
 const data=[{name:John,lastname:John},{name:Peter,lastname:Parker}]
-typeof data = DataArrayElement[]
+typeof data is DataArrayElement[]
 typeof DataArrayEleemnt would be {name:string,lastname:string}
 ```
 
 SelectorReturnType is the type of element that the selector function returns.
 For the last example if we wanted to filter by lastname the selector function we would pass in would be
-
 ```
 const selectorFunction = (el:DataArrayElement)=>{return el.lastname}
-```
-
+````
 and the type would be string or ReturnType of the selection function.
 
 #### Type parameters
 
-| Name                   |
-| :--------------------- |
+| Name |
+| :------ |
 | `DataArrayElementType` |
-| `SelectorReturnType`   |
+| `SelectorReturnType` |
 
 #### Parameters
 
-| Name               | Type                                                    | Default value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| :----------------- | :------------------------------------------------------ | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `selectorFunction` | (`arg`: `DataArrayElementType`) => `SelectorReturnType` | `undefined`   | The function that returns the part of the data we want to filter by.                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `Component?`       | <T\>(`props`: `T`) => `Element`                         | `undefined`   | The Component that will be wrapped around. It gets passed in the filterUpdateFunction function and the value to display. The type of props that the components gets is { labelValue: string \| SelectorReturnType, filterUpdateFunction: Function } and should be used like:                                                                                                                                                                                                                                                        |
-| `nameMap?`         | `Map`<`SelectorReturnType`, `string`\>                  | `undefined`   | A map that is used to lookup names you wish to assign to the checkbox labels for possible values of the checkbox filter. KEYS have to be the values the selector function returns and VALUES must be their respective string labels. If the the data is an array of {color: 'red'\|'blue'} objects, useCheckboxHook will automatically get all the possible values for color and after some clean up offer those values as labels for the checkboxes. If you instead pass in a nameMap the names specified in the map will be used. |
-| `prettyLabels`     | `boolean`                                               | `true`        | Boolean that selects if the user wants some clean up (capitalize first words, remove underscore) done on the possible values that are used as labels when nameMap is NOT provided.                                                                                                                                                                                                                                                                                                                                                  |
+| Name | Type |
+| :------ | :------ |
+| `«destructured»` | `Object` |
+| › `name` | `string` |
+| › `nameMap?` | `Map`<`SelectorReturnType`, `string`\> |
+| › `prettyLabels?` | `boolean` |
+| › `selectorFunction` | (`arg`: `DataArrayElementType`) => `SelectorReturnType` |
+| › `serializeToHistory?` | `boolean` |
 
 #### Returns
 
-`React.JSX.Element`[]
+`Object`
 
-Components[] - The components to render.
+| Name | Type |
+| :------ | :------ |
+| `labels` | (`undefined` \| `string`)[] |
+| `onFilterClear` | (`fn`: (...`args`: `any`) => `any`) => () => `void` |
+| `onFilterUpdate` | (`fn`: (...`args`: `any`) => `any`) => () => `void` |
+| `preloadedCheckedLabels` | `SelectorReturnType`[] |
+| `setChecked` | (`value`: `string` \| `SelectorReturnType`, `state`: `boolean`) => `void` |
 
 #### Defined in
 
-[hooks/useCheckboxFilter.tsx:58](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useCheckboxFilter.tsx#L58)
+[hooks/useCheckboxFilter.tsx:37](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useCheckboxFilter.tsx#L37)
 
----
+___
 
 ### useClearFilter
 
-▸ **useClearFilter**(): `Function`
+▸ **useClearFilter**(): () => `void`
 
 NOTE: React by default will not reset the state of your Filter elements like the checkbox for example. This is because it doesnt reset state of components that are rendered in the same place so the checkboxes will stay checked after clearing unless you explicitly make them reset by adding a dynamic key to them for example
-
 ```jsx
-function CustomCheckboxComp() {
-  return <div key={randomString() || Math.random()}></div>;
+function CustomCheckboxComp(){
+ return <div key={randomString() || Math.random()}>
+
+</div>
 }
 ```
 
 #### Returns
 
-`Function`
+`fn`
 
 clearFilters function
 
+▸ (): `void`
+
+##### Returns
+
+`void`
+
 #### Defined in
 
-[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useClearFilter.tsx#L13)
+[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useClearFilter.tsx#L13)
 
----
+___
 
 ### useFilter
 
@@ -191,77 +171,85 @@ useFilter - Hook to access the filtered data.
 #### Type parameters
 
 | Name |
-| :--- |
-| `T`  |
+| :------ |
+| `T` |
 
 #### Returns
 
 `T`[]
 
-Data[] - Returns the filtered dataafter all filters in the same context have been applied.
+Data[] - Returns the filtered data after all filters in the same context have been applied.
 
 #### Defined in
 
-[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useFilter.tsx#L9)
+[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useFilter.tsx#L9)
 
----
+___
 
 ### useSearchFilter
 
-▸ **useSearchFilter**<`DT`\>(`selectorFunction`, `Component?`, `fuzzy?`): `React.JSX.Element`
+▸ **useSearchFilter**<`DataType`, `SelectorReturnType`\>(`«destructured»`): `Object`
 
 useSearchFilter - Hook that enables text searching on the data.
 
 **`Example`**
 
 ```ts
-const data = [{ name: Peter, last: Parker }];
-const selectorFn = (el) => {
-  return el.name;
-}; //searches only over first names, or
-const selectorFn = (el) => {
-  return [el.name, el.last];
-}; // will search by both parameters.
+const data=[{name:Peter,last:Parker}]
+ const selectorFn = (el) => { return el.name } //searches only over first names, or
+ const selectorFn = (el) => { return [el.name, el.last] } // will search by both parameters.
 ```
+
+**`Remark`**
+
+DataArrayElement is the type of element from the supplied data array.
 
 **`Example`**
 
-```ts
-const MySearchComp = ({
-  filterUpdateFunction,
-}: {
-  filterUpdateFunction: Function;
-}) => {
-  return (
-    <input
-      onChange={(e) => {
-        filterUpdateFunction(e);
-      }}
-    />
-  );
-};
+For example if the data is
+```jsx
+const data=[{name:John,lastname:John},{name:Peter,lastname:Parker}]
+typeof data is DataArrayElement[]
+typeof DataArrayEleemnt would be {name:string,lastname:string}
 ```
+
+SelectorReturnType is the type of element that the selector function returns.
+For the last example if we wanted to filter by lastname the selector function we would pass in would be
+```
+const selectorFunction = (el:DataArrayElement)=>{return el.lastname}
+````
+and the type would be string or ReturnType of the selection function.
+
+@returns - The Search input component passed as Component or a default search component.
 
 #### Type parameters
 
-| Name |
-| :--- |
-| `DT` |
+| Name | Type |
+| :------ | :------ |
+| `DataType` | `any` |
+| `SelectorReturnType` | `any` |
 
 #### Parameters
 
-| Name               | Type                                          | Description                                                                                                                                                                                                                                                                             |
-| :----------------- | :-------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `selectorFunction` | (`element`: `DT`) => `string` \| `string`[]   | Function used to select what part of the data you want to be able to search by. You can select to search by some string property or multiple string properties.                                                                                                                         |
-| `Component?`       | `FC`<{ `filterUpdateFunction`: `Function` }\> | React Functional component that will be returned or a default component if a custom one is not provided. If you do provide a Component you MUST have it take a {filterUpdateFunction} props parameter and call that whenever you want filtering to occur passing it the element object. |
-| `fuzzy?`           | `boolean`                                     | Optional fuzzy parameter to turn fuzzy search on                                                                                                                                                                                                                                        |
+| Name | Type |
+| :------ | :------ |
+| `«destructured»` | `Object` |
+| › `fuzzy?` | `boolean` |
+| › `name` | `string` |
+| › `selectorFunction` | (`element`: `DataType`) => `SelectorReturnType` |
+| › `serializeToHistory?` | `boolean` |
 
 #### Returns
 
-`React.JSX.Element`
+`Object`
 
-- The Search input component passed as Component or a default search component.
+| Name | Type |
+| :------ | :------ |
+| `onFilterClear` | (`fn`: (...`args`: `any`) => `any`) => () => `void` |
+| `onFilterUpdate` | (`fn`: (...`args`: `any`) => `any`) => () => `void` |
+| `preloadedSearchValue` | `string` |
+| `setSearchString` | (`searchString`: `string`) => `void` |
 
 #### Defined in
 
-[hooks/useSearchFilter.tsx:21](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/hooks/useSearchFilter.tsx#L21)
+[hooks/useSearchFilter.tsx:41](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useSearchFilter.tsx#L41)

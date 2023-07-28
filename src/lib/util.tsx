@@ -13,13 +13,10 @@ export function cleanPossibleValue<SelectorReturnType>(
     return possibleValue;
   }
 }
-function checkSessionStorageExists() {
+function checkHistoryExists() {
   //try/catch to stop window is not defined errors on server side rendering
   try {
-    if (!window || !window.sessionStorage) {
-      console.error(
-        "No window or sessionStorage object. Cant use session storage."
-      );
+    if (!window || !window.history) {
       return false;
     }
   } catch {
@@ -27,46 +24,45 @@ function checkSessionStorageExists() {
   }
   return true;
 }
-/* export function loadFromSessionStorage(){
-  const rootStoreObjectString =window.sessionStorage.getItem("react-item-filters");
-  if (!rootStoreObjectString) return;
+function checkWindowExists() {
+  //try/catch to stop window is not defined errors on server side rendering
   try {
-    const rootStoreObject = JSON.parse(rootStoreObjectString);
-    const storageData = rootStoreObject[name];
-    return storageData as T;
-  } catch (e) {
-    console.error(e);
+    if (!window) {
+      return false;
+    }
+  } catch {
+    return false;
   }
-} */
-export function loadHistoryFilters<T = string>(name: string) {
-  if (!checkSessionStorageExists()) return;
+  return true;
+}
+
+export function loadHistoryFiltersFromURL<T = string>(name: string) {
+  if (!checkWindowExists()) return;
   const searchParams = new URLSearchParams(window.location.search);
   if (searchParams.size == 0) return;
   return searchParams.get(name) as T;
 }
-export function storeToSessionStorage(name: string, data: string) {
-  if (!checkSessionStorageExists()) return;
+export function storeHistoryToURL(name: string, data: string) {
+  if (!checkHistoryExists()) return;
+
   try {
-    const rootStoreObjectString =
-      window.sessionStorage.getItem("react-item-filters");
-    const rootStoreObject = rootStoreObjectString
-      ? JSON.parse(rootStoreObjectString)
-      : {};
-    rootStoreObject[name] = data;
     const oldSearchParams = new URLSearchParams(window.location.search);
     const oldSearchParamsObject = Object.fromEntries(oldSearchParams.entries());
-    const newSearchParams = new URLSearchParams({
+    const newSearchParamsObject = {
       ...oldSearchParamsObject,
-      ...rootStoreObject,
-    });
+      [name]: data,
+    };
+    //delete empty filters from the search params
+    for (let key of Object.keys(newSearchParamsObject)) {
+      if (newSearchParamsObject[key] == "") {
+        delete newSearchParamsObject[key];
+      }
+    }
+    const newSearchParams = new URLSearchParams(newSearchParamsObject);
     window.history.replaceState(
       window.history.state,
       "",
       "?" + newSearchParams.toString()
-    );
-    window.sessionStorage.setItem(
-      "react-item-filters",
-      JSON.stringify(rootStoreObject)
     );
   } catch (e) {
     console.error(e);

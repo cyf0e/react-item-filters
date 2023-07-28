@@ -43,7 +43,7 @@ const GenericCheckBoxComponent = ({
     if (onFilterClear) {
       return onFilterClear(() => setCheck(false));
     }
-  }, []);
+  }, [onFilterClear]);
   return (
     <div key={Math.random()}>
       <input
@@ -89,7 +89,7 @@ test("assign invalid data context to FilterBase throws error", () => {
 });
 test("assigns data to DataContainer", () => {
   const c = new DataContainer({ data: [1, 2, 3, 4, 5] });
-  expect(c.getData()).toStrictEqual([1, 2, 3, 4, 5]);
+  expect(c.getInitialData()).toStrictEqual([1, 2, 3, 4, 5]);
 });
 test("assign some invalid initial data to DataContainer throws error", () => {
   expect(
@@ -600,8 +600,8 @@ test("useCheckbox works with nameMap", () => {
 
   expect(screen.getAllByTestId("labelElements")).toHaveLength(2);
 
-  expect(screen.getAllByTestId("labelElements")[0]).toHaveTextContent("Mike");
-  expect(screen.getAllByTestId("labelElements")[1]).toHaveTextContent("Pete");
+  expect(screen.getAllByTestId("labelElements")[0]).toHaveTextContent("Pete");
+  expect(screen.getAllByTestId("labelElements")[1]).toHaveTextContent("Mike");
   fireEvent.click(screen.getByLabelText("Pete"));
   expect(screen.getAllByRole("heading")).toHaveLength(1);
   expect(screen.getByRole("heading")).toHaveTextContent("Peter");

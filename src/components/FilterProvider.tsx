@@ -20,19 +20,10 @@ export function FilterProvider<InitialDataType extends Array<any>>(props: {
       `Initial Data passed to the provider MUST be an array. Instead got: ${typeof props.initialData}. Use [] for empty initialization.`
     );
   }
-  const [dataContext, setDataContext] = useState<
-    DataContainer<InitialDataType>
-  >(
-    new DataContainer({
+  const dataContext = useMemo(() => {
+    return new DataContainer({
       data: props.initialData,
-    })
-  );
-  useMemo(() => {
-    setDataContext(
-      new DataContainer({
-        data: props.initialData,
-      })
-    );
+    });
   }, [props.initialData]);
 
   return (

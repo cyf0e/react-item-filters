@@ -3,7 +3,7 @@
 [GitHub](https://github.com/cyf0e/react-item-filters)
 [NPM Package](https://www.npmjs.com/package/react-item-filters)
 <br>
-Easily create components that offer product filtering in client side react. Created as a way to simply add filtering to a list of products on a web store. Currently only usable client side access with hooks.
+Easily create components that offer product filtering in client side react. Created as a way to simply add filtering to a list of items. Currently only usable client side access with hooks.
 
 **Note:** This is a hobby project in early stage. There is no doubt it has unexpected errors from unforseen edge cases. If you plan on using this, consider testing thoroughly with your use case.
 
@@ -36,39 +36,94 @@ Import the necessary components from the `react-item-filters` package and includ
 For example using the checkbox filter ...
 
 ```jsx
-import { FilterProvider,useCheckboxFilter,useFilter } from 'react-item-filters';
+import { useEffect, useState } from "react";
+import {
+  CheckboxFilterProps,
+  FilterProvider,
+  useCheckboxFilter,
+  useFilter,
+} from "react-item-filters/src";
 
-function CheckboxElement (props: { labelValue:string, filterUpdateFunction: any }) {
-    //labelValue returns a clean value to display in the label element so 'Light Blue' for example.
-    //You can use that value as an id or modify it in some way.
-    return (
-        <div>
-        <input id={labelValue} type="checkbox" onChange={filterUpdateFunction}/>
-        <label htmlFor={labelValue}>{labelValue}</label>
-        </div>
-    )
+function CheckboxElement(props: CheckboxFilterProps) {
+  const [checked, setChecked] = useState(
+    props.preloadedCheckedLabels.includes(props.label)
+  );
+  useEffect(() => {
+    //must return a function to clear the event listeners or you will have memory leaks.
+    const clearingFunction = props.onFilterClear(() => {
+      setChecked(false);
+    });
+    const updateClearFunction = props.onFilterUpdate(() =>
+      console.log("Filter updated.")
+    );
+    return () => {
+      clearingFunction();
+      updateClearFunction();
+    };
+  }, [props.onFilterClear]);
+  return (
+    <div>
+      <input
+        id={props.label}
+        type="checkbox"
+        onChange={(e) => {
+          props.setChecked(props.label, checked);
+        }}
+      />
+      <label htmlFor={props.label}>{props.label}</label>
+    </div>
+  );
 }
 function App() {
-  const [products,setProducts]=useState([])
-  useEffect(()=>{
-      //fetch data
-      setProducts(data)
-  },[])
-  const checkboxSelectorFunction=(element)=>element.color
-  const filteredData=useFilter()
-  const checkboxComponents=useCheckboxFilter(checkboxSelectorFunction,CheckboxElement)
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    //fetch data
+    setProducts(someData);
+    //or
+    setProducts([
+      { color: "Red", weight: 0.2 },
+      { color: "Blue", weight: 0.3 },
+    ]);
+  }, []);
+
+  const checkboxSelectorFunction = (element) => element.color;
+
+  const filteredData = useFilter();
+
+  const colorCheckboxes = useCheckboxFilter({
+    selectorFunction: checkboxSelectorFunction,
+    name: "ColorCheckboxFilter",
+    prettyLabels: true,
+    serializeToHistory: true,
+  });
+
+  const checkboxLabels = colorCheckboxes.labels ?? [];
 
   return (
-          <FilterProvider initialData={}>
-                <div>
-                    <h1>Colors:</h1>
-                    {checkboxComponents}
-                </div>
-                <div>
-                  <h1>Item List</h1>
-                  {filtereData.map((e)=>{return <DataComponent data={e}/> )
-                </div>
-           </FilterProvider>
+    <FilterProvider initialData={products}>
+      <div>
+        <h1>Colors:</h1>
+        {checkboxLabels.map((label) =>
+          label ? (
+            <CheckboxElement
+              key={label}
+              label={label}
+              onFilterUpdate={colorCheckboxes.onFilterUpdate}
+              onFilterClear={colorCheckboxes.onFilterClear}
+              setChecked={colorCheckboxes.setChecked}
+              preloadedCheckedLabels={colorCheckboxes.preloadedCheckedLabels}
+            />
+          ) : null
+        )}
+      </div>
+      <div>
+        <h1>Item List</h1>
+        {filteredData.map((e) => (
+          <DataComponent data={e} />
+        ))}
+      </div>
+    </FilterProvider>
   );
 }
 

@@ -1,12 +1,18 @@
 [react-item-filters](../README.md) / [Exports](../modules.md) / DataContainer
 
-# Class: DataContainer<DT\>
+# Class: DataContainer<DataType\>
 
 ## Type parameters
 
 | Name |
 | :------ |
-| `DT` |
+| `DataType` |
+
+## Hierarchy
+
+- `EventBase`
+
+  ↳ **`DataContainer`**
 
 ## Table of contents
 
@@ -17,76 +23,80 @@
 ### Properties
 
 - [data](DataContainer.md#data)
-- [filterUpdateFunction](DataContainer.md#filterupdatefunction)
+- [events](DataContainer.md#events)
 - [filters](DataContainer.md#filters)
 
 ### Methods
 
 - [addFilter](DataContainer.md#addfilter)
+- [clearFilters](DataContainer.md#clearfilters)
+- [emit](DataContainer.md#emit)
 - [getFilteredData](DataContainer.md#getfiltereddata)
+- [getInitialData](DataContainer.md#getinitialdata)
 - [getPossibleValues](DataContainer.md#getpossiblevalues)
-- [onFiltersUpdated](DataContainer.md#onfiltersupdated)
-- [setOnUpdateFilters](DataContainer.md#setonupdatefilters)
+- [on](DataContainer.md#on)
+- [remove](DataContainer.md#remove)
 
 ## Constructors
 
 ### constructor
 
-• **new DataContainer**<`DT`\>(`data?`)
+• **new DataContainer**<`DataType`\>(`«destructured»`)
 
 #### Type parameters
 
 | Name |
 | :------ |
-| `DT` |
+| `DataType` |
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `data?` | `DT`[] |
+| `«destructured»` | `Object` |
+| › `data?` | `DataType`[] |
+
+#### Overrides
+
+EventBase.constructor
 
 #### Defined in
 
-[lib/filtering.ts:5](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L5)
+[lib/filtering.ts:6](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L6)
 
 ## Properties
 
 ### data
 
-• **data**: `DT`[]
+• `Private` **data**: `DataType`[]
 
 #### Defined in
 
-[lib/filtering.ts:2](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L2)
+[lib/filtering.ts:4](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L4)
 
 ___
 
-### filterUpdateFunction
+### events
 
-• `Optional` **filterUpdateFunction**: () => `DT`[]
+• **events**: `Map`<`string`, `Set`<(...`args`: `any`) => `any`\>\>
 
-#### Type declaration
+#### Inherited from
 
-▸ (): `DT`[]
-
-##### Returns
-
-`DT`[]
+EventBase.events
 
 #### Defined in
 
-[lib/filtering.ts:4](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L4)
+[lib/eventBase.ts:2](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/eventBase.ts#L2)
 
 ___
 
 ### filters
 
-• **filters**: (`element`: `DT`) => `boolean`[]
+• `Private` **filters**: [`FilterBase`](FilterBase.md)<`DataType`\>[]
 
 #### Defined in
 
-[lib/filtering.ts:3](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L3)
+[lib/filtering.ts:5](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L5)
 
 ## Methods
 
@@ -98,7 +108,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `filter` | (...`args`: `any`) => `any` |
+| `filter` | [`FilterBase`](FilterBase.md)<`DataType`\> |
 
 #### Returns
 
@@ -106,27 +116,79 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:43](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L43)
+[lib/filtering.ts:59](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L59)
+
+___
+
+### clearFilters
+
+▸ **clearFilters**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[lib/filtering.ts:26](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L26)
+
+___
+
+### emit
+
+▸ **emit**(`event`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `string` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+EventBase.emit
+
+#### Defined in
+
+[lib/eventBase.ts:18](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/eventBase.ts#L18)
 
 ___
 
 ### getFilteredData
 
-▸ **getFilteredData**(): `DT`[]
+▸ **getFilteredData**(): `DataType`[]
 
 #### Returns
 
-`DT`[]
+`DataType`[]
 
 #### Defined in
 
-[lib/filtering.ts:11](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L11)
+[lib/filtering.ts:17](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L17)
+
+___
+
+### getInitialData
+
+▸ **getInitialData**(): `DataType`[]
+
+#### Returns
+
+`DataType`[]
+
+#### Defined in
+
+[lib/filtering.ts:13](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L13)
 
 ___
 
 ### getPossibleValues
 
-▸ **getPossibleValues**<`SF`\>(`selectorFunction`): `string`[]
+▸ **getPossibleValues**<`SF`\>(`selectorFunction`): `Set`<`string`\>
 
 #### Type parameters
 
@@ -142,42 +204,58 @@ ___
 
 #### Returns
 
-`string`[]
+`Set`<`string`\>
 
 #### Defined in
 
-[lib/filtering.ts:26](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L26)
+[lib/filtering.ts:41](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L41)
 
 ___
 
-### onFiltersUpdated
+### on
 
-▸ **onFiltersUpdated**(): `void`
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-[lib/filtering.ts:22](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L22)
-
-___
-
-### setOnUpdateFilters
-
-▸ **setOnUpdateFilters**(`fn`): `void`
+▸ **on**(`event`, `listener`): `void`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `fn` | (...`args`: `any`) => `any` |
+| `event` | `string` |
+| `listener` | (...`args`: `any`) => `any` |
 
 #### Returns
 
 `void`
 
+#### Inherited from
+
+EventBase.on
+
 #### Defined in
 
-[lib/filtering.ts:19](https://github.com/cyf0e/react-item-filters/blob/6cc6e63/src/lib/filtering.ts#L19)
+[lib/eventBase.ts:7](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/eventBase.ts#L7)
+
+___
+
+### remove
+
+▸ **remove**(`event`, `listener`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `string` |
+| `listener` | (...`args`: `any`) => `any` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+EventBase.remove
+
+#### Defined in
+
+[lib/eventBase.ts:3](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/eventBase.ts#L3)

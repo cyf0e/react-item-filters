@@ -1,11 +1,8 @@
 import { DataContainer, FilterBase, ISessionStorage } from "./filtering";
 import Fuzzy from "fuzzy";
-import { loadHistoryFilters, storeToSessionStorage } from "./util";
+import { loadHistoryFiltersFromURL, storeHistoryToURL } from "./util";
 
-export class SearchFilter<
-    DataType = any,
-    SelectorReturnType extends string | string[] = any
-  >
+export class SearchFilter<DataType = any, SelectorReturnType = any>
   extends FilterBase<DataType>
   implements ISessionStorage
 {
@@ -17,23 +14,29 @@ export class SearchFilter<
     selectorFunction,
     name,
     fuzzy,
+    serializeToHistory,
   }: {
     dataContainer: DataContainer<DataType>;
     selectorFunction: (element: DataType) => SelectorReturnType;
     name: string;
     fuzzy?: boolean;
+    serializeToHistory?: boolean;
   }) {
     const filterFunction = (el: DataType) => {
       const stringsToSearch = this.selectorFunction(el);
+      if (this.searchTerm == "") return true;
+      if (!stringsToSearch) return false;
       if (Array.isArray(stringsToSearch)) {
         let result = false;
         stringsToSearch.forEach((s) => {
-          result =
-            result ||
-            s.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+          if (typeof s == "string") {
+            result =
+              result ||
+              s.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+          }
         });
         return result;
-      } else {
+      } else if (typeof stringsToSearch == "string") {
         if (stringsToSearch.length == 0) return true;
         if (fuzzy) {
           return Fuzzy.test(this.searchTerm.toLowerCase(), stringsToSearch);
@@ -42,11 +45,14 @@ export class SearchFilter<
           stringsToSearch.toLowerCase().indexOf(this.searchTerm.toLowerCase()) >
           -1
         );
+      } else {
+        throw new Error("Search filter can only filter string fields.");
       }
     };
     super({
       dataContainer,
       name,
+      serializeToHistory,
       filterFunction,
       filterClearFunction: () => {
         this.searchTerm = "";
@@ -54,23 +60,25 @@ export class SearchFilter<
     });
     this.searchTerm = "";
     this.selectorFunction = selectorFunction;
-    this.loadFromStorage();
+    this.loadHistory();
   }
 
   updateSearchFilter(searchString: string) {
     searchString = searchString ?? "";
     this.searchTerm = searchString;
-    this.serializeToStorage();
+    this.saveHistory();
     this.dispatchUpdate();
   }
-  loadFromStorage() {
-    if (!this.sessionStorageSerializationEnabled) return;
-    const storageSearchString = loadHistoryFilters(this.name);
+  loadHistory() {
+    if (!this.serializeToHistory) return;
+    const storageSearchString = loadHistoryFiltersFromURL(this.name);
     if (!storageSearchString || storageSearchString.length == 0) return;
     this.searchTerm = storageSearchString;
+
+    this.dispatchUpdate();
   }
-  serializeToStorage() {
-    if (!this.sessionStorageSerializationEnabled) return;
-    storeToSessionStorage(this.name, this.searchTerm);
+  saveHistory() {
+    if (!this.serializeToHistory) return;
+    storeHistoryToURL(this.name, this.searchTerm);
   }
 }

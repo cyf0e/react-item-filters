@@ -14,6 +14,7 @@ export class EventBase {
       oldListeners.add(listener);
     }
   }
+
   emit(event: string) {
     const listeners = this.events.get(event);
     if (listeners) {
