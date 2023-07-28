@@ -18,6 +18,7 @@
 ### Type Aliases
 
 - [CheckboxFilterProps](modules.md#checkboxfilterprops)
+- [SearchFilterProps](modules.md#searchfilterprops)
 
 ### Functions
 
@@ -31,11 +32,35 @@
 
 ### CheckboxFilterProps
 
-Ƭ **CheckboxFilterProps**: `Omit`<`ReturnType`<typeof [`useCheckboxFilter`](modules.md#usecheckboxfilter)\>, ``"labels"``\> & { `label`: `string`  }
+Ƭ **CheckboxFilterProps**<`DataType`, `SelectorReturnType`\>: `Omit`<`ReturnType`<typeof [`useCheckboxFilter`](modules.md#usecheckboxfilter)\>, ``"labels"``\> & { `label`: `string`  }
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `DataType` | `any` |
+| `SelectorReturnType` | `any` |
 
 #### Defined in
 
-[hooks/useCheckboxFilter.tsx:79](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useCheckboxFilter.tsx#L79)
+[hooks/useCheckboxFilter.tsx:80](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useCheckboxFilter.tsx#L80)
+
+___
+
+### SearchFilterProps
+
+Ƭ **SearchFilterProps**<`DataType`, `SelectorReturnType`\>: `ReturnType`<typeof [`useSearchFilter`](modules.md#usesearchfilter)\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `DataType` | `any` |
+| `SelectorReturnType` | `any` |
+
+#### Defined in
+
+[hooks/useSearchFilter.tsx:80](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useSearchFilter.tsx#L80)
 
 ## Functions
 
@@ -65,7 +90,7 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Defined in
 
-[components/FilterProvider.tsx:14](https://github.com/cyf0e/react-item-filters/blob/5033516/src/components/FilterProvider.tsx#L14)
+[components/FilterProvider.tsx:14](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/components/FilterProvider.tsx#L14)
 
 ___
 
@@ -123,11 +148,11 @@ and the type would be string or ReturnType of the selection function.
 | `onFilterClear` | (`fn`: (...`args`: `any`) => `any`) => () => `void` |
 | `onFilterUpdate` | (`fn`: (...`args`: `any`) => `any`) => () => `void` |
 | `preloadedCheckedLabels` | `SelectorReturnType`[] |
-| `setChecked` | (`value`: `string` \| `SelectorReturnType`, `state`: `boolean`) => `void` |
+| `setChecked` | (`value`: `SelectorReturnType`, `state`: `boolean`) => `void` |
 
 #### Defined in
 
-[hooks/useCheckboxFilter.tsx:37](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useCheckboxFilter.tsx#L37)
+[hooks/useCheckboxFilter.tsx:37](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useCheckboxFilter.tsx#L37)
 
 ___
 
@@ -158,7 +183,7 @@ clearFilters function
 
 #### Defined in
 
-[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useClearFilter.tsx#L13)
+[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useClearFilter.tsx#L13)
 
 ___
 
@@ -182,7 +207,7 @@ Data[] - Returns the filtered data after all filters in the same context have be
 
 #### Defined in
 
-[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useFilter.tsx#L9)
+[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useFilter.tsx#L9)
 
 ___
 
@@ -252,4 +277,4 @@ and the type would be string or ReturnType of the selection function.
 
 #### Defined in
 
-[hooks/useSearchFilter.tsx:41](https://github.com/cyf0e/react-item-filters/blob/5033516/src/hooks/useSearchFilter.tsx#L41)
+[hooks/useSearchFilter.tsx:41](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useSearchFilter.tsx#L41)

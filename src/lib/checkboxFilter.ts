@@ -100,11 +100,11 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     //update data container
     this.dispatchUpdate();
   }
-  setChecked(value: string | SelectorReturnType, state: boolean) {
+  setChecked(value: SelectorReturnType, state: boolean) {
     if (state) {
-      this.checked.add(value as SelectorReturnType);
+      this.checked.add(value);
     } else {
-      this.checked.delete(value as SelectorReturnType);
+      this.checked.delete(value);
     }
     this.saveHistory();
     this.dispatchUpdate();

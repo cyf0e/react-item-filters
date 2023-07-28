@@ -62,7 +62,7 @@ EventBase.constructor
 
 #### Defined in
 
-[lib/filtering.ts:6](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L6)
+[lib/filtering.ts:6](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L6)
 
 ## Properties
 
@@ -72,7 +72,7 @@ EventBase.constructor
 
 #### Defined in
 
-[lib/filtering.ts:4](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L4)
+[lib/filtering.ts:4](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L4)
 
 ___
 
@@ -86,7 +86,7 @@ EventBase.events
 
 #### Defined in
 
-[lib/eventBase.ts:2](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/eventBase.ts#L2)
+[lib/eventBase.ts:2](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/eventBase.ts#L2)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:5](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L5)
+[lib/filtering.ts:5](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L5)
 
 ## Methods
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:59](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L59)
+[lib/filtering.ts:59](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L59)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:26](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L26)
+[lib/filtering.ts:26](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L26)
 
 ___
 
@@ -154,7 +154,7 @@ EventBase.emit
 
 #### Defined in
 
-[lib/eventBase.ts:18](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/eventBase.ts#L18)
+[lib/eventBase.ts:18](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/eventBase.ts#L18)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:17](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L17)
+[lib/filtering.ts:17](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L17)
 
 ___
 
@@ -182,7 +182,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:13](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L13)
+[lib/filtering.ts:13](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L13)
 
 ___
 
@@ -208,7 +208,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:41](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L41)
+[lib/filtering.ts:41](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L41)
 
 ___
 
@@ -233,7 +233,7 @@ EventBase.on
 
 #### Defined in
 
-[lib/eventBase.ts:7](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/eventBase.ts#L7)
+[lib/eventBase.ts:7](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/eventBase.ts#L7)
 
 ___
 
@@ -258,4 +258,4 @@ EventBase.remove
 
 #### Defined in
 
-[lib/eventBase.ts:3](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/eventBase.ts#L3)
+[lib/eventBase.ts:3](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/eventBase.ts#L3)

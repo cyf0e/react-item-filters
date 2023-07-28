@@ -76,7 +76,11 @@ export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>({
     };
   }, [checkbox]);
 }
-export type CheckboxFilterProps = Omit<
-  ReturnType<typeof useCheckboxFilter>,
+
+export type CheckboxFilterProps<
+  DataType = any,
+  SelectorReturnType = any
+> = Omit<
+  ReturnType<typeof useCheckboxFilter<DataType, SelectorReturnType>>,
   "labels"
 > & { label: string };

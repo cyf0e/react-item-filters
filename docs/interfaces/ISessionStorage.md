@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[lib/filtering.ts:141](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L141)
+[lib/filtering.ts:141](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L141)
 
 ___
 
@@ -48,4 +48,4 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:140](https://github.com/cyf0e/react-item-filters/blob/5033516/src/lib/filtering.ts#L140)
+[lib/filtering.ts:140](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L140)

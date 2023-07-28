@@ -76,3 +76,8 @@ export function useSearchFilter<DataType = any, SelectorReturnType = any>({
     };
   }, [searchFilter]);
 }
+
+export type SearchFilterProps<
+  DataType = any,
+  SelectorReturnType = any
+> = ReturnType<typeof useSearchFilter<DataType, SelectorReturnType>>;
