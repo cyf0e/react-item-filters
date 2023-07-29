@@ -145,7 +145,7 @@ test("useCheckbox returns valid labels", () => {
 });
 test("useSearchFilter hook", () => {
   const TestComponent = () => {
-    const fd: TestItem[] = useFilter();
+    const fd = useFilter<TestItem>();
     const searchComp = useSearchFilter({
       name: "somerandomName",
       selectorFunction: (el: TestItem) => {
@@ -159,7 +159,7 @@ test("useSearchFilter hook", () => {
             searchComp.setSearchString(e.currentTarget.value);
           }}
         ></input>
-        {fd.map((f) => {
+        {fd.data.map((f) => {
           return <h1 key={f.firstName}>{f.firstName}</h1>;
         })}
       </div>
@@ -208,7 +208,7 @@ test("DataContainer clearing all filters shows all data", () => {
             />
           ) : null
         )}
-        {fd.map((el) => (
+        {fd.data.map((el) => (
           <h1 key={el}>{el}</h1>
         ))}
       </div>
@@ -248,7 +248,7 @@ test("Provider provides initial data", () => {
       return <FilterProvider initialData={testData}>{children}</FilterProvider>;
     },
   });
-  expect(filteredData.result.current).toStrictEqual(testData);
+  expect(filteredData.result.current.data).toStrictEqual(testData);
 });
 
 test("Provider doesnt throw when initial data is []", () => {
@@ -270,7 +270,7 @@ test("Passing a non array to Provider as inital data throws error", () => {
   console.error = jest.fn(); // mock the object
 
   function TestComponent() {
-    const fd: TestItem[] = useFilter();
+    const fd = useFilter<TestItem>();
     const checkboxes = useCheckboxFilter({
       name: "somerandomName",
       selectorFunction: (el: TestItem) => el.firstName,
@@ -292,7 +292,7 @@ test("Passing a non array to Provider as inital data throws error", () => {
             />
           ) : null
         )}
-        {fd.map((e) => (
+        {fd.data.map((e) => (
           <h1 key={e.firstName}>{e.firstName}</h1>
         ))}
       </div>
@@ -312,7 +312,7 @@ test("Passing a non array to Provider as inital data throws error", () => {
 });
 test("Async initial state update sets new state correctly", async () => {
   function TestComponent() {
-    const fd: string[] = useFilter();
+    const fd = useFilter<string>();
     const checkboxes = useCheckboxFilter({
       name: "somerandomName",
       selectorFunction: (el: string) => el,
@@ -330,7 +330,7 @@ test("Async initial state update sets new state correctly", async () => {
             />
           ) : null
         )}
-        {fd.map((e) => (
+        {fd.data.map((e) => (
           <h1 key={e}>{e}</h1>
         ))}
       </div>
@@ -375,13 +375,13 @@ test("Two different providers provide different data", () => {
       );
     },
   });
-  expect(filteredData.result.current).toStrictEqual(testData);
-  expect(filteredData2.result.current).toStrictEqual([{ hello: "world" }]);
+  expect(filteredData.result.current.data).toStrictEqual(testData);
+  expect(filteredData2.result.current.data).toStrictEqual([{ hello: "world" }]);
 });
 
 test("useCheckboxFilter Checking that a custom checkbox filters out the unchecked items", async () => {
   function TestComponent() {
-    const filteredData: string[] = useFilter();
+    const filteredData = useFilter<string>();
     const checkboxes = useCheckboxFilter({
       name: "somerandomName",
       selectorFunction: (el: string) => {
@@ -403,7 +403,7 @@ test("useCheckboxFilter Checking that a custom checkbox filters out the unchecke
         )}
 
         <div>
-          {filteredData.map((e: string) => {
+          {filteredData.data.map((e: string) => {
             return (
               <h1 data-testid={e} key={e}>
                 {e}
@@ -434,7 +434,7 @@ test("useCheckboxFilter Checking that a custom checkbox filters out the unchecke
 });
 test("useCheckboxFilter default checkbox filters out the unchecked items", async () => {
   function TestComponent() {
-    const filteredData: string[] = useFilter();
+    const filteredData = useFilter<string>();
     const checkboxes = useCheckboxFilter({
       name: "somerandomName",
       selectorFunction: (el: string) => {
@@ -455,7 +455,7 @@ test("useCheckboxFilter default checkbox filters out the unchecked items", async
         )}
 
         <div>
-          {filteredData.map((e: string) => {
+          {filteredData.data.map((e: string) => {
             return (
               <h1 data-testid={e} key={e}>
                 {e}
@@ -485,7 +485,7 @@ test("useCheckboxFilter default checkbox filters out the unchecked items", async
 });
 test("useCheckbox No selected checkbox displays all items", () => {
   function TestComponent() {
-    const fd: TestItem[] = useFilter();
+    const fd = useFilter<TestItem>();
     const checkboxes = useCheckboxFilter({
       name: "somerandomName",
       selectorFunction: (el: TestItem) => el.firstName,
@@ -502,7 +502,7 @@ test("useCheckbox No selected checkbox displays all items", () => {
             />
           ) : null
         )}
-        {fd.map((e) => (
+        {fd.data.map((e) => (
           <h1 key={e.firstName}>{e.firstName}</h1>
         ))}
       </div>
@@ -520,7 +520,7 @@ test("useCheckbox No selected checkbox displays all items", () => {
 });
 test("Unselected checkbox displays hidden items again", () => {
   function TestComponent() {
-    const fd: TestItem[] = useFilter();
+    const fd = useFilter<TestItem>();
     const checkboxes = useCheckboxFilter({
       name: "somerandomName",
       selectorFunction: (el: TestItem) => el.firstName,
@@ -537,7 +537,7 @@ test("Unselected checkbox displays hidden items again", () => {
             />
           ) : null
         )}
-        {fd.map((e) => (
+        {fd.data.map((e) => (
           <h1 key={e.firstName}>{e.firstName}</h1>
         ))}
       </div>
@@ -563,7 +563,7 @@ test("Unselected checkbox displays hidden items again", () => {
 });
 test("useCheckbox works with nameMap", () => {
   function TestComponent() {
-    const fd: TestItem[] = useFilter();
+    const fd = useFilter<TestItem>();
     const checkboxes = useCheckboxFilter({
       name: "somerandomName",
       selectorFunction: (el: TestItem) => el.firstName,
@@ -585,7 +585,7 @@ test("useCheckbox works with nameMap", () => {
             />
           ) : null
         )}
-        {fd.map((e) => (
+        {fd.data.map((e) => (
           <h1 key={e.firstName}>{e.firstName}</h1>
         ))}
       </div>
@@ -621,7 +621,7 @@ test("search filter component", () => {
           onFilterUpdate={sf.onFilterUpdate}
           setSearchString={sf.setSearchString}
         />
-        {fd.map((c: string) => (
+        {fd.data.map((c: string) => (
           <h1 key={c}>{c}</h1>
         ))}
       </>
@@ -662,7 +662,7 @@ test("search filter component", () => {
 
 test("useSearchFilter hook with fuzzy search", () => {
   const TestComponent = () => {
-    const fd: TestItem[] = useFilter();
+    const fd = useFilter<TestItem>();
     const searchComp = useSearchFilter({
       name: "somerandomName",
       selectorFunction: (el: TestItem) => {
@@ -677,7 +677,7 @@ test("useSearchFilter hook with fuzzy search", () => {
           onFilterUpdate={searchComp.onFilterUpdate}
           setSearchString={searchComp.setSearchString}
         />
-        {fd.map((f) => {
+        {fd.data.map((f) => {
           return <h1 key={f.firstName}>{f.firstName}</h1>;
         })}
       </div>
@@ -699,7 +699,7 @@ test("useSearchFilter hook with fuzzy search", () => {
 });
 test("useSearchFilter hook with array of strings returned from the selector function ", () => {
   const TestComponent = () => {
-    const fd: TestItem[] = useFilter();
+    const fd = useFilter<TestItem>();
     const searchComp = useSearchFilter({
       name: "somerandomName",
       selectorFunction: (el: TestItem) => {
@@ -712,7 +712,7 @@ test("useSearchFilter hook with array of strings returned from the selector func
           setSearchString={searchComp.setSearchString}
           onFilterUpdate={searchComp.onFilterUpdate}
         />
-        {fd.map((f) => {
+        {fd.data.map((f) => {
           return <h1 key={f.firstName}>{f.firstName}</h1>;
         })}
       </div>

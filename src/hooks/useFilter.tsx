@@ -4,7 +4,7 @@ import { useFilterContext } from "./useFilterContext";
 /**
  * useFilter - Hook to access the filtered data.
  *
- * @returns {Array<T>} Data[] - Returns the filtered data after all filters in the same context have been applied.
+ * @returns Object { data: Data[], onFiltersCleared: function} - Returns the filtered data after all filters in the same context have been applied and way to add listeners to the filters cleared event.
  */
 export function useFilter<T>() {
   const ctx = useFilterContext().context as DataContainer<T>;
@@ -20,5 +20,5 @@ export function useFilter<T>() {
   useEffect(() => {
     setData(ctx.getFilteredData());
   }, []);
-  return data;
+  return { data, onFiltersCleared: ctx.onFilterClear.bind(ctx) };
 }

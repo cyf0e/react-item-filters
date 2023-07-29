@@ -89,7 +89,7 @@ function App() {
 
   const checkboxSelectorFunction = (element) => element.color;
 
-  const filteredData = useFilter();
+  const { filteredData, onFiltersCleared } = useFilter();
 
   const colorCheckboxes = useCheckboxFilter({
     selectorFunction: checkboxSelectorFunction,

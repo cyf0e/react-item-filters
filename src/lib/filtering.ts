@@ -124,26 +124,6 @@ export class FilterBase<DataType> extends EventBase {
   dispatchUpdate() {
     this.emit("filterValueUpdate");
   }
-
-  onEventFired(eventName: string, fn: (...args: any) => any) {
-    const listenerFunction = () => {
-      if (typeof fn !== "function") {
-        throw new Error(`${eventName} callback can only be a function.`);
-      } else {
-        fn();
-      }
-    };
-
-    this.on(eventName, listenerFunction);
-
-    return () => this.remove(eventName, listenerFunction);
-  }
-  onFilterUpdate(fn: (...args: any) => any) {
-    return this.onEventFired("filterValueUpdate", fn);
-  }
-  onFilterClear(fn: (...args: any) => any) {
-    return this.onEventFired("filterClear", fn);
-  }
 }
 export interface ISessionStorage {
   saveHistory: () => void;
