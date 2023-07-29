@@ -60,6 +60,8 @@ export class SearchFilter<DataType = any, SelectorReturnType = any>
     });
     this.searchTerm = "";
     this.selectorFunction = selectorFunction;
+
+    //load search params value
     this.loadHistory();
   }
 
@@ -72,10 +74,9 @@ export class SearchFilter<DataType = any, SelectorReturnType = any>
   loadHistory() {
     if (!this.serializeToHistory) return;
     const storageSearchString = loadHistoryFiltersFromURL(this.name);
+
     if (!storageSearchString || storageSearchString.length == 0) return;
     this.searchTerm = storageSearchString;
-
-    this.dispatchUpdate();
   }
   saveHistory() {
     if (!this.serializeToHistory) return;

@@ -62,6 +62,9 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
       const cleanLabel = this.parseLabelValue(pv);
       if (cleanLabel) this.allParsedLabels.set(pv, cleanLabel);
     });
+
+    //load search param values
+    this.loadHistory();
   }
   getParsedPossibleValues() {
     if (this.nameValueMap) return Array.from(this.nameValueMap.values());
@@ -87,8 +90,11 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
   }
   loadHistory() {
     if (!this.serializeToHistory) return;
+
     const storedValues = loadHistoryFiltersFromURL(this.name);
+
     if (!storedValues) return;
+
     const checkedValues = storedValues.split(",");
 
     checkedValues.forEach((value) => {
@@ -96,9 +102,6 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
         this.checked.add(value as SelectorReturnType);
       }
     });
-
-    //update data container
-    this.dispatchUpdate();
   }
   setChecked(value: SelectorReturnType, state: boolean) {
     if (state) {
@@ -106,6 +109,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     } else {
       this.checked.delete(value);
     }
+
     this.saveHistory();
     this.dispatchUpdate();
   }

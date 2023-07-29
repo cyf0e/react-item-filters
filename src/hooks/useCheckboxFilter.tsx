@@ -58,10 +58,8 @@ export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>({
       nameValueMap: nameMap,
       serializeToHistory,
     });
-    dataContainer.addFilter(checkbox);
 
-    //load checkbox filters from URL search params, needs to run after the filter is added to the data container.
-    checkbox.loadHistory();
+    dataContainer.addFilter(checkbox);
 
     return checkbox;
   }, [dataContainer]);

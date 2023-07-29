@@ -88,7 +88,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.ts:19](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L19)
+[lib/checkboxFilter.ts:19](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L19)
 
 ## Properties
 
@@ -98,7 +98,7 @@
 
 #### Defined in
 
-[lib/checkboxFilter.ts:17](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L17)
+[lib/checkboxFilter.ts:17](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L17)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:12](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L12)
+[lib/checkboxFilter.ts:12](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L12)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[lib/eventBase.ts:2](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/eventBase.ts#L2)
+[lib/eventBase.ts:2](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/eventBase.ts#L2)
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:72](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L72)
+[lib/filtering.ts:81](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L81)
 
 ___
 
@@ -158,7 +158,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:73](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L73)
+[lib/filtering.ts:82](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L82)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:15](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L15)
+[lib/checkboxFilter.ts:15](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L15)
 
 ___
 
@@ -178,7 +178,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:13](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L13)
+[lib/checkboxFilter.ts:13](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L13)
 
 ___
 
@@ -188,7 +188,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:16](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L16)
+[lib/checkboxFilter.ts:16](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L16)
 
 ___
 
@@ -212,7 +212,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:14](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L14)
+[lib/checkboxFilter.ts:14](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L14)
 
 ___
 
@@ -226,7 +226,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:74](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L74)
+[lib/filtering.ts:83](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L83)
 
 ## Methods
 
@@ -244,7 +244,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:102](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L102)
+[lib/filtering.ts:111](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L111)
 
 ___
 
@@ -262,7 +262,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:115](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L115)
+[lib/filtering.ts:124](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L124)
 
 ___
 
@@ -286,7 +286,7 @@ ___
 
 #### Defined in
 
-[lib/eventBase.ts:18](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/eventBase.ts#L18)
+[lib/eventBase.ts:18](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/eventBase.ts#L18)
 
 ___
 
@@ -304,7 +304,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:109](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L109)
+[lib/filtering.ts:118](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L118)
 
 ___
 
@@ -334,7 +334,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:99](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L99)
+[lib/filtering.ts:108](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L108)
 
 ___
 
@@ -352,7 +352,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:96](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L96)
+[lib/filtering.ts:105](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L105)
 
 ___
 
@@ -366,7 +366,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:66](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L66)
+[lib/checkboxFilter.ts:69](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L69)
 
 ___
 
@@ -384,7 +384,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:88](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L88)
+[lib/checkboxFilter.ts:91](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L91)
 
 ___
 
@@ -409,7 +409,7 @@ ___
 
 #### Defined in
 
-[lib/eventBase.ts:7](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/eventBase.ts#L7)
+[lib/eventBase.ts:7](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/eventBase.ts#L7)
 
 ___
 
@@ -440,7 +440,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:119](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L119)
+[lib/filtering.ts:128](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L128)
 
 ___
 
@@ -470,7 +470,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:135](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L135)
+[lib/filtering.ts:144](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L144)
 
 ___
 
@@ -500,7 +500,7 @@ ___
 
 #### Defined in
 
-[lib/filtering.ts:132](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/filtering.ts#L132)
+[lib/filtering.ts:141](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/filtering.ts#L141)
 
 ___
 
@@ -520,7 +520,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:72](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L72)
+[lib/checkboxFilter.ts:75](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L75)
 
 ___
 
@@ -545,7 +545,7 @@ ___
 
 #### Defined in
 
-[lib/eventBase.ts:3](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/eventBase.ts#L3)
+[lib/eventBase.ts:3](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/eventBase.ts#L3)
 
 ___
 
@@ -563,7 +563,7 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:84](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L84)
+[lib/checkboxFilter.ts:87](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L87)
 
 ___
 
@@ -584,4 +584,4 @@ ___
 
 #### Defined in
 
-[lib/checkboxFilter.ts:103](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/lib/checkboxFilter.ts#L103)
+[lib/checkboxFilter.ts:106](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/lib/checkboxFilter.ts#L106)

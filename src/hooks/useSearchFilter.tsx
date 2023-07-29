@@ -59,10 +59,8 @@ export function useSearchFilter<DataType = any, SelectorReturnType = any>({
       fuzzy,
       serializeToHistory,
     });
-    dataContext.addFilter(sf);
 
-    //load search filters from URL search params, needs to run after the filter is added to the data container.
-    sf.loadHistory();
+    dataContext.addFilter(sf);
 
     return sf;
   }, [dataContext]);

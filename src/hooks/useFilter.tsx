@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DataContainer } from "../lib/filtering";
 import { useFilterContext } from "./useFilterContext";
 /**
@@ -9,7 +9,6 @@ import { useFilterContext } from "./useFilterContext";
 export function useFilter<T>() {
   const ctx = useFilterContext().context as DataContainer<T>;
   const [data, setData] = useState<T[]>(() => ctx.getInitialData());
-  //useEffect execution is deffered and executes last in a component. useMemo executes in order. Changing this to useEffect breaks filter loading from URL
   useMemo(() => {
     const clearFunction = ctx.on("filterValueUpdate", () => {
       const newData = ctx.getFilteredData();
@@ -18,5 +17,8 @@ export function useFilter<T>() {
     setData(ctx.getInitialData()); //update the state after context changes for example from fetching data
     return clearFunction;
   }, [ctx]);
+  useEffect(() => {
+    setData(ctx.getFilteredData());
+  }, []);
   return data;
 }

@@ -43,7 +43,7 @@
 
 #### Defined in
 
-[hooks/useCheckboxFilter.tsx:80](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useCheckboxFilter.tsx#L80)
+[hooks/useCheckboxFilter.tsx:78](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/hooks/useCheckboxFilter.tsx#L78)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[hooks/useSearchFilter.tsx:80](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useSearchFilter.tsx#L80)
+[hooks/useSearchFilter.tsx:78](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/hooks/useSearchFilter.tsx#L78)
 
 ## Functions
 
@@ -90,7 +90,7 @@ Provider - Function component that wraps children with the filtering context.
 
 #### Defined in
 
-[components/FilterProvider.tsx:14](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/components/FilterProvider.tsx#L14)
+[components/FilterProvider.tsx:14](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/components/FilterProvider.tsx#L14)
 
 ___
 
@@ -152,7 +152,7 @@ and the type would be string or ReturnType of the selection function.
 
 #### Defined in
 
-[hooks/useCheckboxFilter.tsx:37](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useCheckboxFilter.tsx#L37)
+[hooks/useCheckboxFilter.tsx:37](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/hooks/useCheckboxFilter.tsx#L37)
 
 ___
 
@@ -183,7 +183,7 @@ clearFilters function
 
 #### Defined in
 
-[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useClearFilter.tsx#L13)
+[hooks/useClearFilter.tsx:13](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/hooks/useClearFilter.tsx#L13)
 
 ___
 
@@ -207,7 +207,7 @@ Data[] - Returns the filtered data after all filters in the same context have be
 
 #### Defined in
 
-[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useFilter.tsx#L9)
+[hooks/useFilter.tsx:9](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/hooks/useFilter.tsx#L9)
 
 ___
 
@@ -277,4 +277,4 @@ and the type would be string or ReturnType of the selection function.
 
 #### Defined in
 
-[hooks/useSearchFilter.tsx:41](https://github.com/cyf0e/react-item-filters/blob/9c508bf/src/hooks/useSearchFilter.tsx#L41)
+[hooks/useSearchFilter.tsx:41](https://github.com/cyf0e/react-item-filters/blob/5e1c60a/src/hooks/useSearchFilter.tsx#L41)

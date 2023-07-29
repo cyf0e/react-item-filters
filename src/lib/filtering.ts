@@ -2,12 +2,12 @@ import { EventBase } from "./eventBase";
 
 export class DataContainer<DataType> extends EventBase {
   private data: DataType[];
-  private filters: Array<FilterBase<DataType>>;
+  private filters: Set<FilterBase<DataType>>;
   constructor({ data }: { data?: DataType[] }) {
     super();
     if (!data) throw new Error("Initial Data is undefined.");
     this.data = data;
-    this.filters = new Array<FilterBase<DataType>>();
+    this.filters = new Set<FilterBase<DataType>>();
   }
 
   getInitialData() {
@@ -59,7 +59,16 @@ export class DataContainer<DataType> extends EventBase {
   addFilter(filter: FilterBase<DataType>) {
     if (!filter) throw new Error("Filter function is undefined");
     this.emit("filtersUpdated");
-    this.filters.push(filter);
+
+    //  Delete any filters with the same name.
+    //  Without this React.Strict mode creates two filters for the same filter and breaks the filtering.
+    this.filters.forEach((f) => {
+      if (f.getFilterName() == filter.getFilterName()) {
+        this.filters.delete(f);
+      }
+    });
+
+    this.filters.add(filter);
     filter.onFilterUpdate(() => {
       this.emit("filterValueUpdate");
     });
