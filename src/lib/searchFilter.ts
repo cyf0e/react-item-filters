@@ -15,12 +15,14 @@ export class SearchFilter<DataType = any, SelectorReturnType = any>
     name,
     fuzzy,
     serializeToHistory,
+    customHistorySearchParams,
   }: {
     dataContainer: DataContainer<DataType>;
     selectorFunction: (element: DataType) => SelectorReturnType;
     name: string;
     fuzzy?: boolean;
     serializeToHistory?: boolean;
+    customHistorySearchParams?: string;
   }) {
     const filterFunction = (el: DataType) => {
       const stringsToSearch = this.selectorFunction(el);
@@ -54,15 +56,18 @@ export class SearchFilter<DataType = any, SelectorReturnType = any>
       name,
       serializeToHistory,
       filterFunction,
+      filterGetValueFunction: () => this.searchTerm,
       filterClearFunction: () => {
         this.searchTerm = "";
       },
     });
     this.searchTerm = "";
     this.selectorFunction = selectorFunction;
+    this.customHistorySearchParams = customHistorySearchParams;
 
     //load search params value
     this.loadHistory();
+    this.dispatchHistoryLoad();
   }
 
   updateSearchFilter(searchString: string) {
@@ -73,10 +78,11 @@ export class SearchFilter<DataType = any, SelectorReturnType = any>
   }
   loadHistory() {
     if (!this.serializeToHistory) return;
-    const storageSearchString = loadHistoryFiltersFromURL(this.name);
-
-    if (!storageSearchString || storageSearchString.length == 0) return;
-    this.searchTerm = storageSearchString;
+    const storageSearchString = loadHistoryFiltersFromURL(
+      this.name,
+      this.customHistorySearchParams
+    );
+    this.searchTerm = storageSearchString ?? "";
   }
   saveHistory() {
     if (!this.serializeToHistory) return;

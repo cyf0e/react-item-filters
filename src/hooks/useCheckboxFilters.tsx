@@ -4,7 +4,7 @@ import { useFilterContext } from "./useFilterContext";
 import { PossibleFilterEvents } from "../lib/filtering";
 
 /**
- * useCheckboxFilter - hook that creates a checkbox filter and returns utilities to render checkbox components.
+ * useCheckboxFilters - hook that creates a checkbox filters and returns utilities to render checkbox components.
  *  @param selectorFunction - The function that returns the part of the data we want to filter by.
  *
  *  @param nameMap - A map that is used to lookup names you wish to assign to the checkbox labels for possible values of the checkbox filter.
@@ -35,84 +35,69 @@ import { PossibleFilterEvents } from "../lib/filtering";
  * ````
  * and the type would be string or ReturnType of the selection function.
  */
-export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>({
-  name,
-  selectorFunction,
-  nameMap,
-  prettyLabels = true,
-  serializeToHistory,
-  customHistorySearchParams,
-}: {
-  name: string;
-  prettyLabels?: boolean;
-  selectorFunction: (arg: DataArrayElementType) => SelectorReturnType;
-  nameMap?: Map<SelectorReturnType, string>;
-  serializeToHistory?: boolean;
-  customHistorySearchParams?: string;
-}) {
+export function useCheckboxFilters<DataArrayElementType, SelectorReturnType>(
+  properties: Array<{
+    name: string;
+    prettyLabels?: boolean;
+    selectorFunction: (arg: DataArrayElementType) => SelectorReturnType;
+    nameMap?: Map<SelectorReturnType, string>;
+    serializeToHistory?: boolean;
+    customHistorySearchParams?: string;
+  }>
+) {
   const dataContainer = useFilterContext().context;
 
-  const checkbox = useMemo(() => {
-    const checkbox = new CheckboxFilter({
-      dataContainer,
-      selectorFunction,
-      name,
-      prettyLabels,
-      nameValueMap: nameMap,
-      serializeToHistory,
-      customHistorySearchParams,
+  const checkboxes = useMemo(() => {
+    const checkboxes = properties.map((prop) => {
+      const cb = new CheckboxFilter({
+        dataContainer,
+        selectorFunction: prop.selectorFunction,
+        name: prop.name,
+        prettyLabels: prop.prettyLabels,
+        nameValueMap: prop.nameMap,
+        serializeToHistory: prop.serializeToHistory,
+        customHistorySearchParams: prop.customHistorySearchParams,
+      });
+      dataContainer.addFilter(cb);
+      return cb;
     });
 
-    dataContainer.addFilter(checkbox);
-
-    return checkbox;
+    return checkboxes;
   }, [dataContainer]);
 
   useEffect(() => {
     //load history again after the component mounts
     //in nextjs without this the filters load history from the previous page
-    checkbox.loadHistory();
-    checkbox.dispatchHistoryLoad();
+    checkboxes.forEach((cb) => cb.loadHistory());
+    checkboxes.forEach((cb) => cb.dispatchHistoryLoad());
   }, []);
 
   useEffect(() => {
-    if (checkbox.serializeToHistory) {
-      const listenerFn = () => {
-        checkbox.loadHistory();
-        checkbox.dispatchHistoryLoad();
-      };
-      window.addEventListener("popstate", listenerFn);
-      return () => window.removeEventListener("popstate", listenerFn);
-    }
-  }, [checkbox]);
+    checkboxes.forEach((cb) => {
+      if (cb.serializeToHistory) {
+        const listenerFn = () => {
+          cb.loadHistory();
+          cb.dispatchHistoryLoad();
+        };
+        window.addEventListener("popstate", listenerFn);
+        return () => window.removeEventListener("popstate", listenerFn);
+      }
+    });
+  }, [checkboxes]);
 
-  return {
-    setChecked: checkbox.setChecked.bind(checkbox),
-    subscribe: (event: PossibleFilterEvents, fn: (...args: any) => any) =>
-      checkbox.subscribe(event, fn).bind(checkbox),
-    labels: checkbox.getParsedPossibleValues(),
-    preloadedCheckedLabels: Array.from(checkbox.checked),
+  return checkboxes.map((cb) => {
+    return {
+      setChecked: cb.setChecked.bind(cb),
 
-    getNumberOfItemsWithLabel: (label: string) =>
-      checkbox.getNumberOfItemsWithLabel(
-        label,
-        dataContainer.getFilteredData()
-      ),
-  };
+      subscribe: (event: PossibleFilterEvents, fn: (...args: any) => any) =>
+        cb.subscribe(event, fn).bind(cb),
+
+      labels: cb.getParsedPossibleValues(),
+
+      preloadedCheckedLabels: Array.from(cb.checked),
+
+      getNumberOfItemsWithLabel: (label: string) =>
+        cb.getNumberOfItemsWithLabel(label, dataContainer.getFilteredData()),
+    };
+  });
 }
-export type CheckboxReturnType<
-  DataType = any,
-  SelectorReturnType = any
-> = ReturnType<typeof useCheckboxFilter<DataType, SelectorReturnType>>;
-type CheckboxLabelProps<DataType = any, SelectorReturnType = any> = Omit<
-  CheckboxReturnType<DataType, SelectorReturnType>,
-  "labels"
-> & {
-  label: string;
-};
-export type CheckboxFilterProps<DataType = any, SelectorReturnType = any> = {
-  [K in keyof Omit<
-    CheckboxLabelProps,
-    "label" | "setChecked"
-  >]?: CheckboxLabelProps[K];
-} & Pick<CheckboxLabelProps, "label" | "setChecked">;

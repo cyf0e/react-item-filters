@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { DataContainer } from "../lib/filtering";
+import {
+  DataContainer,
+  DataContainerEvents,
+  PossibleDataContainerEvents,
+} from "../lib/filtering";
 import { useFilterContext } from "./useFilterContext";
 /**
  * useFilter - Hook to access the filtered data.
@@ -8,17 +12,27 @@ import { useFilterContext } from "./useFilterContext";
  */
 export function useFilter<T>() {
   const ctx = useFilterContext().context as DataContainer<T>;
-  const [data, setData] = useState<T[]>(() => ctx.getInitialData());
-  useMemo(() => {
-    const clearFunction = ctx.on("filterValueUpdate", () => {
-      const newData = ctx.getFilteredData();
-      setData(newData);
-    });
-    setData(ctx.getInitialData()); //update the state after context changes for example from fetching data
-    return clearFunction;
-  }, [ctx]);
+  const [data, setData] = useState<T[]>(() => ctx.getFilteredData());
+
   useEffect(() => {
+    const unsub = ctx.subscribe(
+      DataContainerEvents.FILTERED_DATA_RECALCULATED,
+      () => {
+        const newData = ctx.getFilteredData();
+        setData(newData);
+      }
+    );
+    //update the state after context changes for example from fetching data
     setData(ctx.getFilteredData());
-  }, []);
-  return { data, onFiltersCleared: ctx.onFilterClear.bind(ctx) };
+    return () => unsub();
+  }, [ctx]);
+
+  return {
+    data,
+
+    subscribe: (
+      event: PossibleDataContainerEvents,
+      fn: (filteredData?: Array<T>) => any
+    ) => ctx.subscribe(event, fn).bind(ctx),
+  };
 }

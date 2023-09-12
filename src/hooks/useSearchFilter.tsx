@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { SearchFilter } from "../lib/searchFilter";
 import { useFilterContext } from "./useFilterContext";
+import { PossibleFilterEvents } from "../lib/filtering";
 
 /**
  * useSearchFilter - Hook that enables text searching on the data.
@@ -43,11 +44,13 @@ export function useSearchFilter<DataType = any, SelectorReturnType = any>({
   selectorFunction,
   fuzzy,
   serializeToHistory,
+  customHistorySearchParams,
 }: {
   name: string;
   selectorFunction: (element: DataType) => SelectorReturnType;
   fuzzy?: boolean;
   serializeToHistory?: boolean;
+  customHistorySearchParams?: string;
 }) {
   const dataContext = useFilterContext().context;
 
@@ -58,6 +61,7 @@ export function useSearchFilter<DataType = any, SelectorReturnType = any>({
       name,
       fuzzy,
       serializeToHistory,
+      customHistorySearchParams,
     });
 
     dataContext.addFilter(sf);
@@ -65,17 +69,38 @@ export function useSearchFilter<DataType = any, SelectorReturnType = any>({
     return sf;
   }, [dataContext]);
 
-  return useMemo(() => {
-    return {
-      onFilterUpdate: searchFilter.onFilterUpdate.bind(searchFilter),
-      setSearchString: searchFilter.updateSearchFilter.bind(searchFilter),
-      onFilterClear: searchFilter.onFilterClear.bind(searchFilter),
-      preloadedSearchValue: searchFilter.searchTerm,
-    };
-  }, [searchFilter]);
-}
+  useEffect(() => {
+    //load history everytime component mounts
+    //in nextjs without this the filters load history from the previous page
+    searchFilter.loadHistory();
+    searchFilter.dispatchHistoryLoad();
+  }, []);
 
-export type SearchFilterProps<
+  useEffect(() => {
+    if (searchFilter.serializeToHistory) {
+      const listenerFn = () => {
+        searchFilter.loadHistory();
+        searchFilter.dispatchHistoryLoad();
+      };
+      window.addEventListener("popstate", listenerFn);
+      return () => window.removeEventListener("popstate", listenerFn);
+    }
+  }, [searchFilter]);
+
+  return {
+    subscribe: (event: PossibleFilterEvents, fn: (searchTerm: string) => any) =>
+      searchFilter.subscribe(event, fn).bind(searchFilter),
+    setSearchString: searchFilter.updateSearchFilter.bind(searchFilter),
+    preloadedSearchValue: searchFilter.searchTerm,
+  };
+}
+export type SearchFilterReturnType<
   DataType = any,
   SelectorReturnType = any
 > = ReturnType<typeof useSearchFilter<DataType, SelectorReturnType>>;
+export type SearchFilterProps = {
+  [K in keyof Omit<
+    SearchFilterReturnType,
+    "setSearchString"
+  >]?: SearchFilterReturnType[K];
+} & { setSearchString: SearchFilterReturnType["setSearchString"] };

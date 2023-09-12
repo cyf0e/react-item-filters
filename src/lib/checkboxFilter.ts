@@ -15,7 +15,6 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
   nameValueMap?: Map<SelectorReturnType, string>;
   prettyLabels?: boolean;
   allParsedLabels: Map<SelectorReturnType, string> = new Map();
-
   constructor({
     dataContainer,
     selectorFunction,
@@ -23,6 +22,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     nameValueMap,
     prettyLabels = true,
     serializeToHistory = false,
+    customHistorySearchParams,
   }: {
     dataContainer: DataContainer<DataElementType>;
     selectorFunction: (element: DataElementType) => SelectorReturnType;
@@ -30,15 +30,18 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     nameValueMap?: Map<SelectorReturnType, string>;
     prettyLabels?: boolean;
     serializeToHistory?: boolean;
+    customHistorySearchParams?: string;
   }) {
     const filterFunction = (element: DataElementType) => {
       if (this.checked.size == 0) return true;
-      const cleanLabel = this.allParsedLabels.get(selectorFunction(element));
+      const cleanLabel = this.allParsedLabels.get(
+        this.selectorFunction(element)
+      );
       if (cleanLabel) return this.checked.has(cleanLabel as SelectorReturnType);
       return false;
     };
-
     super({
+      filterGetValueFunction: () => this.checked,
       dataContainer,
       filterFunction,
       name,
@@ -48,6 +51,7 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
       serializeToHistory,
     });
 
+    this.customHistorySearchParams = customHistorySearchParams;
     this.selectorFunction = selectorFunction;
     this.prettyLabels = prettyLabels;
     this.nameValueMap = nameValueMap;
@@ -65,7 +69,15 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
 
     //load search param values
     this.loadHistory();
+    this.dispatchHistoryLoad();
   }
+  getNumberOfItemsWithLabel(label: string, items: DataElementType[]) {
+    const newFilterFn = (item: DataElementType) => {
+      return this.selectorFunction(item) == label;
+    };
+    return items.filter(newFilterFn).length;
+  }
+
   getParsedPossibleValues() {
     if (this.nameValueMap) return Array.from(this.nameValueMap.values());
     return Array.from(this.possibleValues).map((pv) =>
@@ -91,7 +103,11 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
   loadHistory() {
     if (!this.serializeToHistory) return;
 
-    const storedValues = loadHistoryFiltersFromURL(this.name);
+    this.checked.clear();
+    const storedValues = loadHistoryFiltersFromURL(
+      this.name,
+      this.customHistorySearchParams
+    );
 
     if (!storedValues) return;
 

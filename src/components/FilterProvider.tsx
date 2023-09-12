@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import { DataContainer } from "../lib/filtering";
 
 export const Context = createContext<{

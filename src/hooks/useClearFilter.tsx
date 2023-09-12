@@ -1,6 +1,6 @@
 import { useFilterContext } from "./useFilterContext";
 /**
- * NOTE: React by default will not reset the state of your Filter elements like the checkbox for example. This is because it doesnt reset state of components that are rendered in the same place so the checkboxes will stay checked after clearing unless you explicitly make them reset by adding a dynamic key to them for example
+ * NOTE: To clear the state of your filters, subscribe to the filterClear event.
  * ```jsx
  * function CustomCheckboxComp(){
  *  return <div key={randomString() || Math.random()}>
@@ -14,6 +14,5 @@ export function useClearFilter() {
   const ctx = useFilterContext().context;
   return () => {
     ctx.clearFilters();
-    ctx.emit("filterValueUpdate");
   };
 }

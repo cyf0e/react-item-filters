@@ -17,6 +17,8 @@ import {
   FilterBase,
   FilterProvider,
   useClearFilter,
+  CheckboxFilterProps,
+  SearchFilterProps,
 } from "../src/index";
 
 jest.useFakeTimers();
@@ -35,14 +37,14 @@ type TestItem = typeof testData extends Array<infer R> ? R : undefined;
 const GenericCheckBoxComponent = ({
   setChecked,
   label,
-  onFilterClear,
-}: any) => {
+  subscribe,
+}: CheckboxFilterProps) => {
   const [check, setCheck] = useState(false);
   useEffect(() => {
-    if (onFilterClear) {
-      return onFilterClear(() => setCheck(false));
+    if (subscribe) {
+      return subscribe("filterClear", () => setCheck(false));
     }
-  }, [onFilterClear]);
+  }, [subscribe]);
   return (
     <div key={Math.random()}>
       <input
@@ -60,7 +62,7 @@ const GenericCheckBoxComponent = ({
     </div>
   );
 };
-const GenericSearchComponent = (props: any) => {
+const GenericSearchComponent = (props: SearchFilterProps) => {
   return (
     <input
       type="text"
@@ -75,6 +77,7 @@ test("assign invalid data context to FilterBase throws error", () => {
       filterFunction: (el: any) => false,
       name: "anyname",
       filterClearFunction: () => {},
+      filterGetValueFunction: () => {},
     }).getDataContainer();
   expect(fb).toThrowError();
   expect(() => {
@@ -83,6 +86,7 @@ test("assign invalid data context to FilterBase throws error", () => {
       filterFunction: () => false,
       name: "name2",
       filterClearFunction: () => {},
+      filterGetValueFunction: () => {},
     }).getDataContainer();
   }).toThrowError();
 });
@@ -111,6 +115,7 @@ test("DataContainer filtering properly filters data", () => {
       },
       name: "testrandom",
       filterClearFunction: () => {},
+      filterGetValueFunction: () => {},
     })
   );
   expect(c.getFilteredData()).toStrictEqual([4, 5]);
@@ -203,8 +208,7 @@ test("DataContainer clearing all filters shows all data", () => {
               key={label}
               label={label}
               setChecked={components.setChecked}
-              onFilterUpdate={components.onFilterUpdate}
-              onFilterClear={components.onFilterClear}
+              subscribe={components.subscribe}
             />
           ) : null
         )}
@@ -288,7 +292,7 @@ test("Passing a non array to Provider as inital data throws error", () => {
               key={label}
               label={label}
               setChecked={checkboxes.setChecked}
-              onFilterUpdate={checkboxes.onFilterUpdate}
+              subscribe={checkboxes.subscribe}
             />
           ) : null
         )}
@@ -326,7 +330,7 @@ test("Async initial state update sets new state correctly", async () => {
               key={label}
               label={label}
               setChecked={checkboxes.setChecked}
-              onFilterUpdate={checkboxes.onFilterUpdate}
+              subscribe={checkboxes.subscribe}
             />
           ) : null
         )}
@@ -397,7 +401,7 @@ test("useCheckboxFilter Checking that a custom checkbox filters out the unchecke
               key={label}
               label={label}
               setChecked={checkboxes.setChecked}
-              onFilterUpdate={checkboxes.onFilterUpdate}
+              subscribe={checkboxes.subscribe}
             />
           ) : null
         )}
@@ -449,7 +453,7 @@ test("useCheckboxFilter default checkbox filters out the unchecked items", async
               key={label}
               label={label}
               setChecked={checkboxes.setChecked}
-              onFilterUpdate={checkboxes.onFilterUpdate}
+              subscribe={checkboxes.subscribe}
             />
           ) : null
         )}
@@ -498,7 +502,7 @@ test("useCheckbox No selected checkbox displays all items", () => {
               key={label}
               label={label}
               setChecked={checkboxes.setChecked}
-              onFilterUpdate={checkboxes.onFilterUpdate}
+              subscribe={checkboxes.subscribe}
             />
           ) : null
         )}
@@ -533,7 +537,7 @@ test("Unselected checkbox displays hidden items again", () => {
               key={label}
               label={label}
               setChecked={checkboxes.setChecked}
-              onFilterUpdate={checkboxes.onFilterUpdate}
+              subscribe={checkboxes.subscribe}
             />
           ) : null
         )}
@@ -580,8 +584,7 @@ test("useCheckbox works with nameMap", () => {
               key={label}
               label={label}
               setChecked={checkboxes.setChecked}
-              onFilterUpdate={checkboxes.onFilterUpdate}
-              onFilterClear={checkboxes.onFilterClear}
+              subscribe={checkboxes.subscribe}
             />
           ) : null
         )}
@@ -618,7 +621,7 @@ test("search filter component", () => {
     return (
       <>
         <GenericSearchComponent
-          onFilterUpdate={sf.onFilterUpdate}
+          subscribe={sf.subscribe}
           setSearchString={sf.setSearchString}
         />
         {fd.data.map((c: string) => (
@@ -674,7 +677,7 @@ test("useSearchFilter hook with fuzzy search", () => {
     return (
       <div>
         <GenericSearchComponent
-          onFilterUpdate={searchComp.onFilterUpdate}
+          subscribe={searchComp.subscribe}
           setSearchString={searchComp.setSearchString}
         />
         {fd.data.map((f) => {
@@ -710,7 +713,7 @@ test("useSearchFilter hook with array of strings returned from the selector func
       <div>
         <GenericSearchComponent
           setSearchString={searchComp.setSearchString}
-          onFilterUpdate={searchComp.onFilterUpdate}
+          subscribe={searchComp.subscribe}
         />
         {fd.data.map((f) => {
           return <h1 key={f.firstName}>{f.firstName}</h1>;

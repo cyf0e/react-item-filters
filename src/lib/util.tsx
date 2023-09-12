@@ -36,10 +36,18 @@ function checkWindowExists() {
   return true;
 }
 
-export function loadHistoryFiltersFromURL<T = string>(name: string) {
-  if (!checkWindowExists()) return;
+export function loadHistoryFiltersFromURL<T = string>(
+  name: string,
+  customUrl?: string
+) {
+  if (!checkWindowExists()) {
+    const searchParams = new URLSearchParams(customUrl);
+    if (searchParams.size == 0) return;
+    return searchParams.get(name) as T;
+  }
   const searchParams = new URLSearchParams(window.location.search);
   if (searchParams.size == 0) return;
+
   return searchParams.get(name) as T;
 }
 export function storeHistoryToURL(name: string, data: string) {
@@ -59,7 +67,7 @@ export function storeHistoryToURL(name: string, data: string) {
       }
     }
     const newSearchParams = new URLSearchParams(newSearchParamsObject);
-    window.history.replaceState(
+    window.history.pushState(
       window.history.state,
       "",
       "?" + newSearchParams.toString()
