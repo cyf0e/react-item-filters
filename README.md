@@ -50,10 +50,10 @@ function CheckboxElement(props: CheckboxFilterProps) {
   );
   useEffect(() => {
     //must return a function to clear the event listeners or you will have memory leaks.
-    const clearingFunction = props.onFilterClear(() => {
+    const clearingFunction = props.subscribe("filterClear", () => {
       setChecked(false);
     });
-    const updateClearFunction = props.onFilterUpdate(() =>
+    const updateClearFunction = props.subscribe("filterUpdate", () =>
       console.log("Filter updated.")
     );
     return () => {
@@ -109,8 +109,7 @@ function App() {
             <CheckboxElement
               key={label}
               label={label}
-              onFilterUpdate={colorCheckboxes.onFilterUpdate}
-              onFilterClear={colorCheckboxes.onFilterClear}
+              subscribe={colorCheckboxes.subscribe}
               setChecked={colorCheckboxes.setChecked}
               preloadedCheckedLabels={colorCheckboxes.preloadedCheckedLabels}
             />
