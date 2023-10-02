@@ -72,9 +72,9 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     this.dispatchHistoryLoad();
   }
   getNumberOfItemsWithLabel(label: string, items: DataElementType[]) {
-    const newFilterFn = (item: DataElementType) => {
-      return this.selectorFunction(item) == label;
-    };
+    const newFilterFn = (item: DataElementType) =>
+      this.parseLabelValue(this.selectorFunction(item)) == label;
+
     return items.filter(newFilterFn).length;
   }
 
