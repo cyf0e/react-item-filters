@@ -85,9 +85,11 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     );
   }
   parseLabelValue(rawLabel: SelectorReturnType) {
+    if (!rawLabel) return undefined;
     if (typeof rawLabel !== "string")
-      throw new Error("A label can only be of type string.");
-    if (!rawLabel) return rawLabel;
+      throw new Error(
+        `A label can only be of type string. Got ${rawLabel} with type ${typeof rawLabel}`
+      );
     if (this.nameValueMap) {
       return this.nameValueMap.get(rawLabel);
     } else if (this.prettyLabels) {
