@@ -101,18 +101,25 @@ export function useCheckboxFilter<DataArrayElementType, SelectorReturnType>({
   };
 }
 export type CheckboxReturnType<
-  DataType = any,
-  SelectorReturnType = any
+  DataType = unknown,
+  SelectorReturnType = unknown
 > = ReturnType<typeof useCheckboxFilter<DataType, SelectorReturnType>>;
-type CheckboxLabelProps<DataType = any, SelectorReturnType = any> = Omit<
-  CheckboxReturnType<DataType, SelectorReturnType>,
-  "labels"
-> & {
+
+type CheckboxLabelProps<
+  DataType = unknown,
+  SelectorReturnType = unknown
+> = Omit<CheckboxReturnType<DataType, SelectorReturnType>, "labels"> & {
   label: string;
 };
-export type CheckboxFilterProps<DataType = any, SelectorReturnType = any> = {
+export type CheckboxFilterProps<
+  DataType = unknown,
+  SelectorReturnType = unknown
+> = {
   [K in keyof Omit<
-    CheckboxLabelProps,
+    CheckboxLabelProps<DataType, SelectorReturnType>,
     "label" | "setChecked"
-  >]?: CheckboxLabelProps[K];
-} & Pick<CheckboxLabelProps, "label" | "setChecked">;
+  >]?: CheckboxLabelProps<DataType, SelectorReturnType>[K];
+} & Pick<
+  CheckboxLabelProps<DataType, SelectorReturnType>,
+  "label" | "setChecked"
+>;

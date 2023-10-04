@@ -95,12 +95,21 @@ export function useSearchFilter<DataType = any, SelectorReturnType = any>({
   };
 }
 export type SearchFilterReturnType<
-  DataType = any,
-  SelectorReturnType = any
+  DataType = unknown,
+  SelectorReturnType = unknown
 > = ReturnType<typeof useSearchFilter<DataType, SelectorReturnType>>;
-export type SearchFilterProps = {
+
+export type SearchFilterProps<
+  DataType = unknown,
+  SelectorReturnType = unknown
+> = {
   [K in keyof Omit<
-    SearchFilterReturnType,
+    SearchFilterReturnType<DataType, SelectorReturnType>,
     "setSearchString"
-  >]?: SearchFilterReturnType[K];
-} & { setSearchString: SearchFilterReturnType["setSearchString"] };
+  >]?: SearchFilterReturnType<DataType, SelectorReturnType>[K];
+} & {
+  setSearchString: SearchFilterReturnType<
+    DataType,
+    SelectorReturnType
+  >["setSearchString"];
+};
