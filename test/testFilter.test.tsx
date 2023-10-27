@@ -601,7 +601,6 @@ test("useCheckbox works with nameMap", () => {
   });
 
   expect(screen.getAllByTestId("labelElements")).toHaveLength(2);
-
   expect(screen.getAllByTestId("labelElements")[0]).toHaveTextContent("Pete");
   expect(screen.getAllByTestId("labelElements")[1]).toHaveTextContent("Mike");
   fireEvent.click(screen.getByLabelText("Pete"));

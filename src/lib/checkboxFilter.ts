@@ -63,7 +63,9 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
 
     //Save clean possible values for faster filtering
     this.possibleValues.forEach((pv) => {
-      const cleanLabel = this.parseLabelValue(pv);
+      const cleanLabel = this.nameValueMap
+        ? this.nameValueMap.get(pv)
+        : this.parseLabelValue(pv);
       if (cleanLabel) this.allParsedLabels.set(pv, cleanLabel);
     });
 
@@ -72,8 +74,13 @@ export class CheckboxFilter<DataElementType, SelectorReturnType = string>
     this.dispatchHistoryLoad();
   }
   getNumberOfItemsWithLabel(label: string, items: DataElementType[]) {
-    const newFilterFn = (item: DataElementType) =>
-      this.parseLabelValue(this.selectorFunction(item)) == label;
+    const newFilterFn = (item: DataElementType) => {
+      const itemLabel = this.selectorFunction(item);
+      if (itemLabel) {
+        return this.parseLabelValue(itemLabel) == label;
+      }
+      return false;
+    };
 
     return items.filter(newFilterFn).length;
   }
